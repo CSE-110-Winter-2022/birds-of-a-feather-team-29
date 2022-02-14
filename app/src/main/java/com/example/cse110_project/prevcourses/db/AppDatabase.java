@@ -1,5 +1,5 @@
 /*
- * Sources:
+ * Source(s):
  *
  * Adding databases/migration in regards to Room -
  * 1) Title: Understanding migrations with Room
