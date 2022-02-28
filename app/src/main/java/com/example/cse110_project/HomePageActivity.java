@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class HomePageActivity extends AppCompatActivity{
     protected RecyclerView studentsRecyclerView;
     protected RecyclerView.LayoutManager studentsLayoutManager;
     protected BoFStudentViewAdapter studentsViewAdapter;
+    private boolean isfavourite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,5 +142,20 @@ public class HomePageActivity extends AppCompatActivity{
 //        studentsViewAdapter.clear();
 //        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao());
         studentsRecyclerView.setAdapter(studentsViewAdapter);
+    }
+
+    public void onToggleStar(View view) {
+        TextView favouriteStar = (TextView) view;
+        if(!isfavourite){
+            // if the star is not already selected and you select it
+            isfavourite = true;
+            favouriteStar.setTextColor(Color.parseColor("#FFD600"));
+            // add the student to database
+        }else{
+            // if the star is already selected and you unselect it
+            isfavourite = false;
+            favouriteStar.setTextColor(Color.parseColor("#9E9E9E"));
+            // remove student from database
+        }
     }
 }
