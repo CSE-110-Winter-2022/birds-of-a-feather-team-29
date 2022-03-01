@@ -15,6 +15,8 @@
     <string name="enter_first_name_below">Enter First Name Below</string>
     <string name="first_name">First name...</string>
     <string name="confirm">Confirm</string>
+    <string name="note_please_click_enter_to_save_the_entered_class">Note: Please click Enter to save the entered class.</string>
+    <string name="class_size">Class Size</string>
 
     <string-array name="academic_years">
         <item>2017</item>
@@ -23,6 +25,7 @@
         <item>2020</item>
         <item>2021</item>
     </string-array>
+
     <string-array name="academic_quarters">
         <item>Fall</item>
         <item>Winter</item>
@@ -30,5 +33,14 @@
         <item>Summer Session I</item>
         <item>Summer Session II</item>
         <item>Special Summer Session</item>
+    </string-array>
+
+    <string-array name="class_size">
+        <item>Tiny (1-40)</item>
+        <item>Small (40-75)</item>
+        <item>Medium (75-150)</item>
+        <item>Large (150-250)</item>
+        <item>Huge (250-400)</item>
+        <item>Gigantic (400+)</item>
     </string-array>
 </resources>
