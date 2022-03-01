@@ -1,4 +1,4 @@
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases.bof;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

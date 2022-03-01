@@ -24,7 +24,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 
@@ -37,6 +40,13 @@ public class AddCoursesMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_courses);
         setTitle(Constants.APP_VERSION);
+
+        // FIXME: elias inserted this
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        User user = db.UserDao().getAll().get(0);
+        Toast.makeText(AddCoursesMainActivity.this, "Hello, " + user.getUserFirstName() + " with " +
+                "URL: " + user.getHeadshotURL(), Toast.LENGTH_SHORT).show();
+        // ---------------------
 
         addCoursesToDatabase();
         initYearDropdown();

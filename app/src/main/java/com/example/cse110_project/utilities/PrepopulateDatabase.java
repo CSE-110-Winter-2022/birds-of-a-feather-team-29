@@ -1,8 +1,8 @@
 package com.example.cse110_project.utilities;
 
-import com.example.cse110_project.prevcourses.db.AppDatabase;
-import com.example.cse110_project.prevcourses.db.DefaultCourse;
-import com.example.cse110_project.prevcourses.db.DefaultStudent;
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.def.DefaultCourse;
+import com.example.cse110_project.databases.def.DefaultStudent;
 
 import java.util.List;
 
@@ -63,8 +63,26 @@ public class PrepopulateDatabase {
     }
 
     private static void clearDefaultDatabase(AppDatabase db) {
-        db.clearAllTables();
+        //db.clearAllTables();
+
+        System.out.println("Num of default students: " + db.DefaultStudentDao().getAll().size());
+        System.out.println("Num of default courses: " + db.DefaultCourseDao().getAll().size());
+        System.out.println("Num of BoF students: " + db.BoFStudentDao().getAll().size());
+        System.out.println("Num of BoF courses: " + db.BoFCourseDao().getAll().size());
+        System.out.println("-----------");
+
         db.DefaultStudentDao().delete();
         db.DefaultCourseDao().delete();
+
+        System.out.println("Num of default students: " + db.DefaultStudentDao().getAll().size());
+        System.out.println("Num of default courses: " + db.DefaultCourseDao().getAll().size());
+        System.out.println("Num of BoF students: " + db.BoFStudentDao().getAll().size());
+        System.out.println("Num of BoF courses: " + db.BoFCourseDao().getAll().size());
+        System.out.println("-----------");
+
+        System.out.println(db.BoFStudentDao().getAll().get(0).getName());
+
+        //db.BoFStudentDao().delete();
+        //db.BoFCourseDao().delete();
     }
 }

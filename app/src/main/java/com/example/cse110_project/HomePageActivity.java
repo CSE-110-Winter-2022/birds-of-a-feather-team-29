@@ -10,10 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.cse110_project.prevcourses.db.AppDatabase;
-import com.example.cse110_project.prevcourses.db.BoFCourse;
-import com.example.cse110_project.prevcourses.db.BoFStudent;
-import com.example.cse110_project.prevcourses.db.DefaultCourse;
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.bof.BoFCourse;
+import com.example.cse110_project.databases.bof.BoFStudent;
+import com.example.cse110_project.databases.def.DefaultCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 
@@ -35,6 +35,8 @@ public class HomePageActivity extends AppCompatActivity{
         setContentView(R.layout.activity_home_page);
         setTitle(Constants.APP_VERSION);
 
+        System.out.println("HOME PAGE ACTIVITY");
+        System.out.println(AppDatabase.singleton(getApplicationContext()).UserDao().getAll().size());
 
         compareUserCoursesWithStudents();
         displayBirdsOfAFeatherList();

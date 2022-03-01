@@ -8,7 +8,7 @@
  *    Source used for...: Understanding what to do when additional databases are added
  * */
 
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases;
 
 import android.content.Context;
 
@@ -16,7 +16,18 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {DefaultStudent.class, DefaultCourse.class, BoFStudent.class, BoFCourse.class}, version = 2)
+import com.example.cse110_project.databases.bof.BoFCourse;
+import com.example.cse110_project.databases.bof.BoFCourseDao;
+import com.example.cse110_project.databases.bof.BoFStudent;
+import com.example.cse110_project.databases.bof.BoFStudentDao;
+import com.example.cse110_project.databases.def.DefaultCourse;
+import com.example.cse110_project.databases.def.DefaultCourseDao;
+import com.example.cse110_project.databases.def.DefaultStudent;
+import com.example.cse110_project.databases.def.DefaultStudentDao;
+import com.example.cse110_project.databases.user.User;
+import com.example.cse110_project.databases.user.UserDao;
+
+@Database(entities = {DefaultStudent.class, DefaultCourse.class, BoFStudent.class, BoFCourse.class, User.class}, version = 2)
 
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase singletonInstance;
@@ -24,7 +35,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase singleton(Context context){
         if(singletonInstance == null){
             singletonInstance = Room.databaseBuilder(context, AppDatabase.class, "students.db")
-                    .createFromAsset("starter-students.db")
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build();
@@ -42,6 +52,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DefaultCourseDao DefaultCourseDao();
     public abstract BoFStudentDao BoFStudentDao();
     public abstract BoFCourseDao BoFCourseDao();
+    public abstract UserDao UserDao();
     public static AppDatabase getSingletonInstance() {
         return singletonInstance;
     }

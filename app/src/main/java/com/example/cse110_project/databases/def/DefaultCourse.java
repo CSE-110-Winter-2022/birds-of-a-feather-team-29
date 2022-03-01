@@ -1,4 +1,4 @@
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases.def;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

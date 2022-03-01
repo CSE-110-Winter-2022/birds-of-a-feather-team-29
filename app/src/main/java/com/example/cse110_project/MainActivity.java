@@ -17,18 +17,15 @@ package com.example.cse110_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
-import com.example.cse110_project.prevcourses.db.AppDatabase;
-import com.example.cse110_project.prevcourses.db.DefaultCourse;
-import com.example.cse110_project.prevcourses.db.DefaultStudent;
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.PrepopulateDatabase;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,10 +37,17 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferencesDatabase.clearCurrEnteredCoursesDatabase(getApplicationContext());
         PrepopulateDatabase.populateDefaultDatabase(AppDatabase.singleton(getApplicationContext()));
+        initializeUser();
     }
 
     public void onStartAppClicked(View view) {
         Intent intent = new Intent(this, EnterNameActivity.class);
         startActivity(intent);
+    }
+
+    public void initializeUser() {
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        System.out.println(db.UserDao().getAll().size());
+        db.UserDao().insert(new User(null, null));
     }
 }

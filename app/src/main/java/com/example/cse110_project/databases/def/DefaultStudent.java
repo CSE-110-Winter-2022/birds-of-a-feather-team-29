@@ -1,10 +1,8 @@
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases.def;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.util.List;
 
 @Entity(tableName = "students")
 public class DefaultStudent {

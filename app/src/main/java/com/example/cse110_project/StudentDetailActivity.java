@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import com.example.cse110_project.prevcourses.db.AppDatabase;
-import com.example.cse110_project.prevcourses.db.BoFCourse;
-import com.example.cse110_project.prevcourses.db.BoFStudent;
-import com.example.cse110_project.prevcourses.db.DefaultStudent;
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.bof.BoFCourse;
+import com.example.cse110_project.databases.bof.BoFStudent;
 import com.example.cse110_project.utilities.Constants;
 
 public class StudentDetailActivity extends AppCompatActivity {

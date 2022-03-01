@@ -29,6 +29,7 @@ public class InvalidURLTest {
         scenario.moveToState(Lifecycle.State.STARTED);
 
         // ignore comment
+        // ignore comment
         scenario.onActivity(activity -> {
             TextView textView = activity.findViewById(R.id.editTextTextPersonName);
             textView.setText("");

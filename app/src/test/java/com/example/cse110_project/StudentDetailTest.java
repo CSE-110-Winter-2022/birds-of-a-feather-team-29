@@ -2,20 +2,18 @@ package com.example.cse110_project;
 
 import android.content.Context;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.cse110_project.prevcourses.db.AppDatabase;
-import com.example.cse110_project.prevcourses.db.BoFCourse;
-import com.example.cse110_project.prevcourses.db.BoFCourseDao;
-import com.example.cse110_project.prevcourses.db.BoFStudent;
-import com.example.cse110_project.prevcourses.db.BoFStudentDao;
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.bof.BoFCourse;
+import com.example.cse110_project.databases.bof.BoFCourseDao;
+import com.example.cse110_project.databases.bof.BoFStudent;
+import com.example.cse110_project.databases.bof.BoFStudentDao;
 
 import org.junit.After;
 import org.junit.Before;

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
 
 public class AddLinkActivity extends AppCompatActivity {
@@ -30,8 +32,13 @@ public class AddLinkActivity extends AppCompatActivity {
 
             editor.putString(Constants.USER_URL_KEY, url);
             editor.apply();
-            startActivity(intent);
 
+            // FIXME: elias inserted this here
+            AppDatabase db = AppDatabase.singleton(getApplicationContext());
+            db.UserDao().updateHeadshotURL(url, db.UserDao().getAll().get(0).getUserId());
+            // -------------------
+
+            startActivity(intent);
         }
 
     }
@@ -46,6 +53,12 @@ public class AddLinkActivity extends AppCompatActivity {
 
         editor.putString(Constants.USER_URL_KEY, default_pic);
         editor.apply();
+
+        // FIXME: elias inserted this here
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        db.UserDao().updateHeadshotURL(Constants.DEFAULT_PIC_LINK, db.UserDao().getAll().get(0).getUserId());
+        // -------------------
+
         startActivity(intent);
     }
 }

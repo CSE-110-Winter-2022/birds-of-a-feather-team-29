@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import com.example.cse110_project.prevcourses.db.BoFCourse;
+import com.example.cse110_project.databases.bof.BoFCourse;
 import com.example.cse110_project.utilities.Constants;
 
 public class BoFCourseViewAdapter extends RecyclerView.Adapter<BoFCourseViewAdapter.ViewHolder> {

@@ -10,12 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cse110_project.prevcourses.db.BoFCourseDao;
-import com.example.cse110_project.prevcourses.db.BoFStudent;
+import com.example.cse110_project.databases.bof.BoFCourseDao;
+import com.example.cse110_project.databases.bof.BoFStudent;
 import com.example.cse110_project.utilities.BoFStudentComparator;
 import com.example.cse110_project.utilities.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAdapter.ViewHolder> {
