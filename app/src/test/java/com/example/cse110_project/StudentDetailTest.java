@@ -49,19 +49,19 @@ public class StudentDetailTest {
         assert(true);
     }
 
-    @Test
-    public void test_Display_One_Previous_Course_Shared_With_User() {
-        //mainSD.insert(new BoFStudent(1, "Steel"));
-        BoFStudent student = db.BoFStudentDao().getBasedOnPrevId(1);
-        //mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall", "CSE 21"));
-
-        ActivityScenario<StudentDetailActivity> scenario = rule.getScenario();
-        scenario.moveToState(Lifecycle.State.CREATED);
-        scenario.onActivity(activity -> {
-            activity.displaySharedCourses(1);
-            assert(activity.getNumOfCoursesDisplayed() == 1);
-        });
-    }
+//    @Test
+//    public void test_Display_One_Previous_Course_Shared_With_User() {
+//        //mainSD.insert(new BoFStudent(1, "Steel"));
+//        BoFStudent student = db.BoFStudentDao().getBasedOnPrevId(1);
+//        //mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall", "CSE 21"));
+//
+//        ActivityScenario<StudentDetailActivity> scenario = rule.getScenario();
+//        scenario.moveToState(Lifecycle.State.CREATED);
+//        scenario.onActivity(activity -> {
+//            activity.displaySharedCourses(1);
+//            assert(activity.getNumOfCoursesDisplayed() == 1);
+//        });
+//    }
 
     @Test
     public void test_Display_Five_Previous_Courses_Shared_With_User() {

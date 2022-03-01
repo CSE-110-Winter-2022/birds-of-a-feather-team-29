@@ -80,7 +80,6 @@ public class AddCoursesActivity extends AppCompatActivity {
         firstCourse.setText(fullCourseName);
 
         addToList(extras.getString(Constants.INIT_COURSE_NUMBER));
-
         addToDatabase(extras.getString("courseNum"));
     }
 
@@ -94,10 +93,9 @@ public class AddCoursesActivity extends AppCompatActivity {
 
         String fullCourseName = this.course + Constants.SPACE + courseNumber.getText().toString();
 
-        // Displays the entered course on a TextView that has not been set with a text
         courseLayouts[courseIndex].setText(fullCourseName);
-        addToList(courseNumber.getText().toString());
 
+        addToList(courseNumber.getText().toString());
         addToDatabase(courseNumber.getText().toString());
     }
 

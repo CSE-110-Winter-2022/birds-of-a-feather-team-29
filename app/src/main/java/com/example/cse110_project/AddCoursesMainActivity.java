@@ -51,10 +51,8 @@ public class AddCoursesMainActivity extends AppCompatActivity {
         TextView courseNumber = findViewById(R.id.enter_course_textview);
 
         // Checks if the user has not entered a course and corresponding course number
-        if ((subject.getText().toString().equals(""))
-                || (courseNumber.getText().toString().equals(""))) {
-            Utilities.showAlert(this, Constants.WARNING,
-                    Constants.NO_SUB_OR_COURSE_NUMBER_WARNING);
+        if ((subject.getText().toString().equals("")) || (courseNumber.getText().toString().equals(""))) {
+            Utilities.showAlert(this, Constants.WARNING, Constants.NO_SUB_OR_COURSE_NUMBER_WARNING);
             return;
         }
 
