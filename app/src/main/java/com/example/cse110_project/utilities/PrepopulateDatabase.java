@@ -24,37 +24,37 @@ public class PrepopulateDatabase {
 
         DefaultCourse[] defaultCourseList = {
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                        "Fall", "CSE 11"),
+                        "Fall", "CSE", "11", false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                        "Fall","CSE 12"),
+                        "Fall","CSE", "12", false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                        "Fall","CSE 21"),
+                        "Fall","CSE", "21", false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                        "Spring","CSE 100"),
+                        "Spring","CSE","100", false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                        "Spring","CSE 140"),
+                        "Spring","CSE","140", false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                        "Spring","CSE 105"),
+                        "Spring","CSE","105", false),
 
                 new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                        "Winter","CSE 11"),
+                        "Winter","CSE","11", false),
                 new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                        "Winter","CSE 12"),
+                        "Winter","CSE","12", false),
                 new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                        "Winter","CSE 21"),
+                        "Winter","CSE","21", false),
                 new DefaultCourse(defStudentsList.get(1).getStudentId(), "2019",
-                        "Fall", "CSE 100"),
+                        "Fall", "CSE","100", false),
 
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2018",
-                        "Spring","CSE 15L"),
+                        "Spring","CSE","15L", false),
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                        "Summer Session I","CSE 191"),
+                        "Summer Session I","CSE","191", false),
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                        "Fall","CSE 142"),
+                        "Fall","CSE","142", false),
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                        "Fall","CSE 112"),
+                        "Fall","CSE","112", false),
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                        "Fall","CSE 167")
+                        "Fall","CSE","167", false)
         };
 
         for (DefaultCourse defaultCourse : defaultCourseList) {

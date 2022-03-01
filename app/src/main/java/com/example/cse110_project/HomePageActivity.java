@@ -14,6 +14,8 @@ import com.example.cse110_project.databases.AppDatabase;
 import com.example.cse110_project.databases.bof.BoFCourse;
 import com.example.cse110_project.databases.bof.BoFStudent;
 import com.example.cse110_project.databases.def.DefaultCourse;
+import com.example.cse110_project.databases.def.DefaultStudent;
+import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 
@@ -34,9 +36,6 @@ public class HomePageActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         setTitle(Constants.APP_VERSION);
-
-        System.out.println("HOME PAGE ACTIVITY");
-        System.out.println(AppDatabase.singleton(getApplicationContext()).UserDao().getAll().size());
 
         compareUserCoursesWithStudents();
         displayBirdsOfAFeatherList();
@@ -64,77 +63,72 @@ public class HomePageActivity extends AppCompatActivity{
     }
 
     /**
-     * Adds the students and courses that the User has shared a class with to the database by
+     * Adds the students and courses that the User has shared a class with to the BoF database by
      * cross-checking the User's courses with all the pre-populated courses in the database
      * */
     public void compareUserCoursesWithStudents() {
         db = AppDatabase.singleton(getApplicationContext());
-        SharedPreferences sp = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
-                Constants.MAIN_USER_COURSE_DB);
-        Map<String, ?> userCoursesMap = sp.getAll();
-        Object[] keysArr = userCoursesMap.keySet().toArray();
-        List<DefaultCourse> defaultCourseList;
-        Set<String> userCourses;
-        String[] studentCourseSplit, userKeySplit;
-        String year, quarter;
-        boolean skipCourse;
-        int studentId;
+        List<UserCourse> ucl = db.UserCourseDao().getAll();
+        List<DefaultCourse> dcl;
+        List<BoFStudent> bsl;
+        String year;
+        String quarter;
+        String course;
+        String courseNum;
+        boolean next;
 
-        // TODO: Update algorithm so that it compares default courses with the user's courses in
-        //  Room database instead of SharedPreferences
+        // Checks which students in the default database have courses that match with the courses
+        // the user has entered
+        for (UserCourse uc : ucl) {
+            year = uc.getYear();
+            quarter = uc.getQuarter();
+            course = uc.getCourse();
+            courseNum = uc.getCourseNum();
 
-        // Cross-checks the classes entered by the user with the students pre-populated into the
-        // database
-        for (Object o : keysArr) {
+            dcl = db.DefaultCourseDao().getAll();
 
-            // FIXME: new
+            for (DefaultCourse dc : dcl) {
+                next = false;
 
+                if (dc.getCourseAdded()) { continue; }
+                // Checks the default course database if any match with the course the user has
+                // entered
+                else if ((dc.getYear().equals(year)) && (dc.getQuarter().equals(quarter))
+                        && (dc.getCourse().equals(course)) && (dc.getCourseNum().equals(courseNum))) {
 
-            userKeySplit = ((String)o).split(Constants.COMMA);
-            userCourses = (Set<String>) userCoursesMap.get(o);
-            defaultCourseList = db.DefaultCourseDao().getAll();
+                    DefaultStudent currMatchingStudent = db.DefaultStudentDao().get(dc.getStudentId());
+                    bsl = db.BoFStudentDao().getAll();
 
-            // Iterates through the course numbers entered by the user for a specific year, quarter,
-            // and course
-            for (String uC : userCourses) {
-                // Iterates through all the remaining courses in the pre-populated database
-                for (DefaultCourse cL : defaultCourseList) {
-                    skipCourse = false;
-                    studentCourseSplit = cL.getCourse().split(Constants.SPACE);
-                    year = cL.getYear();
-                    quarter = cL.getQuarter();
-
-                    if (cL.getYear().equals(userKeySplit[0]) && cL.getQuarter().equals(userKeySplit[1])
-                            && studentCourseSplit[0].equals(userKeySplit[2])
-                            && studentCourseSplit[1].equals(uC)) {
-                        studentId = cL.getStudentId();
-
-                        // Checks whether or not the student already has the course associated with them
-                        // in the database
-                        if (db.DefaultStudentDao().get(studentId).getEncountered()) {
-                            //List<BoFCourse> studentCourses = db.BoFCourseDao().getForStudent(studentId);
-                            List<BoFCourse> studentCourses = db.BoFCourseDao().getForStudent(db.BoFStudentDao().getBasedOnPrevId(studentId).getStudentId());
-                            for (BoFCourse course : studentCourses) {
-                                if (course.getCourse().equals(cL.getCourse())) {
-                                    skipCourse = true;
-                                    break;
-                                }
-                            }
-                            if (skipCourse) { continue; }
+                    // Checks if the student with the matching course is already in the BoF student
+                    // database
+                    // Note: Current duplicate check is finding the same name
+                    for (BoFStudent bs : bsl) {
+                        if (bs.getName().equals(currMatchingStudent.getName())) {
+                            db.BoFCourseDao().insert(new BoFCourse(bs.getStudentId(), dc.getYear(),
+                                    dc.getQuarter(), dc.getCourse(), dc.getCourseNum()));
+                            next = true;
+                            break;
                         }
-
-                        // If the student has not been added to the BoF database, then we add the
-                        // student to the BoF database
-                        if (!(db.DefaultStudentDao().get(studentId).getEncountered())) {
-                            BoFStudent ns = new BoFStudent(studentId, db.DefaultStudentDao().get(studentId).getName());
-                            db.BoFStudentDao().insert(ns);
-                            db.DefaultStudentDao().updateEncountered(true, studentId);
-                        }
-
-                        studentId = db.BoFStudentDao().getBasedOnPrevId(studentId).getStudentId();
-                        BoFCourse nc = new BoFCourse(studentId, year, quarter, cL.getCourse());
-                        db.BoFCourseDao().insert(nc);
                     }
+
+                    if (next) {
+                        db.DefaultCourseDao().updateCourseAdded(true, dc.getCourseId());
+                        continue;
+                    }
+
+                    // If student does not exist in the BoF student database
+                    db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName()));
+                    bsl = db.BoFStudentDao().getAll();
+
+                    for (BoFStudent bs : bsl) {
+                        if (bs.getName().equals(currMatchingStudent.getName())) {
+                            db.BoFCourseDao().insert(new BoFCourse(bs.getStudentId(), dc.getYear(),
+                                    dc.getQuarter(), dc.getCourse(), dc.getCourseNum()));
+                            break;
+                        }
+                    }
+
+                    db.DefaultCourseDao().updateCourseAdded(true, dc.getCourseId());
                 }
             }
         }
@@ -145,12 +139,9 @@ public class HomePageActivity extends AppCompatActivity{
         List<BoFStudent> students = db.BoFStudentDao().getAll();
 
         studentsRecyclerView = findViewById(R.id.students_view);
-
         studentsLayoutManager = new LinearLayoutManager(this);
         studentsRecyclerView.setLayoutManager(studentsLayoutManager);
-
         studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao());
-
         studentsRecyclerView.setAdapter(studentsViewAdapter);
     }
 }

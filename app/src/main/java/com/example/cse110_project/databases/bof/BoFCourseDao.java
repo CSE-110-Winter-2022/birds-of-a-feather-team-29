@@ -23,9 +23,6 @@ public interface BoFCourseDao {
     @Query("DELETE FROM newCourse")
     void delete();
 
-    @Query("SELECT COUNT(*) from newCourse")
-    int count();
-
     @Insert
     void insert(BoFCourse course);
 

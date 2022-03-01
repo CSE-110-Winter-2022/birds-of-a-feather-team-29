@@ -38,12 +38,22 @@ public class MainActivity extends AppCompatActivity {
         // FIXME: test line(s)
         System.out.println("--------------");
         System.out.println(AppDatabase.singleton(getApplicationContext()).
-                UserCourseDao().getAll().size());
+                BoFStudentDao().getAll().size());
+        System.out.println(AppDatabase.singleton(getApplicationContext()).
+                BoFCourseDao().getAll().size());
         System.out.println("--------------");
 
         SharedPreferencesDatabase.clearCurrEnteredCoursesDatabase(getApplicationContext());
         PrepopulateDatabase.populateDefaultDatabase(AppDatabase.singleton(getApplicationContext()));
         initializeUser();
+
+        // FIXME: test line(s)
+        System.out.println("--------------");
+        System.out.println(AppDatabase.singleton(getApplicationContext()).
+                BoFStudentDao().getAll().size());
+        System.out.println(AppDatabase.singleton(getApplicationContext()).
+                BoFCourseDao().getAll().size());
+        System.out.println("--------------");
     }
 
     public void onStartAppClicked(View view) {

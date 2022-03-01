@@ -22,12 +22,23 @@ public class DefaultCourse {
     @ColumnInfo(name = "course")
     public String course;
 
-    public DefaultCourse(int studentId, String year, String quarter, String course) {
+    @ColumnInfo(name = "course_num")
+    private String courseNum;
+
+    @ColumnInfo(name = "course_added")
+    private boolean courseAdded;
+
+    public DefaultCourse(int studentId, String year, String quarter, String course, String courseNum,
+                         boolean courseAdded) {
         this.studentId = studentId;
         this.year = year;
         this.quarter = quarter;
         this.course = course;
+        this.courseNum = courseNum;
+        this.courseAdded = courseAdded;
     }
+
+    public int getCourseId() { return this.courseId; }
 
     public int getStudentId() {
         return studentId;
@@ -44,4 +55,10 @@ public class DefaultCourse {
     public void setCourse(String course) {
         this.course = course;
     }
+
+    public String getCourseNum() {
+        return this.courseNum;
+    }
+
+    public boolean getCourseAdded() { return this.courseAdded; }
 }

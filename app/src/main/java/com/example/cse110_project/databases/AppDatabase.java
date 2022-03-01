@@ -30,7 +30,7 @@ import com.example.cse110_project.databases.user.UserCourseDao;
 import com.example.cse110_project.databases.user.UserDao;
 
 @Database(entities = {DefaultStudent.class, DefaultCourse.class, BoFStudent.class, BoFCourse.class,
-        User.class, UserCourse.class}, version = 3)
+        User.class, UserCourse.class}, version = 4)
 
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase singletonInstance;

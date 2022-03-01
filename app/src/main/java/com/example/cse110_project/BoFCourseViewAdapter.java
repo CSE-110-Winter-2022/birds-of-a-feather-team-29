@@ -52,9 +52,9 @@ public class BoFCourseViewAdapter extends RecyclerView.Adapter<BoFCourseViewAdap
 
         public void setCourse(BoFCourse course) {
             this.course = course;
-            this.courseTextView.setText(course.course + Constants.LEFT_PARENTHESIS +
-                    course.getQuarter() + Constants.COMMA_SPACE + course.getYear() +
-                    Constants.RIGHT_PARENTHESIS);
+            this.courseTextView.setText(course.course + Constants.SPACE + course.getCourseNum() +
+                    Constants.LEFT_PARENTHESIS + course.getQuarter() + Constants.COMMA_SPACE +
+                    course.getYear() + Constants.RIGHT_PARENTHESIS);
         }
     }
 }

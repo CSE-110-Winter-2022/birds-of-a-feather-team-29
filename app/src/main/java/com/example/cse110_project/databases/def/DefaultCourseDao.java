@@ -30,6 +30,9 @@ public interface DefaultCourseDao {
     @Query("SELECT * FROM courses WHERE student_id=:id")
     DefaultCourse get(int id);
 
+    @Query("UPDATE courses SET course_added=:courseAdded WHERE course_id=:courseId")
+    void updateCourseAdded(boolean courseAdded, int courseId);
+
     @Query("DELETE FROM courses")
     void delete();
 

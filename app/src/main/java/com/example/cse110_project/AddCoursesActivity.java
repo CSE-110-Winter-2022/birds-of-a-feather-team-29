@@ -26,8 +26,6 @@ public class AddCoursesActivity extends AppCompatActivity {
     /** Instance variables */
     List<String> enteredCourses = new ArrayList<>(LIST_SIZE);
     private int courseCounter = 0;
-
-    // FIXME: new
     private String year;
     private String quarter;
     private String course;
@@ -38,7 +36,6 @@ public class AddCoursesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_courses);
         setTitle(Constants.APP_VERSION);
 
-        // FIXME: new
         Bundle extras = getIntent().getExtras();
         this.year = extras.getString("year");
         this.quarter = extras.getString("quarter");
@@ -52,16 +49,16 @@ public class AddCoursesActivity extends AppCompatActivity {
 
         // Checks if 1) user has entered > 6 courses, 2) no course was entered, and 3) course has
         // already been added to database
-//        if (this.courseCounter == COURSE_COUNTER_MAX) {
-//            Utilities.showAlert(this, Constants.ALERT, Constants.TOO_MANY_COURSES_WARNING);
-//            return;
-//        } else if (enteredCourseNumber.getText().toString().equals("")) {
-//            Utilities.showAlert(this, Constants.WARNING, Constants.NO_COURSE_ENTERED);
-//            return;
-//        } else if (enteredCourses.contains(enteredCourseNumber.getText().toString())) {
-//            Utilities.showAlert(this, Constants.WARNING, Constants.DUPLICATE_COURSE);
-//            return;
-//        }
+        if (this.courseCounter == COURSE_COUNTER_MAX) {
+            Utilities.showAlert(this, Constants.ALERT, Constants.TOO_MANY_COURSES_WARNING);
+            return;
+        } else if (enteredCourseNumber.getText().toString().equals("")) {
+            Utilities.showAlert(this, Constants.WARNING, Constants.NO_COURSE_ENTERED);
+            return;
+        } else if (enteredCourses.contains(enteredCourseNumber.getText().toString())) {
+            Utilities.showAlert(this, Constants.WARNING, Constants.DUPLICATE_COURSE);
+            return;
+        }
 
         displayEnteredPrevCourse(this.courseCounter);
         this.courseCounter++;
@@ -69,19 +66,6 @@ public class AddCoursesActivity extends AppCompatActivity {
 
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, AddCoursesMainActivity.class);
-
-        SharedPreferences pref = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
-                Constants.CURR_ENTERED_COURSES_DB);
-        SharedPreferences.Editor editor = pref.edit();
-        Bundle extras = getIntent().getExtras();
-        HashSet<String> set = new HashSet<>();
-
-        for (String courses : this.enteredCourses) { set.add(courses); }
-
-        editor.putStringSet(extras.getString(Constants.INIT_SUBJECT_KEY), set);
-        editor.apply();
-        intent.putExtra(Constants.SUBJECT_KEY, extras.getString(Constants.INIT_SUBJECT_KEY));
-
         startActivity(intent);
     }
 
@@ -91,18 +75,12 @@ public class AddCoursesActivity extends AppCompatActivity {
     public void displayInitPrevCourse() {
         TextView firstCourse = findViewById(R.id.prev_course_one_textview);
         Bundle extras = getIntent().getExtras();
-//        String fullCourseName = extras.getString(Constants.INIT_SUBJECT_KEY)
-//                + Constants.SPACE + extras.getString(Constants.INIT_COURSE_NUMBER);
-//
-//        firstCourse.setText(fullCourseName);
 
-        // FIXME: new
         String fullCourseName = this.course + Constants.SPACE + extras.getString("courseNum");
         firstCourse.setText(fullCourseName);
 
         addToList(extras.getString(Constants.INIT_COURSE_NUMBER));
 
-        // FIXME: new
         addToDatabase(extras.getString("courseNum"));
     }
 
@@ -113,18 +91,13 @@ public class AddCoursesActivity extends AppCompatActivity {
                 findViewById(R.id.prev_course_five_textview),
                 findViewById(R.id.prev_course_six_textview)};
         TextView courseNumber = findViewById(R.id.course_number_textview);
-        Bundle extras = getIntent().getExtras();
-//        String fullCourseName = extras.getString(Constants.INIT_SUBJECT_KEY) + Constants.SPACE
-//                + courseNumber.getText().toString();
 
-        // FIXME: new
         String fullCourseName = this.course + Constants.SPACE + courseNumber.getText().toString();
 
         // Displays the entered course on a TextView that has not been set with a text
         courseLayouts[courseIndex].setText(fullCourseName);
         addToList(courseNumber.getText().toString());
 
-        // FIXME: new
         addToDatabase(courseNumber.getText().toString());
     }
 
@@ -132,7 +105,6 @@ public class AddCoursesActivity extends AppCompatActivity {
         enteredCourses.add(courseNumber);
     }
 
-    // FIXME: new
     public void addToDatabase(String courseNum) {
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
         List<UserCourse> ucl = db.UserCourseDao().getAll();
