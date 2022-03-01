@@ -1,7 +1,7 @@
 package com.example.cse110_project.utilities;
 
-import com.example.cse110_project.prevcourses.db.BoFCourseDao;
-import com.example.cse110_project.prevcourses.db.BoFStudent;
+import com.example.cse110_project.databases.bof.BoFCourseDao;
+import com.example.cse110_project.databases.bof.BoFStudent;
 
 import java.util.Comparator;
 

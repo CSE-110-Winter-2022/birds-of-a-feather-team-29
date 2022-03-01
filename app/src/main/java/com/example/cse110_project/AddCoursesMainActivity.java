@@ -24,7 +24,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.user.User;
+import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 
@@ -38,7 +42,6 @@ public class AddCoursesMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_courses);
         setTitle(Constants.APP_VERSION);
 
-        addCoursesToDatabase();
         initYearDropdown();
         initQuarterDropdown();
     }
@@ -48,84 +51,35 @@ public class AddCoursesMainActivity extends AppCompatActivity {
         TextView courseNumber = findViewById(R.id.enter_course_textview);
 
         // Checks if the user has not entered a course and corresponding course number
-        if ((subject.getText().toString().equals(""))
-                || (courseNumber.getText().toString().equals(""))) {
-            Utilities.showAlert(this, Constants.WARNING,
-                    Constants.NO_SUB_OR_COURSE_NUMBER_WARNING);
+        if ((subject.getText().toString().equals("")) || (courseNumber.getText().toString().equals(""))) {
+            Utilities.showAlert(this, Constants.WARNING, Constants.NO_SUB_OR_COURSE_NUMBER_WARNING);
             return;
         }
 
-        SharedPreferences pref = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
-                Constants.CURR_ENTERED_COURSES_DB);
-        SharedPreferences.Editor editor = pref.edit();
-        Spinner s1 = findViewById(R.id.year_dropdown_container);
-        Spinner s2 = findViewById(R.id.quarter_dropdown_container);
-
-        // Retrieves the selected year and quarter from the dropdown menus and stores them as
-        // extras
-        editor.clear();
-        editor.putString(Constants.YEAR_KEY, s1.getSelectedItem().toString());
-        editor.putString(Constants.QTR_KEY, s2.getSelectedItem().toString());
-        editor.apply();
+        Spinner year = findViewById(R.id.year_dropdown_container);
+        Spinner quarter = findViewById(R.id.quarter_dropdown_container);
 
         Intent intent = new Intent(this, AddCoursesActivity.class);
 
-        intent.putExtra(Constants.INIT_SUBJECT_KEY, subject.getText().toString());
-        intent.putExtra(Constants.INIT_COURSE_NUMBER, courseNumber.getText().toString());
+        intent.putExtra("year", year.getSelectedItem().toString());
+        intent.putExtra("quarter", quarter.getSelectedItem().toString());
+        intent.putExtra("course", subject.getText().toString());
+        intent.putExtra("courseNum", courseNumber.getText().toString());
 
         startActivity(intent);
     }
 
     public boolean onDoneClicked(View view) {
-        SharedPreferences userCourseInfo = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
-                Constants.MAIN_USER_COURSE_DB);
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
 
         // Checks if the user has entered data into the database
-        if (userCourseInfo.getAll().isEmpty()) {
+        if (db.UserCourseDao().getAll().size() < 1) {
             Utilities.showAlert(this, Constants.WARNING, Constants.NO_CLASSES_ENTERED_WARNING);
             return false;
         }
 
         Intent intent = new Intent(this, HomePageActivity.class);
         startActivity(intent);
-
-        return true;
-    }
-
-    /**
-     * Adding the courses entered by the user from AddCoursesActivity.class in the form of
-     * extras into the appropriate SharedPreferences database
-     * */
-    public boolean addCoursesToDatabase() {
-        Bundle extras = getIntent().getExtras();
-
-        if (extras == null) { return false; }
-
-        // Getting the courses entered by the user from the "current entered classes" database
-        // in the form of a set
-        String subjectKey = extras.getString(Constants.SUBJECT_KEY);
-        SharedPreferences curr = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
-                Constants.CURR_ENTERED_COURSES_DB);
-        HashSet<String> set = (HashSet<String>) curr.getStringSet(subjectKey, null);
-
-        if (set == null) { return false; }
-
-        SharedPreferences userCourseInfo = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
-                Constants.MAIN_USER_COURSE_DB);
-        SharedPreferences.Editor mainEditor = userCourseInfo.edit();
-
-        // Adding the set of courses received above into a "main user class info" database as a value
-        // mapped to a key representing the year, quarter, and subject
-        String completeKey = curr.getString(Constants.YEAR_KEY, null) + Constants.COMMA +
-                curr.getString(Constants.QTR_KEY, null) + Constants.COMMA + subjectKey;
-
-        if (userCourseInfo.contains(completeKey)) {
-            HashSet<String> set2 = (HashSet<String>) userCourseInfo.getStringSet(completeKey, null);
-            set.addAll(set2);
-        }
-
-        mainEditor.putStringSet(completeKey, set);
-        mainEditor.apply();
 
         return true;
     }

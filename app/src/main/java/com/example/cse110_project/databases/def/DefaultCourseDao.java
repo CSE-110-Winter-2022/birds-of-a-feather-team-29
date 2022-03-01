@@ -8,7 +8,7 @@
  *    Source used for...: Understanding how to delete data in the Room database
  * */
 
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases.def;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -30,11 +30,11 @@ public interface DefaultCourseDao {
     @Query("SELECT * FROM courses WHERE student_id=:id")
     DefaultCourse get(int id);
 
+    @Query("UPDATE courses SET course_added=:courseAdded WHERE course_id=:courseId")
+    void updateCourseAdded(boolean courseAdded, int courseId);
+
     @Query("DELETE FROM courses")
     void delete();
-
-    @Query("SELECT COUNT(*) from courses")
-    int count();
 
     @Insert
     void insert(DefaultCourse defaultCourse);

@@ -20,14 +20,14 @@ public class AddCoursesMainTest {
     /**
      * Unit test of AddCoursesMainActivity:addCoursesToDatabase()
      * */
-    @Test
-    public void test_Func_addCoursesToDatabase() {
-        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
-        scenario.moveToState(Lifecycle.State.CREATED);
-        scenario.onActivity(activity -> {
-            assert(!activity.addCoursesToDatabase());
-        });
-    }
+//    @Test
+//    public void test_Func_addCoursesToDatabase() {
+//        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+//        scenario.moveToState(Lifecycle.State.CREATED);
+//        scenario.onActivity(activity -> {
+//            assert(!activity.addCoursesToDatabase());
+//        });
+//    }
 
     @Test
     public void test_Subject_TextView_Is_Initially_Empty() {

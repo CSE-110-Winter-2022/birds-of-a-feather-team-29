@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import com.example.cse110_project.prevcourses.db.BoFCourse;
+import com.example.cse110_project.databases.bof.BoFCourse;
 import com.example.cse110_project.utilities.Constants;
 
 public class BoFCourseViewAdapter extends RecyclerView.Adapter<BoFCourseViewAdapter.ViewHolder> {
@@ -52,9 +52,9 @@ public class BoFCourseViewAdapter extends RecyclerView.Adapter<BoFCourseViewAdap
 
         public void setCourse(BoFCourse course) {
             this.course = course;
-            this.courseTextView.setText(course.course + Constants.LEFT_PARENTHESIS +
-                    course.getQuarter() + Constants.COMMA_SPACE + course.getYear() +
-                    Constants.RIGHT_PARENTHESIS);
+            this.courseTextView.setText(course.course + Constants.SPACE + course.getCourseNum() +
+                    Constants.LEFT_PARENTHESIS + course.getQuarter() + Constants.COMMA_SPACE +
+                    course.getYear() + Constants.RIGHT_PARENTHESIS);
         }
     }
 }

@@ -2,26 +2,18 @@ package com.example.cse110_project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.os.IResultReceiver;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.cse110_project.prevcourses.db.AppDatabase;
-import com.example.cse110_project.prevcourses.db.BoFCourseDao;
-import com.example.cse110_project.prevcourses.db.BoFStudent;
-import com.example.cse110_project.prevcourses.db.BoFStudentDao;
-import com.example.cse110_project.prevcourses.db.DefaultCourse;
-import com.example.cse110_project.prevcourses.db.DefaultCourseDao;
-import com.example.cse110_project.prevcourses.db.DefaultStudent;
-import com.example.cse110_project.prevcourses.db.DefaultStudentDao;
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.def.DefaultCourse;
+import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.FakedMessageListener;
-import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
@@ -68,7 +60,7 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
 
                 for (int i = 2; i < mockArr.length; i=i+4) {
                     db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
-                            mockArr[i], mockArr[i+1], mockArr[i+2] + " " + mockArr[i+3]));
+                            mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], false));
                 }
 
             }

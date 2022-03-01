@@ -1,10 +1,8 @@
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases.bof;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.util.List;
 
 @Entity(tableName = "newCourse")
 public class BoFCourse {
@@ -25,11 +23,15 @@ public class BoFCourse {
     @ColumnInfo(name = "course")
     public String course;
 
-    public BoFCourse(int studentId, String year, String quarter, String course) {
+    @ColumnInfo(name = "course_num")
+    private String courseNum;
+
+    public BoFCourse(int studentId, String year, String quarter, String course, String courseNum) {
         this.studentId = studentId;
         this.year = year;
         this.quarter = quarter;
         this.course = course;
+        this.courseNum = courseNum;
     }
 
     public int getStudentId() {
@@ -44,8 +46,7 @@ public class BoFCourse {
         return course;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public String getCourseNum() {
+        return this.courseNum;
     }
-
 }
