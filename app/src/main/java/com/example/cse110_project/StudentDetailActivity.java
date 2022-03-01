@@ -47,7 +47,7 @@ public class StudentDetailActivity extends AppCompatActivity {
 
         List<BoFCourse> courses = db.BoFCourseDao().getForStudent(studentId);
 
-        setTitle(student.getName());
+        if(student != null){setTitle(student.getName());}
 
         coursesRecyclerView = findViewById(R.id.courses_view);
         coursesLayoutManager = new LinearLayoutManager(this);

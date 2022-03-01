@@ -46,7 +46,10 @@ public class HomePageActivity extends AppCompatActivity{
         TextView topLeftButton = findViewById(R.id.start_button);
         String currText = topLeftButton.getText().toString();
 
-        if (currText.equals(Constants.START)) { topLeftButton.setText(Constants.STOP); }
+        if (currText.equals(Constants.START)) {
+            topLeftButton.setText(Constants.STOP);
+            //MockNearbyMessagesActivity.onStart();
+        }
         else { topLeftButton.setText(Constants.START); }
     }
 
@@ -102,7 +105,8 @@ public class HomePageActivity extends AppCompatActivity{
                         // Checks whether or not the student already has the course associated with them
                         // in the database
                         if (db.DefaultStudentDao().get(studentId).getEncountered()) {
-                            List<BoFCourse> studentCourses = db.BoFCourseDao().getForStudent(studentId);
+                            //List<BoFCourse> studentCourses = db.BoFCourseDao().getForStudent(studentId);
+                            List<BoFCourse> studentCourses = db.BoFCourseDao().getForStudent(db.BoFStudentDao().getBasedOnPrevId(studentId).getStudentId());
                             for (BoFCourse course : studentCourses) {
                                 if (course.getCourse().equals(cL.getCourse())) {
                                     skipCourse = true;
@@ -139,8 +143,7 @@ public class HomePageActivity extends AppCompatActivity{
         studentsRecyclerView.setLayoutManager(studentsLayoutManager);
 
         studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao());
-//        studentsViewAdapter.clear();
-//        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao());
+
         studentsRecyclerView.setAdapter(studentsViewAdapter);
     }
 }
