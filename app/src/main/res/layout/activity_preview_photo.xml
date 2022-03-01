@@ -7,7 +7,7 @@
     tools:context=".PreviewPhotoActivity">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/invalideTextView"
         android:layout_width="215dp"
         android:layout_height="30dp"
         android:text="If you see this, your URL is invalid."

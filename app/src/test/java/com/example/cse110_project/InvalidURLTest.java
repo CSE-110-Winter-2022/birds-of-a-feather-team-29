@@ -3,6 +3,8 @@ package com.example.cse110_project;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import static org.junit.Assert.assertEquals;
+
 import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,25 +22,22 @@ import org.junit.runner.RunWith;
 public class InvalidURLTest {
     @Rule
     public ActivityScenarioRule<AddLinkActivity> rule = new ActivityScenarioRule<AddLinkActivity>(AddLinkActivity.class);
-    public ActivityScenarioRule<PreviewPhotoActivity> rule2 = new ActivityScenarioRule<PreviewPhotoActivity>(PreviewPhotoActivity.class);
 
     @Test
     public void test_invalidURL() {
         ActivityScenario<AddLinkActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.STARTED);
 
+        // ignore comment
         scenario.onActivity(activity -> {
             TextView textView = activity.findViewById(R.id.editTextTextPersonName);
-            textView.setText("www.google.com");
+            textView.setText("");
             Button button = activity.findViewById(R.id.continue_button);
-            assert(button.isClickable());
-            button.performClick();
-//            startActivity(Intent(activity, PreviewPhotoActivity::class.java));
 
+            button.performClick();
+            assertEquals(Lifecycle.State.STARTED,scenario.getState());
 
         });
-        ActivityScenario<AddLinkActivity> detailScenario = rule.getScenario();
-        scenario.moveToState(Lifecycle.State.STARTED);
-
     }
+
 }
