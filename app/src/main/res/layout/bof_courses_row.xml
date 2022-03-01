@@ -10,8 +10,8 @@
 
     <TextView
         android:id="@+id/courses_row_text"
-        android:layout_width="259dp"
-        android:layout_height="29dp"
+        android:layout_width="336dp"
+        android:layout_height="27dp"
         android:layout_marginTop="16sp"
         android:height="24sp"
         android:lineHeight="16sp"

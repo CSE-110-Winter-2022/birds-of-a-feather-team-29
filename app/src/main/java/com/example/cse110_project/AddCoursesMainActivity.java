@@ -59,11 +59,13 @@ public class AddCoursesMainActivity extends AppCompatActivity {
 
         Spinner year = findViewById(R.id.year_dropdown_container);
         Spinner quarter = findViewById(R.id.quarter_dropdown_container);
+        Spinner classSize = findViewById(R.id.class_size_dropdown_container);
 
         Intent intent = new Intent(this, AddCoursesActivity.class);
 
         intent.putExtra("year", year.getSelectedItem().toString());
         intent.putExtra("quarter", quarter.getSelectedItem().toString());
+        intent.putExtra("classSize", classSize.getSelectedItem().toString());
         intent.putExtra("course", subject.getText().toString());
         intent.putExtra("courseNum", courseNumber.getText().toString());
 
