@@ -44,6 +44,7 @@ public class AddCoursesMainActivity extends AppCompatActivity {
 
         initYearDropdown();
         initQuarterDropdown();
+        initClassSizeDropdown();
     }
 
     public void onEnterClicked(View view) {
@@ -58,11 +59,13 @@ public class AddCoursesMainActivity extends AppCompatActivity {
 
         Spinner year = findViewById(R.id.year_dropdown_container);
         Spinner quarter = findViewById(R.id.quarter_dropdown_container);
+        Spinner classSize = findViewById(R.id.class_size_dropdown_container);
 
         Intent intent = new Intent(this, AddCoursesActivity.class);
 
         intent.putExtra("year", year.getSelectedItem().toString());
         intent.putExtra("quarter", quarter.getSelectedItem().toString());
+        intent.putExtra("classSize", classSize.getSelectedItem().toString());
         intent.putExtra("course", subject.getText().toString());
         intent.putExtra("courseNum", courseNumber.getText().toString());
 
@@ -98,5 +101,13 @@ public class AddCoursesMainActivity extends AppCompatActivity {
                 R.array.academic_quarters, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         quarterDropdown.setAdapter(adapter);
+    }
+
+    public void initClassSizeDropdown() {
+        Spinner classSizeDropdown = findViewById(R.id.class_size_dropdown_container);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.class_size, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        classSizeDropdown.setAdapter(adapter);
     }
 }

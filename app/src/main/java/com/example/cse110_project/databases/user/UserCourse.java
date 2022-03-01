@@ -16,15 +16,19 @@ public class UserCourse {
     @ColumnInfo(name = "quarter")
     private String quarter;
 
+    @ColumnInfo(name = "classSize")
+    private String classSize;
+
     @ColumnInfo(name = "course")
     private String course;
 
     @ColumnInfo(name = "course_num")
     private String courseNum;
 
-    public UserCourse(String year, String quarter, String course, String courseNum) {
+    public UserCourse(String year, String quarter, String classSize, String course, String courseNum) {
         this.year = year;
         this.quarter = quarter;
+        this.classSize = classSize;
         this.course = course;
         this.courseNum = courseNum;
     }
@@ -36,6 +40,8 @@ public class UserCourse {
     public String getQuarter() {
         return this.quarter;
     }
+
+    public String getClassSize() { return this.classSize; }
 
     public String getCourse() {
         return this.course;

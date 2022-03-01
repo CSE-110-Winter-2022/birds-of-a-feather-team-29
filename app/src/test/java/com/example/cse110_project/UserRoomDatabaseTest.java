@@ -53,10 +53,10 @@ public class UserRoomDatabaseTest {
 
     @Test
     public void test_Past_Courses_In_Room_Database_Retained() {
-        ucd.insert(new UserCourse("2017", "Fall", "CSE", "11"));
-        ucd.insert(new UserCourse("2017", "Fall", "CSE", "12"));
-        ucd.insert(new UserCourse("2017", "Winter", "CSE", "21"));
-        ucd.insert(new UserCourse("2018", "Spring", "CSE", "11"));
+        ucd.insert(new UserCourse("2017", "Fall", "Tiny (1-40)", "CSE", "11"));
+        ucd.insert(new UserCourse("2017", "Fall","Tiny (1-40)", "CSE", "12"));
+        ucd.insert(new UserCourse("2017", "Winter", "Medium (75-150)","CSE", "21"));
+        ucd.insert(new UserCourse("2018", "Spring","Huge (250-400)", "CSE", "11"));
         List<UserCourse> uc = db.UserCourseDao().getAll();
         assert(uc.size() == 4);
         AppDatabase db2 = AppDatabase.getSingletonInstance();

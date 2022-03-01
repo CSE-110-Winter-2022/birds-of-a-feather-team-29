@@ -73,6 +73,7 @@ public class HomePageActivity extends AppCompatActivity{
         List<BoFStudent> bsl;
         String year;
         String quarter;
+        String classSize;
         String course;
         String courseNum;
         boolean next;
@@ -82,6 +83,7 @@ public class HomePageActivity extends AppCompatActivity{
         for (UserCourse uc : ucl) {
             year = uc.getYear();
             quarter = uc.getQuarter();
+            classSize = uc.getClassSize();
             course = uc.getCourse();
             courseNum = uc.getCourseNum();
 
@@ -94,7 +96,8 @@ public class HomePageActivity extends AppCompatActivity{
                 // Checks the default course database if any match with the course the user has
                 // entered
                 else if ((dc.getYear().equals(year)) && (dc.getQuarter().equals(quarter))
-                        && (dc.getCourse().equals(course)) && (dc.getCourseNum().equals(courseNum))) {
+                        && (dc.getClassSize().equals(classSize)) && (dc.getCourse().equals(course))
+                        && (dc.getCourseNum().equals(courseNum))) {
 
                     DefaultStudent currMatchingStudent = db.DefaultStudentDao().get(dc.getStudentId());
                     bsl = db.BoFStudentDao().getAll();
@@ -105,7 +108,7 @@ public class HomePageActivity extends AppCompatActivity{
                     for (BoFStudent bs : bsl) {
                         if (bs.getName().equals(currMatchingStudent.getName())) {
                             db.BoFCourseDao().insert(new BoFCourse(bs.getStudentId(), dc.getYear(),
-                                    dc.getQuarter(), dc.getCourse(), dc.getCourseNum()));
+                                    dc.getQuarter(), dc.getClassSize(), dc.getCourse(), dc.getCourseNum()));
                             next = true;
                             break;
                         }
@@ -123,7 +126,7 @@ public class HomePageActivity extends AppCompatActivity{
                     for (BoFStudent bs : bsl) {
                         if (bs.getName().equals(currMatchingStudent.getName())) {
                             db.BoFCourseDao().insert(new BoFCourse(bs.getStudentId(), dc.getYear(),
-                                    dc.getQuarter(), dc.getCourse(), dc.getCourseNum()));
+                                    dc.getQuarter(), dc.getClassSize(), dc.getCourse(), dc.getCourseNum()));
                             break;
                         }
                     }

@@ -20,16 +20,21 @@ public class BoFCourse {
     @ColumnInfo(name = "quarter")
     public String quarter;
 
+    @ColumnInfo(name = "classSize")
+    public String classSize;
+
     @ColumnInfo(name = "course")
     public String course;
 
     @ColumnInfo(name = "course_num")
     private String courseNum;
 
-    public BoFCourse(int studentId, String year, String quarter, String course, String courseNum) {
+    public BoFCourse(int studentId, String year, String quarter, String classSize,
+                     String course, String courseNum) {
         this.studentId = studentId;
         this.year = year;
         this.quarter = quarter;
+        this.classSize = classSize;
         this.course = course;
         this.courseNum = courseNum;
     }
@@ -41,6 +46,8 @@ public class BoFCourse {
     public String getYear() { return year; }
 
     public String getQuarter() { return quarter; }
+
+    public String getClassSize() { return this.classSize; }
 
     public String getCourse() {
         return course;

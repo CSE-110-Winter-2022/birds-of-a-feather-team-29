@@ -29,6 +29,7 @@ public class AddCoursesActivity extends AppCompatActivity {
     private String year;
     private String quarter;
     private String course;
+    private String classSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,14 @@ public class AddCoursesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_courses);
         setTitle(Constants.APP_VERSION);
 
+        TextView classSize = findViewById(R.id.class_size_title_textview);
+
         Bundle extras = getIntent().getExtras();
         this.year = extras.getString("year");
         this.quarter = extras.getString("quarter");
         this.course = extras.getString("course");
+        this.classSize = extras.getString("classSize");
+        classSize.setText("Class size: " + this.classSize);
 
         displayInitPrevCourse();
     }
@@ -115,6 +120,7 @@ public class AddCoursesActivity extends AppCompatActivity {
             }
         }
 
-        db.UserCourseDao().insert(new UserCourse(this.year, this.quarter, this.course, courseNum));
+        db.UserCourseDao().insert(new UserCourse(this.year, this.quarter, this.classSize,
+                this.course, courseNum));
     }
 }
