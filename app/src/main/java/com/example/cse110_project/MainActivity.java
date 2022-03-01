@@ -35,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(Constants.APP_VERSION);
 
+        // FIXME: test line(s)
+        System.out.println("--------------");
+        System.out.println(AppDatabase.singleton(getApplicationContext()).
+                UserCourseDao().getAll().size());
+        System.out.println("--------------");
+
         SharedPreferencesDatabase.clearCurrEnteredCoursesDatabase(getApplicationContext());
         PrepopulateDatabase.populateDefaultDatabase(AppDatabase.singleton(getApplicationContext()));
         initializeUser();
@@ -47,7 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void initializeUser() {
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        System.out.println(db.UserDao().getAll().size());
+        if (db.UserDao().getAll().size() > 0) {
+            Toast.makeText(MainActivity.this, "Welcome back, " + db.UserDao().getAll().
+                get(0).getUserFirstName(), Toast.LENGTH_LONG).show();
+            return;
+        }
         db.UserDao().insert(new User(null, null));
     }
 }

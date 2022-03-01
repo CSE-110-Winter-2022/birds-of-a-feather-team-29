@@ -14,6 +14,7 @@ import com.example.cse110_project.databases.def.DefaultCourse;
 import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.FakedMessageListener;
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 

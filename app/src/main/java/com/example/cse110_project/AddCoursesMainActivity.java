@@ -41,13 +41,6 @@ public class AddCoursesMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_courses);
         setTitle(Constants.APP_VERSION);
 
-        // FIXME: elias inserted this
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        User user = db.UserDao().getAll().get(0);
-        Toast.makeText(AddCoursesMainActivity.this, "Hello, " + user.getUserFirstName() + " with " +
-                "URL: " + user.getHeadshotURL(), Toast.LENGTH_SHORT).show();
-        // ---------------------
-
         addCoursesToDatabase();
         initYearDropdown();
         initQuarterDropdown();
@@ -65,23 +58,25 @@ public class AddCoursesMainActivity extends AppCompatActivity {
             return;
         }
 
-        SharedPreferences pref = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
-                Constants.CURR_ENTERED_COURSES_DB);
-        SharedPreferences.Editor editor = pref.edit();
-        Spinner s1 = findViewById(R.id.year_dropdown_container);
-        Spinner s2 = findViewById(R.id.quarter_dropdown_container);
+//        SharedPreferences pref = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
+//                Constants.CURR_ENTERED_COURSES_DB);
+//        SharedPreferences.Editor editor = pref.edit();
+        Spinner year = findViewById(R.id.year_dropdown_container);
+        Spinner quarter = findViewById(R.id.quarter_dropdown_container);
 
         // Retrieves the selected year and quarter from the dropdown menus and stores them as
         // extras
-        editor.clear();
-        editor.putString(Constants.YEAR_KEY, s1.getSelectedItem().toString());
-        editor.putString(Constants.QTR_KEY, s2.getSelectedItem().toString());
-        editor.apply();
+//        editor.clear();
+//        editor.putString(Constants.YEAR_KEY, s1.getSelectedItem().toString());
+//        editor.putString(Constants.QTR_KEY, s2.getSelectedItem().toString());
+//        editor.apply();
 
         Intent intent = new Intent(this, AddCoursesActivity.class);
 
-        intent.putExtra(Constants.INIT_SUBJECT_KEY, subject.getText().toString());
-        intent.putExtra(Constants.INIT_COURSE_NUMBER, courseNumber.getText().toString());
+        intent.putExtra("year", year.getSelectedItem().toString());
+        intent.putExtra("quarter", quarter.getSelectedItem().toString());
+        intent.putExtra("course", subject.getText().toString());
+        intent.putExtra("courseNum", courseNumber.getText().toString());
 
         startActivity(intent);
     }

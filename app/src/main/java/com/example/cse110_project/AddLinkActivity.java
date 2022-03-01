@@ -22,7 +22,6 @@ public class AddLinkActivity extends AppCompatActivity {
         setTitle("Birds of a Feather v0.0.1");
     }
 
-
     public void onContinueClicked(View view) {
         SharedPreferences preferences = getSharedPreferences(Constants.USER_INFO, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -39,13 +38,12 @@ public class AddLinkActivity extends AppCompatActivity {
 
             // FIXME: elias inserted this here
             AppDatabase db = AppDatabase.singleton(getApplicationContext());
-            db.UserDao().updateHeadshotURL(url, db.UserDao().getAll().get(0).getUserId());
+            db.UserDao().updateHeadshotURL(urlView.toString(), db.UserDao().getAll().get(0).getUserId());
             // -------------------
 
             startActivity(intent);
         }
-
-        }
+    }
 
     public void onSkipClicked(View view) {
         String default_pic = Constants.DEFAULT_PIC_LINK;
@@ -58,16 +56,14 @@ public class AddLinkActivity extends AppCompatActivity {
         editor.putString(Constants.USER_URL_KEY, default_pic);
         editor.apply();
 
-
-//        // FIXME: elias inserted this here
-//        AppDatabase db = AppDatabase.singleton(getApplicationContext());
-//        db.UserDao().updateHeadshotURL(Constants.DEFAULT_PIC_LINK, db.UserDao().getAll().get(0).getUserId());
+        // FIXME: elias inserted this here
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        db.UserDao().updateHeadshotURL(Constants.DEFAULT_PIC_LINK, db.UserDao().getAll().get(0).getUserId());
         // -------------------
+
 
         startActivity(intent);
     }
-
-
 }
 
 

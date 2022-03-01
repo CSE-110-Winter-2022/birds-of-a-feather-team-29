@@ -63,26 +63,9 @@ public class PrepopulateDatabase {
     }
 
     private static void clearDefaultDatabase(AppDatabase db) {
-        db.clearAllTables();
-
-//        System.out.println("Num of default students: " + db.DefaultStudentDao().getAll().size());
-//        System.out.println("Num of default courses: " + db.DefaultCourseDao().getAll().size());
-//        System.out.println("Num of BoF students: " + db.BoFStudentDao().getAll().size());
-//        System.out.println("Num of BoF courses: " + db.BoFCourseDao().getAll().size());
-//        System.out.println("-----------");
-
-//        db.DefaultStudentDao().delete();
-//        db.DefaultCourseDao().delete();
-
-//        System.out.println("Num of default students: " + db.DefaultStudentDao().getAll().size());
-//        System.out.println("Num of default courses: " + db.DefaultCourseDao().getAll().size());
-//        System.out.println("Num of BoF students: " + db.BoFStudentDao().getAll().size());
-//        System.out.println("Num of BoF courses: " + db.BoFCourseDao().getAll().size());
-//        System.out.println("-----------");
-//
-//        System.out.println(db.BoFStudentDao().getAll().get(0).getName());
-
-        //db.BoFStudentDao().delete();
-        //db.BoFCourseDao().delete();
+        db.DefaultStudentDao().delete();
+        db.DefaultCourseDao().delete();
+        db.BoFStudentDao().delete();
+        db.BoFCourseDao().delete();
     }
 }

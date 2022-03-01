@@ -80,9 +80,16 @@ public class HomePageActivity extends AppCompatActivity{
         boolean skipCourse;
         int studentId;
 
+        // TODO: Update algorithm so that it compares default courses with the user's courses in
+        //  Room database instead of SharedPreferences
+
         // Cross-checks the classes entered by the user with the students pre-populated into the
         // database
         for (Object o : keysArr) {
+
+            // FIXME: new
+
+
             userKeySplit = ((String)o).split(Constants.COMMA);
             userCourses = (Set<String>) userCoursesMap.get(o);
             defaultCourseList = db.DefaultCourseDao().getAll();
