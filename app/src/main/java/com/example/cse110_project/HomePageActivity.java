@@ -140,7 +140,7 @@ public class HomePageActivity extends AppCompatActivity{
         studentsLayoutManager = new LinearLayoutManager(this);
         studentsRecyclerView.setLayoutManager(studentsLayoutManager);
 
-        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao());
+        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao(), db.FavoriteDao());
 
         studentsRecyclerView.setAdapter(studentsViewAdapter);
     }
