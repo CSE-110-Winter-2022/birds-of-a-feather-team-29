@@ -1,4 +1,4 @@
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases.def;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -19,15 +19,30 @@ public class DefaultCourse {
     @ColumnInfo(name = "quarter")
     public String quarter;
 
+    @ColumnInfo(name = "classSize")
+    public String classSize;
+
     @ColumnInfo(name = "course")
     public String course;
 
-    public DefaultCourse(int studentId, String year, String quarter, String course) {
+    @ColumnInfo(name = "course_num")
+    private String courseNum;
+
+    @ColumnInfo(name = "course_added")
+    private boolean courseAdded;
+
+    public DefaultCourse(int studentId, String year, String quarter, String classSize,
+                         String course, String courseNum, boolean courseAdded) {
         this.studentId = studentId;
         this.year = year;
         this.quarter = quarter;
+        this.classSize = classSize;
         this.course = course;
+        this.courseNum = courseNum;
+        this.courseAdded = courseAdded;
     }
+
+    public int getCourseId() { return this.courseId; }
 
     public int getStudentId() {
         return studentId;
@@ -37,6 +52,8 @@ public class DefaultCourse {
 
     public String getQuarter() { return quarter; }
 
+    public String getClassSize() { return this.classSize; }
+
     public String getCourse() {
         return course;
     }
@@ -44,4 +61,10 @@ public class DefaultCourse {
     public void setCourse(String course) {
         this.course = course;
     }
+
+    public String getCourseNum() {
+        return this.courseNum;
+    }
+
+    public boolean getCourseAdded() { return this.courseAdded; }
 }

@@ -8,7 +8,7 @@
  *     Source used for...: Understanding how to update data in Room database
  * */
 
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases.def;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

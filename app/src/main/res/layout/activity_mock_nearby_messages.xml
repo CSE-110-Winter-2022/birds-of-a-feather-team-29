@@ -10,7 +10,7 @@
         android:id="@+id/mock_text_textview"
         android:layout_width="285dp"
         android:layout_height="353dp"
-        android:hint="Please enter mock information..."
+        android:hint="@string/enter_api_information_in_this_format_name_link_year1_quarter1_classsize1_course1_number1_year2_quarter2_classsize2_course2_number2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

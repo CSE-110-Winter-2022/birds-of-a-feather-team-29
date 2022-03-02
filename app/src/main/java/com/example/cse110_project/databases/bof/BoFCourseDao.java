@@ -1,4 +1,4 @@
-package com.example.cse110_project.prevcourses.db;
+package com.example.cse110_project.databases.bof;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -22,9 +22,6 @@ public interface BoFCourseDao {
 
     @Query("DELETE FROM newCourse")
     void delete();
-
-    @Query("SELECT COUNT(*) from newCourse")
-    int count();
 
     @Insert
     void insert(BoFCourse course);

@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.user.User;
+import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 
@@ -23,12 +26,25 @@ public class AddCoursesActivity extends AppCompatActivity {
     /** Instance variables */
     List<String> enteredCourses = new ArrayList<>(LIST_SIZE);
     private int courseCounter = 0;
+    private String year;
+    private String quarter;
+    private String course;
+    private String classSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_courses);
         setTitle(Constants.APP_VERSION);
+
+        TextView classSize = findViewById(R.id.class_size_title_textview);
+
+        Bundle extras = getIntent().getExtras();
+        this.year = extras.getString("year");
+        this.quarter = extras.getString("quarter");
+        this.course = extras.getString("course");
+        this.classSize = extras.getString("classSize");
+        classSize.setText("Class size: " + this.classSize);
 
         displayInitPrevCourse();
     }
@@ -55,19 +71,6 @@ public class AddCoursesActivity extends AppCompatActivity {
 
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, AddCoursesMainActivity.class);
-
-        SharedPreferences pref = SharedPreferencesDatabase.getDatabase(getApplicationContext(),
-                Constants.CURR_ENTERED_COURSES_DB);
-        SharedPreferences.Editor editor = pref.edit();
-        Bundle extras = getIntent().getExtras();
-        HashSet<String> set = new HashSet<>();
-
-        for (String courses : this.enteredCourses) { set.add(courses); }
-
-        editor.putStringSet(extras.getString(Constants.INIT_SUBJECT_KEY), set);
-        editor.apply();
-        intent.putExtra(Constants.SUBJECT_KEY, extras.getString(Constants.INIT_SUBJECT_KEY));
-
         startActivity(intent);
     }
 
@@ -77,11 +80,12 @@ public class AddCoursesActivity extends AppCompatActivity {
     public void displayInitPrevCourse() {
         TextView firstCourse = findViewById(R.id.prev_course_one_textview);
         Bundle extras = getIntent().getExtras();
-        String fullCourseName = extras.getString(Constants.INIT_SUBJECT_KEY)
-                + Constants.SPACE + extras.getString(Constants.INIT_COURSE_NUMBER);
 
+        String fullCourseName = this.course + Constants.SPACE + extras.getString("courseNum");
         firstCourse.setText(fullCourseName);
+
         addToList(extras.getString(Constants.INIT_COURSE_NUMBER));
+        addToDatabase(extras.getString("courseNum"));
     }
 
     public void displayEnteredPrevCourse(int courseIndex) {
@@ -91,16 +95,32 @@ public class AddCoursesActivity extends AppCompatActivity {
                 findViewById(R.id.prev_course_five_textview),
                 findViewById(R.id.prev_course_six_textview)};
         TextView courseNumber = findViewById(R.id.course_number_textview);
-        Bundle extras = getIntent().getExtras();
-        String fullCourseName = extras.getString(Constants.INIT_SUBJECT_KEY) + Constants.SPACE
-                + courseNumber.getText().toString();
 
-        // Displays the entered course on a TextView that has not been set with a text
+        String fullCourseName = this.course + Constants.SPACE + courseNumber.getText().toString();
+
         courseLayouts[courseIndex].setText(fullCourseName);
+
         addToList(courseNumber.getText().toString());
+        addToDatabase(courseNumber.getText().toString());
     }
 
     public void addToList(String courseNumber) {
         enteredCourses.add(courseNumber);
+    }
+
+    public void addToDatabase(String courseNum) {
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        List<UserCourse> ucl = db.UserCourseDao().getAll();
+
+        // Checks if the course already exists in the database
+        for (UserCourse uc : ucl) {
+            if ((uc.getYear().equals(this.year)) && (uc.getQuarter().equals(this.quarter)) &&
+                (uc.getCourse().equals(this.course)) && (uc.getCourseNum().equals(courseNum))) {
+                return;
+            }
+        }
+
+        db.UserCourseDao().insert(new UserCourse(this.year, this.quarter, this.classSize,
+                this.course, courseNum));
     }
 }

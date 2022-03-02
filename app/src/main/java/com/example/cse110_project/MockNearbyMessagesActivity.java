@@ -2,26 +2,18 @@ package com.example.cse110_project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.os.IResultReceiver;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.cse110_project.prevcourses.db.AppDatabase;
-import com.example.cse110_project.prevcourses.db.BoFCourseDao;
-import com.example.cse110_project.prevcourses.db.BoFStudent;
-import com.example.cse110_project.prevcourses.db.BoFStudentDao;
-import com.example.cse110_project.prevcourses.db.DefaultCourse;
-import com.example.cse110_project.prevcourses.db.DefaultCourseDao;
-import com.example.cse110_project.prevcourses.db.DefaultStudent;
-import com.example.cse110_project.prevcourses.db.DefaultStudentDao;
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.def.DefaultCourse;
+import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.FakedMessageListener;
-import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
@@ -53,81 +45,24 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
                 //Log.d(TAG, "Found message: " + new String(message.getContent()));
                 String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
 
-                AppDatabase db = AppDatabase.singleton(getApplicationContext());
-                db.clearAllTables();
-                db.DefaultStudentDao().delete();
-                db.DefaultCourseDao().delete();
-                //1
-
-                DefaultStudent[] defaultStudentList = {
-                        new DefaultStudent("Steel"),
-                        new DefaultStudent("Sandy"),
-                        new DefaultStudent("Aiko"),
-                        new DefaultStudent(mockArr[0])
-                };
-
-                for (DefaultStudent dS : defaultStudentList) {
-                    db.DefaultStudentDao().insert(dS);
+                //AppDatabase db = AppDatabase.singleton(getApplicationContext());
+                AppDatabase db = AppDatabase.getSingletonInstance();
+                List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
+                for (int i = 0; i< studentList.size(); i++){
+                    if (studentList.get(i).getName().equals(mockArr[0])){
+                        return;
+                    }
                 }
+                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[0]));
 
                 List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
 
-                DefaultCourse[] defaultCourseList = {
-                        new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                                "Fall", "CSE 11"),
-                        new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                                "Fall","CSE 12"),
-                        new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                                "Fall","CSE 21"),
-                        new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                                "Spring","CSE 100"),
-                        new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                                "Spring","CSE 140"),
-                        new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                                "Spring","CSE 105"),
 
-                        new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                                "Winter","CSE 11"),
-                        new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                                "Winter","CSE 12"),
-                        new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                                "Winter","CSE 21"),
-                        new DefaultCourse(defStudentsList.get(1).getStudentId(), "2019",
-                                "Fall", "CSE 100"),
-
-                        new DefaultCourse(defStudentsList.get(2).getStudentId(), "2018",
-                                "Spring","CSE 15L"),
-                        new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                                "Summer Session I","CSE 191"),
-                        new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                                "Fall","CSE 142"),
-                        new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                                "Fall","CSE 112"),
-                        new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                                "Fall","CSE 167"),
-                };
-
-
-                for (DefaultCourse defaultCourse : defaultCourseList) {
-                    db.DefaultCourseDao().insert(defaultCourse);
+                for (int i = 2; i < mockArr.length; i=i+5) {
+                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
+                            mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
                 }
 
-                for (int i = 2; i < mockArr.length; i=i+4) {
-                    Log.d(TAG, mockArr[i] + " " + mockArr[i+1] + " " + mockArr[i+2] + mockArr[i+3]);
-                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(3).getStudentId(),
-                            mockArr[i], mockArr[i+1], mockArr[i+2] + " " + mockArr[i+3]));
-                }
-
-//                AppDatabase db = AppDatabase.singleton(getApplicationContext());
-//                DefaultStudentDao sd = db.DefaultStudentDao();
-//                DefaultCourseDao cd = db.DefaultCourseDao();
-//
-//                sd.insert(new DefaultStudent(mockArr[0]));
-//
-//                // index 8 -->
-//
-//                List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
-//
             }
 
             @Override
@@ -145,12 +80,17 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //Nearby.getMessagesClient(this).subscribe(messageListener);
+        if(messageListener!=null){
+            Nearby.getMessagesClient(this).subscribe(messageListener);
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //Nearby.getMessagesClient(this).unsubscribe(messageListener);
+        if(messageListener!=null){
+
+            Nearby.getMessagesClient(this).unsubscribe(messageListener);
+        }
     }
 }

@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.user.User;
+import com.example.cse110_project.databases.user.UserDao;
 import com.example.cse110_project.utilities.Constants;
 
 public class EnterNameActivity extends AppCompatActivity {
@@ -32,6 +35,14 @@ public class EnterNameActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddLinkActivity.class);
             SharedPreferences pref = getSharedPreferences(Constants.USER_INFO, MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
+
+            // FIXME: elias inserted this here
+            AppDatabase db = AppDatabase.singleton(getApplicationContext());
+            db.UserDao().updateFirstName(name, db.UserDao().getAll().get(0).getUserId());
+
+            User user2 = db.UserDao().getAll().get(0);
+            System.out.println(user2.getUserFirstName());
+            // ----------------
 
             editor.putString(Constants.USER_FIRST_NAME, name);
 
