@@ -151,7 +151,7 @@ public class HomePageActivity extends AppCompatActivity{
     }
 
     public void onClickFavorite(View view) {
-//        Intent intent = new Intent(this, FavoriteActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, FavoriteActivity.class);
+        startActivity(intent);
     }
 }
