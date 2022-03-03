@@ -146,22 +146,12 @@ public class HomePageActivity extends AppCompatActivity{
         studentsRecyclerView = findViewById(R.id.students_view);
         studentsLayoutManager = new LinearLayoutManager(this);
         studentsRecyclerView.setLayoutManager(studentsLayoutManager);
-        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao());
+        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao(), db.FavoriteDao());
         studentsRecyclerView.setAdapter(studentsViewAdapter);
     }
 
-    public void onToggleStar(View view) {
-        TextView favouriteStar = (TextView) view;
-        if(!isfavourite){
-            // if the star is not already selected and you select it
-            isfavourite = true;
-            favouriteStar.setTextColor(Color.parseColor("#FFD600"));
-            // add the student to database
-        }else{
-            // if the star is already selected and you unselect it
-            isfavourite = false;
-            favouriteStar.setTextColor(Color.parseColor("#9E9E9E"));
-            // remove student from database
-        }
+    public void onClickFavorite(View view) {
+        Intent intent = new Intent(this, FavoriteActivity.class);
+        startActivity(intent);
     }
 }
