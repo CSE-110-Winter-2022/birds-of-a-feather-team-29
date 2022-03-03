@@ -36,13 +36,8 @@ public class EnterNameActivity extends AppCompatActivity {
             SharedPreferences pref = getSharedPreferences(Constants.USER_INFO, MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
 
-            // FIXME: elias inserted this here
             AppDatabase db = AppDatabase.singleton(getApplicationContext());
             db.UserDao().updateFirstName(name, db.UserDao().getAll().get(0).getUserId());
-
-            User user2 = db.UserDao().getAll().get(0);
-            System.out.println(user2.getUserFirstName());
-            // ----------------
 
             editor.putString(Constants.USER_FIRST_NAME, name);
 

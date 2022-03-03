@@ -1,6 +1,7 @@
 package com.example.cse110_project;
 
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
@@ -17,17 +18,35 @@ public class AddCoursesMainTest {
     @Rule
     public ActivityScenarioRule<AddCoursesMainActivity> rule = new ActivityScenarioRule<>(AddCoursesMainActivity.class);
 
-    /**
-     * Unit test of AddCoursesMainActivity:addCoursesToDatabase()
-     * */
-//    @Test
-//    public void test_Func_addCoursesToDatabase() {
-//        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
-//        scenario.moveToState(Lifecycle.State.CREATED);
-//        scenario.onActivity(activity -> {
-//            assert(!activity.addCoursesToDatabase());
-//        });
-//    }
+    @Test
+    public void test_Func_initYearDropdown() {
+        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            Spinner yearDropdown = activity.findViewById(R.id.year_dropdown_container);
+            assert(yearDropdown.getSelectedItem().toString().equals("2017"));
+        });
+    }
+
+    @Test
+    public void test_Func_initQuarterDropdown() {
+        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            Spinner quarterDropdown = activity.findViewById(R.id.quarter_dropdown_container);
+            assert(quarterDropdown.getSelectedItem().toString().equals("Fall"));
+        });
+    }
+
+    @Test
+    public void test_Func_initClassSizeDropdown() {
+        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            Spinner classSizeDropdown = activity.findViewById(R.id.class_size_dropdown_container);
+            assert(classSizeDropdown.getSelectedItem().toString().equals("Tiny (1-40)"));
+        });
+    }
 
     @Test
     public void test_Subject_TextView_Is_Initially_Empty() {

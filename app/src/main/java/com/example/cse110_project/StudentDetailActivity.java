@@ -56,6 +56,9 @@ public class StudentDetailActivity extends AppCompatActivity {
         coursesRecyclerView.setAdapter(coursesViewAdapter);
     }
 
+    /**
+     * Returns the number of courses shared with the User for testing purposes
+     * */
     public int getNumOfCoursesDisplayed() {
         return coursesViewAdapter.getItemCount();
     }

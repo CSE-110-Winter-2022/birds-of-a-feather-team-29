@@ -11,16 +11,8 @@ public class BoFStudent {
     @ColumnInfo(name = "new_student_id")
     public int newStudentId;
 
-//    @ColumnInfo(name = "previous_student_id")
-//    public int prevStudentId;
-
     @ColumnInfo(name = "name")
     public String name;
-
-//    public BoFStudent(int prevStudentId, String name) {
-//        this.prevStudentId = prevStudentId;
-//        this.name = name;
-//    }
 
     public BoFStudent(String name) {
         this.name = name;
