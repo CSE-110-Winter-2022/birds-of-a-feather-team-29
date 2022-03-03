@@ -35,25 +35,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(Constants.APP_VERSION);
 
-        // FIXME: test line(s)
-        System.out.println("--------------");
-        System.out.println(AppDatabase.singleton(getApplicationContext()).
-                BoFStudentDao().getAll().size());
-        System.out.println(AppDatabase.singleton(getApplicationContext()).
-                BoFCourseDao().getAll().size());
-        System.out.println("--------------");
-
         SharedPreferencesDatabase.clearCurrEnteredCoursesDatabase(getApplicationContext());
         PrepopulateDatabase.populateDefaultDatabase(AppDatabase.singleton(getApplicationContext()));
         initializeUser();
-
-        // FIXME: test line(s)
-        System.out.println("--------------");
-        System.out.println(AppDatabase.singleton(getApplicationContext()).
-                BoFStudentDao().getAll().size());
-        System.out.println(AppDatabase.singleton(getApplicationContext()).
-                BoFCourseDao().getAll().size());
-        System.out.println("--------------");
     }
 
     public void onStartAppClicked(View view) {

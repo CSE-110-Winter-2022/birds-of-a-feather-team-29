@@ -49,43 +49,50 @@ public class StudentDetailTest {
         assert(true);
     }
 
-//    @Test
-//    public void test_Display_One_Previous_Course_Shared_With_User() {
-//        //mainSD.insert(new BoFStudent(1, "Steel"));
-//        BoFStudent student = db.BoFStudentDao().getBasedOnPrevId(1);
-//        //mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall", "CSE 21"));
-//
-//        ActivityScenario<StudentDetailActivity> scenario = rule.getScenario();
-//        scenario.moveToState(Lifecycle.State.CREATED);
-//        scenario.onActivity(activity -> {
-//            activity.displaySharedCourses(1);
-//            assert(activity.getNumOfCoursesDisplayed() == 1);
-//        });
-//    }
+    @Test
+    public void test_Display_One_Previous_Course_Shared_With_User() {
+        mainSD.insert(new BoFStudent("Steel"));
+        BoFStudent student = db.BoFStudentDao().getAll().get(0);
+        mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall",
+                "Tiny (1-40)", "CSE", "21"));
 
-//    @Test
-//    public void test_Display_Five_Previous_Courses_Shared_With_User() {
-////        mainSD.insert(new BoFStudent(1, "Steel"));
-////        BoFStudent student = db.BoFStudentDao().getBasedOnPrevId(1);
-////        mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall", "CSE 21"));
-////        mainCD.insert(new BoFCourse(student.getStudentId(), "2019", "Winter", "CSE 100"));
-////        mainCD.insert(new BoFCourse(student.getStudentId(), "2019", "Winter", "CSE 101"));
-////        mainCD.insert(new BoFCourse(student.getStudentId(), "2019", "Winter", "CSE 105"));
-////        mainCD.insert(new BoFCourse(student.getStudentId(), "2019", "Spring", "CSE 110"));
-//
-//        ActivityScenario<StudentDetailActivity> scenario = rule.getScenario();
-//        scenario.moveToState(Lifecycle.State.CREATED);
-//        scenario.onActivity(activity -> {
-//            activity.displaySharedCourses(1);
-//            assert(activity.getNumOfCoursesDisplayed() == 5);
-//        });
-//    }
+        ActivityScenario<StudentDetailActivity> scenario = rule.getScenario();
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            activity.displaySharedCourses(1);
+            assert(activity.getNumOfCoursesDisplayed() == 1);
+        });
+    }
+
+    @Test
+    public void test_Display_Five_Previous_Courses_Shared_With_User() {
+        mainSD.insert(new BoFStudent("Steel"));
+        BoFStudent student = db.BoFStudentDao().getAll().get(0);
+        mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall",
+                "Tiny (1-40)", "CSE","21"));
+        mainCD.insert(new BoFCourse(student.getStudentId(), "2019", "Winter",
+                "Tiny (1-40)", "CSE","100"));
+        mainCD.insert(new BoFCourse(student.getStudentId(), "2019", "Winter",
+                "Tiny (1-40)", "CSE","101"));
+        mainCD.insert(new BoFCourse(student.getStudentId(), "2019", "Winter",
+                "Tiny (1-40)", "CSE","105"));
+        mainCD.insert(new BoFCourse(student.getStudentId(), "2019", "Spring",
+                "Tiny (1-40)", "CSE","110"));
+
+        ActivityScenario<StudentDetailActivity> scenario = rule.getScenario();
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.onActivity(activity -> {
+            activity.displaySharedCourses(1);
+            assert(activity.getNumOfCoursesDisplayed() == 5);
+        });
+    }
 
     @Test
     public void test_Student_Has_Default_Head_Shot() {
-//        mainSD.insert(new BoFStudent(1, "Steel"));
-//        BoFStudent student = db.BoFStudentDao().getBasedOnPrevId(1);
-//        mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall", "CSE 21"));
+        mainSD.insert(new BoFStudent("Steel"));
+        BoFStudent student = db.BoFStudentDao().getAll().get(0);
+        mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall",
+                "Tiny (1-40)", "CSE","21"));
 
         ActivityScenario<StudentDetailActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);

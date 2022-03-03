@@ -36,10 +36,8 @@ public class AddLinkActivity extends AppCompatActivity {
 
             editor.apply();
 
-            // FIXME: elias inserted this here
             AppDatabase db = AppDatabase.singleton(getApplicationContext());
             db.UserDao().updateHeadshotURL(urlView.toString(), db.UserDao().getAll().get(0).getUserId());
-            // -------------------
 
             startActivity(intent);
         }
@@ -56,11 +54,8 @@ public class AddLinkActivity extends AppCompatActivity {
         editor.putString(Constants.USER_URL_KEY, default_pic);
         editor.apply();
 
-        // FIXME: elias inserted this here
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
         db.UserDao().updateHeadshotURL(Constants.DEFAULT_PIC_LINK, db.UserDao().getAll().get(0).getUserId());
-        // -------------------
-
 
         startActivity(intent);
     }
