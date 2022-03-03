@@ -25,13 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 public class HomePageActivity extends AppCompatActivity{
     private AppDatabase db;
     protected RecyclerView studentsRecyclerView;
     protected RecyclerView.LayoutManager studentsLayoutManager;
     protected BoFStudentViewAdapter studentsViewAdapter;
-    private boolean isfavourite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
