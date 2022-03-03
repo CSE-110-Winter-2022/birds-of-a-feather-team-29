@@ -24,13 +24,15 @@ import com.example.cse110_project.databases.def.DefaultCourse;
 import com.example.cse110_project.databases.def.DefaultCourseDao;
 import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.databases.def.DefaultStudentDao;
+import com.example.cse110_project.databases.favorite.Favorite;
+import com.example.cse110_project.databases.favorite.FavoriteDao;
 import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.databases.user.UserCourseDao;
 import com.example.cse110_project.databases.user.UserDao;
 
 @Database(entities = {DefaultStudent.class, DefaultCourse.class, BoFStudent.class, BoFCourse.class,
-        User.class, UserCourse.class}, version = 4)
+        User.class, UserCourse.class, Favorite.class}, version = 4, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase singletonInstance;
@@ -55,6 +57,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DefaultCourseDao DefaultCourseDao();
     public abstract BoFStudentDao BoFStudentDao();
     public abstract BoFCourseDao BoFCourseDao();
+    public abstract FavoriteDao FavoriteDao();
     public abstract UserDao UserDao();
     public abstract UserCourseDao UserCourseDao();
     public static AppDatabase getSingletonInstance() {
