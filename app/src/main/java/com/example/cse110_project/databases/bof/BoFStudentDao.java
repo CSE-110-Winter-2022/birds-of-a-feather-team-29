@@ -15,9 +15,6 @@ public interface BoFStudentDao {
     @Query("SELECT * FROM newStudents WHERE new_student_id=:id")
     BoFStudent get(int id);
 
-//    @Query("SELECT * FROM newStudents WHERE previous_student_id=:prevId")
-//    BoFStudent getBasedOnPrevId(int prevId);
-
     @Query("DELETE FROM newStudents")
     void delete();
 

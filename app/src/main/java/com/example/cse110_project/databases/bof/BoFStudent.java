@@ -11,16 +11,11 @@ public class BoFStudent {
     @ColumnInfo(name = "new_student_id")
     public int newStudentId;
 
-//    @ColumnInfo(name = "previous_student_id")
-//    public int prevStudentId;
-
     @ColumnInfo(name = "name")
     public String name;
 
-//    public BoFStudent(int prevStudentId, String name) {
-//        this.prevStudentId = prevStudentId;
-//        this.name = name;
-//    }
+    @ColumnInfo(name = "isFavorite")
+    public boolean isFavorite;
 
     public BoFStudent(String name) {
         this.name = name;
@@ -34,8 +29,6 @@ public class BoFStudent {
         return newStudentId;
     }
 
-    //public int getPrevStudentId() { return prevStudentId; }
-
     public String getName() {
         return name;
     }
@@ -43,5 +36,9 @@ public class BoFStudent {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setFavorite(boolean isFavorite){this.isFavorite = isFavorite;}
+
+    public boolean getFavorite(){return isFavorite;}
 
 }

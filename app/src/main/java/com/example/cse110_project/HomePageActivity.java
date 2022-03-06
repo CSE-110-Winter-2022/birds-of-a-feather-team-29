@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 
 public class HomePageActivity extends AppCompatActivity {
     private AppDatabase db;
@@ -171,7 +173,12 @@ public class HomePageActivity extends AppCompatActivity {
         studentsRecyclerView = findViewById(R.id.students_view);
         studentsLayoutManager = new LinearLayoutManager(this);
         studentsRecyclerView.setLayoutManager(studentsLayoutManager);
-        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao());
+        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao(), db.FavoriteDao());
         studentsRecyclerView.setAdapter(studentsViewAdapter);
+    }
+
+    public void onClickFavorite(View view) {
+        Intent intent = new Intent(this, FavoriteActivity.class);
+        startActivity(intent);
     }
 }
