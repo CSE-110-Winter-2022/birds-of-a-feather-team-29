@@ -27,6 +27,11 @@ public class MainPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onFavoriteClicked(View view) {
+        Intent intent = new Intent(this, FavoriteActivity.class);
+        startActivity(intent);
+    }
+
     public void onBoFFunctionClicked(View view) {
         Intent intent = new Intent(this, HomePageActivity.class);
         startActivity(intent);

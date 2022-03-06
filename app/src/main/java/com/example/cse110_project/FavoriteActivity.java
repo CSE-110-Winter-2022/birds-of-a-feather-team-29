@@ -37,7 +37,7 @@ public class FavoriteActivity extends AppCompatActivity {
     }
 
     public void onGoBackClicked(View view) {
-        Intent intent = new Intent(this, HomePageActivity.class);
+        Intent intent = new Intent(this, MainPageActivity.class);
         startActivity(intent);
     }
 }

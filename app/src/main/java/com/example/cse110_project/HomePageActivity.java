@@ -177,8 +177,4 @@ public class HomePageActivity extends AppCompatActivity {
         studentsRecyclerView.setAdapter(studentsViewAdapter);
     }
 
-    public void onClickFavorite(View view) {
-        Intent intent = new Intent(this, FavoriteActivity.class);
-        startActivity(intent);
-    }
 }
