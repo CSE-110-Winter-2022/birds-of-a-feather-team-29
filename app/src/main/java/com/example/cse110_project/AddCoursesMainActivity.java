@@ -81,7 +81,7 @@ public class AddCoursesMainActivity extends AppCompatActivity {
             return false;
         }
 
-        Intent intent = new Intent(this, HomePageActivity.class);
+        Intent intent = new Intent(this, CoursesActivity.class);
         startActivity(intent);
 
         return true;

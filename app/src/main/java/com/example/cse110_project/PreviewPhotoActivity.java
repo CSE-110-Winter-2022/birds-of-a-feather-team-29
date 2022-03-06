@@ -18,7 +18,6 @@ public class PreviewPhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_photo);
         setTitle(Constants.APP_VERSION);
-
         displayImage();
     }
 

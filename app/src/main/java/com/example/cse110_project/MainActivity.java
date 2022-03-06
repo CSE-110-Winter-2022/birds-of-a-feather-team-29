@@ -27,6 +27,8 @@ import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.PrepopulateDatabase;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 
+import java.util.Collections;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -41,8 +43,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onStartAppClicked(View view) {
-        Intent intent = new Intent(this, EnterNameActivity.class);
-        startActivity(intent);
+        AppDatabase db = AppDatabase.getSingletonInstance();
+        if(db.UserDao().getAll().get(0).getUserFirstName() == null){
+            Intent intent = new Intent(this, EnterNameActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, MainPageActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void initializeUser() {
