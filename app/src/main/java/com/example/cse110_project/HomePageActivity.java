@@ -19,14 +19,13 @@ import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-public class HomePageActivity extends AppCompatActivity{
+public class HomePageActivity extends AppCompatActivity {
     private AppDatabase db;
+    private boolean Start;
     protected RecyclerView studentsRecyclerView;
     protected RecyclerView.LayoutManager studentsLayoutManager;
     protected BoFStudentViewAdapter studentsViewAdapter;
@@ -37,8 +36,30 @@ public class HomePageActivity extends AppCompatActivity{
         setContentView(R.layout.activity_home_page);
         setTitle(Constants.APP_VERSION);
 
-        compareUserCoursesWithStudents();
+        Start = false;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null){
+            if(extras.containsKey("start")){
+                Start = extras.getBoolean("start",false);
+            };
+        }
+
+        TextView topLeftButton = findViewById(R.id.start_button);
+
+        if(Start){
+            topLeftButton.setText(Constants.STOP);
+        }
+        else{
+            topLeftButton.setText(Constants.START);
+        }
+
+        String currText = topLeftButton.getText().toString();
+        if (currText.equals(Constants.STOP)) {
+            compareUserCoursesWithStudents();
+        }
         displayBirdsOfAFeatherList();
+
     }
 
     public void onStartClicked(View view) {
@@ -46,26 +67,32 @@ public class HomePageActivity extends AppCompatActivity{
         String currText = topLeftButton.getText().toString();
 
         if (currText.equals(Constants.START)) {
+            Start = true;
             topLeftButton.setText(Constants.STOP);
-            //MockNearbyMessagesActivity.onStart();
+            compareUserCoursesWithStudents();
         }
-        else { topLeftButton.setText(Constants.START); }
+        else {
+            topLeftButton.setText(Constants.START);
+            Start = false;
+        }
+        displayBirdsOfAFeatherList();
     }
 
     public void onBackClicked(View view) {
-        Intent intent = new Intent(this, AddCoursesMainActivity.class);
+        Intent intent = new Intent(this, MainPageActivity.class);
         startActivity(intent);
     }
 
     public void onMockNearbyMessagesClicked(View view) {
         Intent intent = new Intent(this, MockNearbyMessagesActivity.class);
+        intent.putExtra("start", Start);
         startActivity(intent);
     }
 
     /**
      * Adds the students and courses that the User has shared a class with to the BoF database by
      * cross-checking the User's courses with all the pre-populated courses in the database
-     * */
+     **/
     public void compareUserCoursesWithStudents() {
         db = AppDatabase.singleton(getApplicationContext());
         List<UserCourse> ucl = db.UserCourseDao().getAll();
