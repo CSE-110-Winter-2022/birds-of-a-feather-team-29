@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStartAppClicked(View view) {
         AppDatabase db = AppDatabase.getSingletonInstance();
-        if(db.UserDao().getAll().get(0).getUserFirstName() == null){
+
+        if (db.UserDao().getAll().get(0).getUserFirstName() == null){
             Intent intent = new Intent(this, EnterNameActivity.class);
             startActivity(intent);
         } else {
