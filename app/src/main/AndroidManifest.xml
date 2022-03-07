@@ -44,9 +44,6 @@
             android:name=".EnterNameActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true" />
-        <activity
             android:name=".MainPageActivity"
             android:exported="true" />
         <activity
@@ -54,7 +51,10 @@
             android:exported="true" />
         <activity
             android:name=".CoursesActivity"
-            android:exported="true">
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

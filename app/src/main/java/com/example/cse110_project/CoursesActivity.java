@@ -36,19 +36,7 @@ public class CoursesActivity extends AppCompatActivity {
     public void displayCourse() {
         AppDatabase db = AppDatabase.getSingletonInstance();
 
-        int index = 0;
-
         ArrayList<String> courseList = new ArrayList<>();
-//        while(db.UserCourseDao().getAll().get(index).getYear() != null) {
-//            String year = db.UserCourseDao().getAll().get(index).getYear();
-//            String quarter = db.UserCourseDao().getAll().get(index).getQuarter();
-//            String subject = db.UserCourseDao().getAll().get(index).getCourse();
-//            String number = db.UserCourseDao().getAll().get(index).getCourseNum();
-//            String size = db.UserCourseDao().getAll().get(index).getClassSize();
-//            String fullCourseName = year + " " + quarter + " " + subject + " " + number + " " + size;
-//            courseList.add(fullCourseName);
-//            index++;
-//        }
 
         for(int i = 0; i < db.UserCourseDao().getAll().size(); i++){
             String year = db.UserCourseDao().getAll().get(i).getYear();
@@ -74,61 +62,5 @@ public class CoursesActivity extends AppCompatActivity {
         for(int i = 0; i < courseList.size() && i < 10; i++) {
             courseLayouts[i].setText(courseList.get(i));
         }
-
-        //        String year = db.UserCourseDao().getAll().get(0).getYear();
-//        String quarter = db.UserCourseDao().getAll().get(0).getQuarter();
-//        String subject = db.UserCourseDao().getAll().get(0).getCourse();
-//        String number = db.UserCourseDao().getAll().get(0).getCourseNum();
-//        String size = db.UserCourseDao().getAll().get(0).getClassSize();
-//        TextView textView = (TextView) findViewById(R.id.prev_course_one_textview);
-//        textView.setText(year + " " + quarter + " " + subject + " " + number + " " + size);
-
-//        TextView[] courseLayouts = {findViewById(R.id.prev_course_one_textview),
-//                findViewById(R.id.prev_course_two_textview),
-//                findViewById(R.id.prev_course_three_textview),
-//                findViewById(R.id.prev_course_four_textview),
-//                findViewById(R.id.prev_course_five_textview),
-//                findViewById(R.id.prev_course_six_textview)};
-
-
-        //        while(db.UserCourseDao().getAll().get(i).getYear() != null) {
-//            String year = db.UserCourseDao().getAll().get(i).getYear();
-//            String quarter = db.UserCourseDao().getAll().get(i).getQuarter();
-//            String subject = db.UserCourseDao().getAll().get(i).getCourse();
-//            String number = db.UserCourseDao().getAll().get(i).getCourseNum();
-//            String size = db.UserCourseDao().getAll().get(i).getClassSize();
-//
-//            String fullCourseName = year + " " + quarter + " " + subject + " " + number + " " + size;
-//
-//            courseLayouts[i] = new TextView();
-//            i++;
-//        }
-
-//        LinearLayout list = (LinearLayout) findViewById(R.id.course_list);
-//        for(int i = 0; i < courseList.size(); i++){
-//            TextView courseView = new TextView(this);
-//            courseView.setText(courseList.get(i));
-//            list.addView(courseView);
-//        }
-
-
-//        TextView[] tv=(TextView)findViewById(R.id.course_list);
-//
-//        for(int i = 0; i < 6; i++) { // iterate over all array items and assign them text.
-//            TextView txtCnt = new TextView(this);
-//            txtCnt.setText(courseList.get(i));
-//            tv[i] =txtCnt ;
-//        }
-//        int[] courseLayouts = {
-//                R.id.prev_course_one_textview,
-//                R.id.prev_course_two_textview,
-//                R.id.prev_course_three_textview,
-//                R.id.prev_course_four_textview,
-//                R.id.prev_course_five_textview,
-//                R.id.prev_course_six_textview};
-
-
     }
-
-
 }

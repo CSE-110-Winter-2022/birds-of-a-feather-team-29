@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPreferencesDatabase {
+    // ignore comment
     public static void clearCurrEnteredCoursesDatabase(Context context) {
         SharedPreferences curr = context.getSharedPreferences(Constants.CURR_ENTERED_COURSES_DB,
                 Context.MODE_PRIVATE);

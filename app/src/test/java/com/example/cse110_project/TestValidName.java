@@ -24,5 +24,4 @@ public class TestValidName {
         assertEquals(true, EnterNameActivity.isValidName("Jason Li"));
         assertEquals(true, EnterNameActivity.isValidName("Aiko"));
     }
-
 }
