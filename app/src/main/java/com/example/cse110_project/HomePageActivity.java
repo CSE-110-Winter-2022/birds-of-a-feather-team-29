@@ -61,14 +61,11 @@ public class HomePageActivity extends AppCompatActivity {
             String sortingOption = adapterView.getItemAtPosition(i).toString();
 
             if (sortingOption.equals("Default")) {
-                displayBirdsOfAFeatherList(db.BoFStudentDao(),
-                        new DefaultBoFComparator(db.BoFCourseDao()));
+                displayBirdsOfAFeatherList(db.BoFStudentDao(), new DefaultBoFComparator(db.BoFCourseDao()));
             } else if (sortingOption.equals("Prioritize Recent")) {
-                displayBirdsOfAFeatherList(db.BoFStudentDao(),
-                        new PrioritizeMostRecentComparator());
+                displayBirdsOfAFeatherList(db.BoFStudentDao(), new PrioritizeMostRecentComparator());
             } else {
-                displayBirdsOfAFeatherList(db.BoFStudentDao(),
-                        new PrioritizeSmallClassesComparator());
+                displayBirdsOfAFeatherList(db.BoFStudentDao(), new PrioritizeSmallClassesComparator());
             }
         }
 
@@ -104,6 +101,8 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void saveSearchButtonState() {
+        Log.d("HomePageActivity::saveSearchButtonState()", "Non-testable method");
+
         SharedPreferences searchButtonSP = getSharedPreferences("SearchButton", MODE_PRIVATE);
         SharedPreferences.Editor searchEditor = searchButtonSP.edit();
 
@@ -112,7 +111,7 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void checkSelectedSortingOption() {
-        Log.d("HomePageActivity::checkSelectedSortingOption", "Non-testable method");
+        Log.d("HomePageActivity::checkSelectedSortingOption()", "Non-testable method");
 
         Spinner sortingOptionDropdown = findViewById(R.id.sorting_options_dropdown_menu);
         SharedPreferences sortingOptionSP = getSharedPreferences("SortingOption", MODE_PRIVATE);
@@ -144,11 +143,12 @@ public class HomePageActivity extends AppCompatActivity {
         }
         else { searchButton.setText(Constants.START); }
 
-        displayBirdsOfAFeatherList(db.BoFStudentDao(),
-                new DefaultBoFComparator(db.BoFCourseDao()));
+        displayBirdsOfAFeatherList(db.BoFStudentDao(), new DefaultBoFComparator(db.BoFCourseDao()));
     }
 
     public void onStartClicked(View view) {
+        Log.d("HomePageActivity::onStartClicked()", "Non-testable method");
+
         Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
         TextView topLeftButton = findViewById(R.id.start_button);
         String currText = topLeftButton.getText().toString();
@@ -160,8 +160,7 @@ public class HomePageActivity extends AppCompatActivity {
             topLeftButton.setText(Constants.STOP);
             sortingOptionsDropdown.setSelection(0);
             compareUserCoursesWithStudents(AppDatabase.singleton(getApplicationContext()));
-            displayBirdsOfAFeatherList(db.BoFStudentDao(),
-                    new DefaultBoFComparator(db.BoFCourseDao()));
+            displayBirdsOfAFeatherList(db.BoFStudentDao(), new DefaultBoFComparator(db.BoFCourseDao()));
         }
         else {
             this.searchButtonState = false;
@@ -170,6 +169,8 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void onBackClicked(View view) {
+        Log.d("HomePageActivity::onBackClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, MainPageActivity.class);
         //intent.putExtra("start", this.searchButtonState);
         saveSortingOption();
@@ -178,6 +179,8 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void onMockNearbyMessagesClicked(View view) {
+        Log.d("HomePageActivity::onMockNearbyMessagesClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, MockNearbyMessagesActivity.class);
         //intent.putExtra("start", this.searchButtonState);
         saveSortingOption();
@@ -294,6 +297,7 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void initSortingOptionsDropdown() {
+        Log.d("HomePageActivity::initSortingOptionsDropdown()", "Non-testable method");
         Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.sorting_options, android.R.layout.simple_spinner_dropdown_item);
