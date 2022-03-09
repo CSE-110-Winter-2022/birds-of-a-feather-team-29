@@ -2,7 +2,7 @@ package com.example.cse110_project.utilities;
 
 /**
  * Class contains prioritization algorithms for sorting based on the two sorting options the
- * User has
+ * User has access to
  * */
 public class PrioritizationAlgorithms {
 

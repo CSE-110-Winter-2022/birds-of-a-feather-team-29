@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,6 +39,22 @@ public class HomePageActivity extends AppCompatActivity {
         setTitle(Constants.APP_VERSION);
 
         initSortingOptions();
+
+
+        // FIXME: testing
+        Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
+        sortingOptionsDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                System.out.println(adapterView.getItemAtPosition(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+
+        });
+
 
         Start = false;
 
