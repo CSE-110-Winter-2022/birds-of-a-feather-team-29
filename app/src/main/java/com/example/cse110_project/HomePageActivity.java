@@ -2,6 +2,9 @@
 * Sources used:
 *
 * https://www.tutorialspoint.com/how-to-get-spinner-value-in-android
+*
+* https://stackoverflow.com/questions/38725374/android-spinner-selecting-same-item-twice
+* https://stackoverflow.com/questions/12098329/set-spinner-to-unselected
 * */
 
 package com.example.cse110_project;
@@ -11,8 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,23 +38,24 @@ import com.example.cse110_project.utilities.comparators.PrioritizeSmallClassesCo
 
 import java.util.List;
 
-
-
 public class HomePageActivity extends AppCompatActivity {
     private AppDatabase db;
-    private boolean Start;
-    private Spinner sortingOptionsDropdown;
+    private boolean searchButtonState;
     protected RecyclerView studentsRecyclerView;
     protected RecyclerView.LayoutManager studentsLayoutManager;
     protected BoFStudentViewAdapter studentsViewAdapter;
 
+    /**
+     * Inner class for specifying what happens when a particular sorting option is selected at any
+     * point in time on the home page
+     * */
     class SortingOptions implements AdapterView.OnItemSelectedListener {
 
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            String sortingOption = adapterView.getItemAtPosition(i).toString();
-
             if (db == null) { return; }
+
+            String sortingOption = adapterView.getItemAtPosition(i).toString();
 
             if (sortingOption.equals("Default")) {
                 displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
@@ -72,72 +77,120 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         setTitle(Constants.APP_VERSION);
 
-        initSortingOptions();
+        initSortingOptionsDropdown();
+        checkSelectedSortingOption();
+        checkStateOfSearchButton();
+
+        //Start = false;
+
+//        Bundle extras = getIntent().getExtras();
+//        if (extras!=null){
+//            if(extras.containsKey("start")){
+//                Start = extras.getBoolean("start",false);
+//            };
+//        }
+//
+//        TextView topLeftButton = findViewById(R.id.start_button);
+//
+//        if(Start){
+//            topLeftButton.setText(Constants.STOP);
+//        }
+//        else{
+//            topLeftButton.setText(Constants.START);
+//        }
+//
+//        String currText = topLeftButton.getText().toString();
+//        if (currText.equals(Constants.STOP)) {
+//            compareUserCoursesWithStudents();
+//        }
+    }
+
+    public void saveSortingOption() {
+        SharedPreferences sortingOptionSP = getSharedPreferences("SortingOption", MODE_PRIVATE);
+        SharedPreferences.Editor sortingEditor = sortingOptionSP.edit();
+        Spinner sortingOptionDropdown = findViewById(R.id.sorting_options_dropdown_menu);
+
+        sortingEditor.putString("sortingOption", sortingOptionDropdown.getSelectedItem().toString());
+        sortingEditor.apply();
+    }
+
+    public void saveSearchButtonState() {
+        SharedPreferences searchButtonSP = getSharedPreferences("SearchButton", MODE_PRIVATE);
+        SharedPreferences.Editor searchEditor = searchButtonSP.edit();
+
+        searchEditor.putBoolean("searchButtonState", this.searchButtonState);
+        searchEditor.apply();
+    }
+
+    public void checkSelectedSortingOption() {
+        Log.d("HomePageActivity::checkSelectedSortingOption", "Non-testable method");
+
+        Spinner sortingOptionDropdown = findViewById(R.id.sorting_options_dropdown_menu);
+        SharedPreferences sortingOptionSP = getSharedPreferences("SortingOption", MODE_PRIVATE);
+        String sortingOption = sortingOptionSP.getString("sortingOption", "Default");
+        String[] sortingOptions = { "Default", "Prioritize Recent", "Prioritize Small Classes" };
+
+        // Reinitialize the BoF list as sorted by the previous sorting option selected by the User
+        for (int i = 0; i < sortingOptions.length; i++) {
+            if (sortingOption.equals(sortingOptions[i])) { sortingOptionDropdown.setSelection(i); }
+        }
+    }
+
+    public void checkStateOfSearchButton() {
+        Log.d("HomePageActivity::checkStateOfSearchButton()", "Non-testable method");
+
+        // TODO: Instead of using Extras, use SharedPreferences instead to save the state of the
+        //  search button. This lessens the amount of code needed.
+        // TODO: Use SharedPreferences to save which sorting option was selected.
+        //Bundle extras = getIntent().getExtras();
 
         db = AppDatabase.singleton(getApplicationContext());
+        SharedPreferences searchButtonSP = getSharedPreferences("SearchButton", MODE_PRIVATE);
+        this.searchButtonState = searchButtonSP.getBoolean("searchButtonState", false);
+        TextView searchButton = findViewById(R.id.start_button);
 
-        // FIXME: testing
-        sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
-        sortingOptionsDropdown.setOnItemSelectedListener(new SortingOptions());
-        sortingOptionsDropdown.setClickable(false);
-
-        Start = false;
-
-        Bundle extras = getIntent().getExtras();
-        if (extras!=null){
-            if(extras.containsKey("start")){
-                Start = extras.getBoolean("start",false);
-            };
-        }
-
-        TextView topLeftButton = findViewById(R.id.start_button);
-
-        if(Start){
-            topLeftButton.setText(Constants.STOP);
-        }
-        else{
-            topLeftButton.setText(Constants.START);
-        }
-
-        String currText = topLeftButton.getText().toString();
-        if (currText.equals(Constants.STOP)) {
+        if (this.searchButtonState) {
+            searchButton.setText(Constants.STOP);
             compareUserCoursesWithStudents();
         }
-
+        else { searchButton.setText(Constants.START); }
 
         displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
     }
 
     public void onStartClicked(View view) {
+        Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
         TextView topLeftButton = findViewById(R.id.start_button);
         String currText = topLeftButton.getText().toString();
 
+        // If the User has ended the student search, then we maintain the list as is -- otherwise
+        // the list is displayed by default sorting
         if (currText.equals(Constants.START)) {
-            Start = true;
-
-            this.sortingOptionsDropdown.setClickable(true);
-
+            this.searchButtonState = true;
             topLeftButton.setText(Constants.STOP);
+            sortingOptionsDropdown.setSelection(0);
             compareUserCoursesWithStudents();
+            displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
         }
         else {
+            this.searchButtonState = false;
             topLeftButton.setText(Constants.START);
-            Start = false;
-
-            this.sortingOptionsDropdown.setClickable(false);
         }
-
-        displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
     }
 
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, MainPageActivity.class);
+        //intent.putExtra("start", this.searchButtonState);
+        saveSortingOption();
+        saveSearchButtonState();
         startActivity(intent);
     }
 
     public void onMockNearbyMessagesClicked(View view) {
         Intent intent = new Intent(this, MockNearbyMessagesActivity.class);
-        intent.putExtra("start", Start);
+        //intent.putExtra("start", this.searchButtonState);
+        saveSortingOption();
+        saveSearchButtonState();
         startActivity(intent);
     }
 
@@ -146,6 +199,7 @@ public class HomePageActivity extends AppCompatActivity {
      * cross-checking the User's courses with all the pre-populated courses in the database
      **/
     public void compareUserCoursesWithStudents() {
+        db = AppDatabase.singleton(getApplicationContext());
         List<UserCourse> ucl = db.UserCourseDao().getAll();
         List<DefaultCourse> dcl;
         List<BoFStudent> bsl;
@@ -250,11 +304,12 @@ public class HomePageActivity extends AppCompatActivity {
         studentsRecyclerView.setAdapter(studentsViewAdapter);
     }
 
-    public void initSortingOptions() {
+    public void initSortingOptionsDropdown() {
         Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.sorting_options, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         sortingOptionsDropdown.setAdapter(adapter);
+        sortingOptionsDropdown.setOnItemSelectedListener(new SortingOptions());
     }
 }
