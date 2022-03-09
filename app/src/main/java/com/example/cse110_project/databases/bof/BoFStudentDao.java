@@ -18,6 +18,12 @@ public interface BoFStudentDao {
     @Query("DELETE FROM newStudents")
     void delete();
 
+    @Query("UPDATE newStudents SET course_size_score=:score WHERE new_student_id=:id")
+    void updateCourseSizeScore(double score, int id);
+
+    @Query("UPDATE newStudents SET recent_score=:score WHERE new_student_id=:id")
+    void updateRecentScore(int score, int id);
+
     @Insert
     void insert(BoFStudent student);
 

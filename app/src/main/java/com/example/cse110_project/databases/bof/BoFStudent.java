@@ -17,8 +17,16 @@ public class BoFStudent {
     @ColumnInfo(name = "isFavorite")
     public boolean isFavorite;
 
-    public BoFStudent(String name) {
+    @ColumnInfo(name = "course_size_score")
+    private double sizeScore;
+
+    @ColumnInfo(name = "recent_score")
+    private int recentScore;
+
+    public BoFStudent(String name, double sizeScore, int recentScore) {
         this.name = name;
+        this.sizeScore = sizeScore;
+        this.recentScore = recentScore;
     }
 
     public void setStudentId(int newStudentId) {
@@ -37,8 +45,11 @@ public class BoFStudent {
         this.name = name;
     }
 
-    public void setFavorite(boolean isFavorite){this.isFavorite = isFavorite;}
+    public void setFavorite(boolean isFavorite){ this.isFavorite = isFavorite; }
 
-    public boolean getFavorite(){return isFavorite;}
+    public boolean getFavorite(){ return isFavorite; }
 
+    public double getSizeScore() { return this.sizeScore; }
+
+    public int getRecentScore() { return this.recentScore; }
 }

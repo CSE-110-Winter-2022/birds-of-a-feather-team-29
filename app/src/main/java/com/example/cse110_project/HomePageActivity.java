@@ -5,10 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.cse110_project.databases.AppDatabase;
@@ -18,11 +18,9 @@ import com.example.cse110_project.databases.def.DefaultCourse;
 import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
-import com.example.cse110_project.utilities.SharedPreferencesDatabase;
+import com.example.cse110_project.utilities.PrioritizationAlgorithms;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 public class HomePageActivity extends AppCompatActivity {
@@ -37,6 +35,8 @@ public class HomePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         setTitle(Constants.APP_VERSION);
+
+        initSortingOptions();
 
         Start = false;
 
@@ -60,8 +60,9 @@ public class HomePageActivity extends AppCompatActivity {
         if (currText.equals(Constants.STOP)) {
             compareUserCoursesWithStudents();
         }
-        displayBirdsOfAFeatherList();
 
+
+        displayBirdsOfAFeatherList();
     }
 
     public void onStartClicked(View view) {
@@ -105,6 +106,8 @@ public class HomePageActivity extends AppCompatActivity {
         String classSize;
         String course;
         String courseNum;
+        double sizeScore;
+        int recentScore;
         boolean next;
 
         // Checks which students in the default database have courses that match with the courses
@@ -138,18 +141,39 @@ public class HomePageActivity extends AppCompatActivity {
                         if (bs.getName().equals(currMatchingStudent.getName())) {
                             db.BoFCourseDao().insert(new BoFCourse(bs.getStudentId(), dc.getYear(),
                                     dc.getQuarter(), dc.getClassSize(), dc.getCourse(), dc.getCourseNum()));
+
+                            // Calculates new class size and recent scores based on the matched
+                            // course
+                            sizeScore = PrioritizationAlgorithms.calcClassSizeScore(bs.getSizeScore(),
+                                    dc.getClassSize().charAt(0));
+                            recentScore = PrioritizationAlgorithms.calcRecentScore(bs.getRecentScore(),
+                                    dc.getYear(), dc.getQuarter());
+
+                            db.BoFStudentDao().updateCourseSizeScore(sizeScore, bs.getStudentId());
+                            db.BoFStudentDao().updateRecentScore(recentScore, bs.getStudentId());
+
                             next = true;
                             break;
                         }
                     }
 
+                    // States that the matching course has already been added to the BoF Course
+                    // database for the associated student (who exists in the BoF student database
+                    // prior)
                     if (next) {
                         db.DefaultCourseDao().updateCourseAdded(true, dc.getCourseId());
                         continue;
                     }
 
-                    // If student does not exist in the BoF student database
-                    db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName()));
+                    sizeScore = PrioritizationAlgorithms.calcClassSizeScore(0,
+                            dc.getClassSize().charAt(0));
+                    recentScore = PrioritizationAlgorithms.calcRecentScore(0,
+                            dc.getYear(), dc.getQuarter());
+
+                    // The above but for the case where the student does not exist in the BoF
+                    // student database
+                    db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName(),
+                            sizeScore, recentScore));
                     bsl = db.BoFStudentDao().getAll();
 
                     for (BoFStudent bs : bsl) {
@@ -177,4 +201,11 @@ public class HomePageActivity extends AppCompatActivity {
         studentsRecyclerView.setAdapter(studentsViewAdapter);
     }
 
+    public void initSortingOptions() {
+        Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sorting_options, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        sortingOptionsDropdown.setAdapter(adapter);
+    }
 }

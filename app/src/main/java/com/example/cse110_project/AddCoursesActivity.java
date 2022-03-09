@@ -13,6 +13,7 @@ import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.SharedPreferencesDatabase;
+import com.example.cse110_project.utilities.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
