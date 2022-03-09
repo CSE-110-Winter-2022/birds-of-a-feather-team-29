@@ -95,6 +95,10 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
         return this.students.size();
     }
 
+    public BoFStudent getBoFStudent(int position) {
+        return students.get(position);
+    }
+
     public static class ViewHolder
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {

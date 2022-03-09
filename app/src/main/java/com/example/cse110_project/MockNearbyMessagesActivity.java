@@ -23,21 +23,16 @@ import java.util.List;
 public class MockNearbyMessagesActivity extends AppCompatActivity {
     private static final String TAG = "CSE110-Project";
     private MessageListener messageListener;
-    private boolean Start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mock_nearby_messages);
         setTitle(Constants.APP_VERSION);
-
-        //Bundle extras = getIntent().getExtras();
-        //Start = extras.getBoolean("start");
     }
 
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, HomePageActivity.class);
-        //intent.putExtra("start", Start);
         startActivity(intent);
     }
 

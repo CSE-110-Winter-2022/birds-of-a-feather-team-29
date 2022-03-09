@@ -53,26 +53,35 @@ public class HomePageActivity extends AppCompatActivity {
 
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            Log.d("HomePageActivity.SortingOptions::onItemSelected()", "Non-testable method");
+
             if (db == null) { return; }
 
             String sortingOption = adapterView.getItemAtPosition(i).toString();
 
             if (sortingOption.equals("Default")) {
-                displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
+                displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+                        new DefaultBoFComparator(db.BoFCourseDao()));
             } else if (sortingOption.equals("Prioritize Recent")) {
-                displayBirdsOfAFeatherList(new PrioritizeMostRecentComparator());
+                displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+                        new PrioritizeMostRecentComparator());
             } else {
-                displayBirdsOfAFeatherList(new PrioritizeSmallClassesComparator());
+                displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+                        new PrioritizeSmallClassesComparator());
             }
         }
 
         @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {}
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            Log.d("HomePageActivity.SortingOptions::onNothingSelected()", "Non-testable method");
+        }
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("HomePageActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         setTitle(Constants.APP_VERSION);
@@ -151,11 +160,12 @@ public class HomePageActivity extends AppCompatActivity {
 
         if (this.searchButtonState) {
             searchButton.setText(Constants.STOP);
-            compareUserCoursesWithStudents();
+            compareUserCoursesWithStudents(AppDatabase.singleton(getApplicationContext()));
         }
         else { searchButton.setText(Constants.START); }
 
-        displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
+        displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+                new DefaultBoFComparator(db.BoFCourseDao()));
     }
 
     public void onStartClicked(View view) {
@@ -169,8 +179,9 @@ public class HomePageActivity extends AppCompatActivity {
             this.searchButtonState = true;
             topLeftButton.setText(Constants.STOP);
             sortingOptionsDropdown.setSelection(0);
-            compareUserCoursesWithStudents();
-            displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
+            compareUserCoursesWithStudents(AppDatabase.singleton(getApplicationContext()));
+            displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+                    new DefaultBoFComparator(db.BoFCourseDao()));
         }
         else {
             this.searchButtonState = false;
@@ -198,8 +209,7 @@ public class HomePageActivity extends AppCompatActivity {
      * Adds the students and courses that the User has shared a class with to the BoF database by
      * cross-checking the User's courses with all the pre-populated courses in the database
      **/
-    public void compareUserCoursesWithStudents() {
-        db = AppDatabase.singleton(getApplicationContext());
+    public void compareUserCoursesWithStudents(AppDatabase db) {
         List<UserCourse> ucl = db.UserCourseDao().getAll();
         List<DefaultCourse> dcl;
         List<BoFStudent> bsl;
@@ -292,8 +302,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    public void displayBirdsOfAFeatherList(BoFComparator comparator) {
-        db = AppDatabase.singleton(getApplicationContext());
+    public void displayBirdsOfAFeatherList(AppDatabase db, BoFComparator comparator) {
         List<BoFStudent> students = db.BoFStudentDao().getAll();
 
         studentsRecyclerView = findViewById(R.id.students_view);
