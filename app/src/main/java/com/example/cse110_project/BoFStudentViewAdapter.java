@@ -17,7 +17,8 @@ import com.example.cse110_project.databases.bof.BoFCourseDao;
 import com.example.cse110_project.databases.bof.BoFStudent;
 import com.example.cse110_project.databases.favorite.Favorite;
 import com.example.cse110_project.databases.favorite.FavoriteDao;
-import com.example.cse110_project.utilities.BoFStudentComparator;
+import com.example.cse110_project.utilities.comparators.BoFComparator;
+import com.example.cse110_project.utilities.comparators.DefaultBoFComparator;
 import com.example.cse110_project.utilities.Constants;
 
 import java.util.ArrayList;
@@ -34,12 +35,13 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
     private static Favorite favStudent;
     public static long favId;
 
-    public BoFStudentViewAdapter(List<BoFStudent> students, BoFCourseDao cd, FavoriteDao favoriteD) {
+    public BoFStudentViewAdapter(List<BoFStudent> students, BoFCourseDao cd, FavoriteDao favoriteD,
+                                 BoFComparator comparator) {
         super();
         this.students = students;
         this.cd = cd;
         this.favoriteD = favoriteD;
-        students.sort(new BoFStudentComparator(cd));
+        students.sort(comparator);
     }
 
     public void clear(){

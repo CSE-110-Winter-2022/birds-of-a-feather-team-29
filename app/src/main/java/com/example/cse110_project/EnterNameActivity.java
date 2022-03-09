@@ -12,6 +12,7 @@ import com.example.cse110_project.databases.AppDatabase;
 import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.databases.user.UserDao;
 import com.example.cse110_project.utilities.Constants;
+import com.example.cse110_project.utilities.Utilities;
 
 public class EnterNameActivity extends AppCompatActivity {
 
