@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.example.cse110_project.databases.AppDatabase;
 import com.example.cse110_project.databases.bof.BoFCourse;
 import com.example.cse110_project.databases.bof.BoFStudent;
+import com.example.cse110_project.databases.bof.BoFStudentDao;
 import com.example.cse110_project.databases.def.DefaultCourse;
 import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.databases.user.UserCourse;
@@ -60,13 +61,13 @@ public class HomePageActivity extends AppCompatActivity {
             String sortingOption = adapterView.getItemAtPosition(i).toString();
 
             if (sortingOption.equals("Default")) {
-                displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+                displayBirdsOfAFeatherList(db.BoFStudentDao(),
                         new DefaultBoFComparator(db.BoFCourseDao()));
             } else if (sortingOption.equals("Prioritize Recent")) {
-                displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+                displayBirdsOfAFeatherList(db.BoFStudentDao(),
                         new PrioritizeMostRecentComparator());
             } else {
-                displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+                displayBirdsOfAFeatherList(db.BoFStudentDao(),
                         new PrioritizeSmallClassesComparator());
             }
         }
@@ -89,32 +90,11 @@ public class HomePageActivity extends AppCompatActivity {
         initSortingOptionsDropdown();
         checkSelectedSortingOption();
         checkStateOfSearchButton();
-
-        //Start = false;
-
-//        Bundle extras = getIntent().getExtras();
-//        if (extras!=null){
-//            if(extras.containsKey("start")){
-//                Start = extras.getBoolean("start",false);
-//            };
-//        }
-//
-//        TextView topLeftButton = findViewById(R.id.start_button);
-//
-//        if(Start){
-//            topLeftButton.setText(Constants.STOP);
-//        }
-//        else{
-//            topLeftButton.setText(Constants.START);
-//        }
-//
-//        String currText = topLeftButton.getText().toString();
-//        if (currText.equals(Constants.STOP)) {
-//            compareUserCoursesWithStudents();
-//        }
     }
 
     public void saveSortingOption() {
+        Log.d("HomePageActivity::saveSortingOption()", "Non-testable method");
+
         SharedPreferences sortingOptionSP = getSharedPreferences("SortingOption", MODE_PRIVATE);
         SharedPreferences.Editor sortingEditor = sortingOptionSP.edit();
         Spinner sortingOptionDropdown = findViewById(R.id.sorting_options_dropdown_menu);
@@ -164,7 +144,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
         else { searchButton.setText(Constants.START); }
 
-        displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+        displayBirdsOfAFeatherList(db.BoFStudentDao(),
                 new DefaultBoFComparator(db.BoFCourseDao()));
     }
 
@@ -180,7 +160,7 @@ public class HomePageActivity extends AppCompatActivity {
             topLeftButton.setText(Constants.STOP);
             sortingOptionsDropdown.setSelection(0);
             compareUserCoursesWithStudents(AppDatabase.singleton(getApplicationContext()));
-            displayBirdsOfAFeatherList(AppDatabase.singleton(getApplicationContext()),
+            displayBirdsOfAFeatherList(db.BoFStudentDao(),
                     new DefaultBoFComparator(db.BoFCourseDao()));
         }
         else {
@@ -302,8 +282,8 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    public void displayBirdsOfAFeatherList(AppDatabase db, BoFComparator comparator) {
-        List<BoFStudent> students = db.BoFStudentDao().getAll();
+    public void displayBirdsOfAFeatherList(BoFStudentDao bsd, BoFComparator comparator) {
+        List<BoFStudent> students = bsd.getAll();
 
         studentsRecyclerView = findViewById(R.id.students_view);
         studentsLayoutManager = new LinearLayoutManager(this);

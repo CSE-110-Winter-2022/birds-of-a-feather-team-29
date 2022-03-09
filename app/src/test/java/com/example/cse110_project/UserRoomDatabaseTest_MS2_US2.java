@@ -11,6 +11,7 @@ import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.databases.user.UserCourseDao;
 import com.example.cse110_project.databases.user.UserDao;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,11 @@ public class UserRoomDatabaseTest_MS2_US2 {
         db = AppDatabase.getSingletonInstance();
         ud = db.UserDao();
         ucd = db.UserCourseDao();
+    }
+
+    @After
+    public void closeTestDatabase() {
+        db.close();
     }
 
     @Test
