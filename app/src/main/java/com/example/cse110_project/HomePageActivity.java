@@ -1,3 +1,9 @@
+/*
+* Sources used:
+*
+* https://www.tutorialspoint.com/how-to-get-spinner-value-in-android
+* */
+
 package com.example.cse110_project;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,16 +27,44 @@ import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.PrioritizationAlgorithms;
+import com.example.cse110_project.utilities.comparators.BoFComparator;
+import com.example.cse110_project.utilities.comparators.DefaultBoFComparator;
+import com.example.cse110_project.utilities.comparators.PrioritizeMostRecentComparator;
+import com.example.cse110_project.utilities.comparators.PrioritizeSmallClassesComparator;
 
 import java.util.List;
+
 
 
 public class HomePageActivity extends AppCompatActivity {
     private AppDatabase db;
     private boolean Start;
+    private Spinner sortingOptionsDropdown;
     protected RecyclerView studentsRecyclerView;
     protected RecyclerView.LayoutManager studentsLayoutManager;
     protected BoFStudentViewAdapter studentsViewAdapter;
+
+    class SortingOptions implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            String sortingOption = adapterView.getItemAtPosition(i).toString();
+
+            if (db == null) { return; }
+
+            if (sortingOption.equals("Default")) {
+                displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
+            } else if (sortingOption.equals("Prioritize Recent")) {
+                displayBirdsOfAFeatherList(new PrioritizeMostRecentComparator());
+            } else {
+                displayBirdsOfAFeatherList(new PrioritizeSmallClassesComparator());
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {}
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +74,12 @@ public class HomePageActivity extends AppCompatActivity {
 
         initSortingOptions();
 
+        db = AppDatabase.singleton(getApplicationContext());
 
         // FIXME: testing
-        Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
-        sortingOptionsDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println(adapterView.getItemAtPosition(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-
-        });
-
+        sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
+        sortingOptionsDropdown.setOnItemSelectedListener(new SortingOptions());
+        sortingOptionsDropdown.setClickable(false);
 
         Start = false;
 
@@ -80,7 +105,7 @@ public class HomePageActivity extends AppCompatActivity {
         }
 
 
-        displayBirdsOfAFeatherList();
+        displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
     }
 
     public void onStartClicked(View view) {
@@ -89,14 +114,20 @@ public class HomePageActivity extends AppCompatActivity {
 
         if (currText.equals(Constants.START)) {
             Start = true;
+
+            this.sortingOptionsDropdown.setClickable(true);
+
             topLeftButton.setText(Constants.STOP);
             compareUserCoursesWithStudents();
         }
         else {
             topLeftButton.setText(Constants.START);
             Start = false;
+
+            this.sortingOptionsDropdown.setClickable(false);
         }
-        displayBirdsOfAFeatherList();
+
+        displayBirdsOfAFeatherList(new DefaultBoFComparator(db.BoFCourseDao()));
     }
 
     public void onBackClicked(View view) {
@@ -115,7 +146,6 @@ public class HomePageActivity extends AppCompatActivity {
      * cross-checking the User's courses with all the pre-populated courses in the database
      **/
     public void compareUserCoursesWithStudents() {
-        db = AppDatabase.singleton(getApplicationContext());
         List<UserCourse> ucl = db.UserCourseDao().getAll();
         List<DefaultCourse> dcl;
         List<BoFStudent> bsl;
@@ -208,14 +238,15 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
-    public void displayBirdsOfAFeatherList() {
+    public void displayBirdsOfAFeatherList(BoFComparator comparator) {
         db = AppDatabase.singleton(getApplicationContext());
         List<BoFStudent> students = db.BoFStudentDao().getAll();
 
         studentsRecyclerView = findViewById(R.id.students_view);
         studentsLayoutManager = new LinearLayoutManager(this);
         studentsRecyclerView.setLayoutManager(studentsLayoutManager);
-        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao(), db.FavoriteDao());
+        studentsViewAdapter = new BoFStudentViewAdapter(students, db.BoFCourseDao(),
+                db.FavoriteDao(), comparator);
         studentsRecyclerView.setAdapter(studentsViewAdapter);
     }
 

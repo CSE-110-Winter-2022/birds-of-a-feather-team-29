@@ -5,7 +5,7 @@ import com.example.cse110_project.databases.bof.BoFStudent;
 
 import java.util.Comparator;
 
-public class PrioritizeMostRecentComparator implements Comparator<BoFStudent> {
+public class PrioritizeMostRecentComparator implements BoFComparator {
 
     @Override
     public int compare(BoFStudent s1, BoFStudent s2) {

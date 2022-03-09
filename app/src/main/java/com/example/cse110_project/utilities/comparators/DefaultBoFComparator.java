@@ -5,7 +5,7 @@ import com.example.cse110_project.databases.bof.BoFStudent;
 
 import java.util.Comparator;
 
-public class DefaultBoFComparator implements Comparator<BoFStudent> {
+public class DefaultBoFComparator implements BoFComparator {
 
     private BoFCourseDao cd;
 
