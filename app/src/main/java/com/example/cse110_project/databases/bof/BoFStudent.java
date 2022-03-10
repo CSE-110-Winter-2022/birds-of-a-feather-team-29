@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 public class BoFStudent {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "new_student_id")
+    @ColumnInfo(name = "student_id")
     public int newStudentId;
 
     @ColumnInfo(name = "name")
@@ -45,12 +45,12 @@ public class BoFStudent {
         return newStudentId;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setFavorite(boolean isFavorite){ this.isFavorite = isFavorite; }

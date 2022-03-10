@@ -4,21 +4,17 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Transaction;
-
-import com.example.cse110_project.databases.bof.BoFStudent;
 
 import java.util.List;
 
 @Dao
 public interface SessionDao {
 
-    @Transaction
-    @Query("SELECT * FROM session where session_name=:sessionName")
-    List<BoFStudent> getForSession(String sessionName);
-
     @Query("SELECT * FROM session")
-    List<BoFStudent> getAll();
+    List<Session> getAll();
+
+    @Query("SELECT * FROM session where session_name=:sessionName")
+    Session get(String sessionName);
 
     @Query("DELETE FROM session")
     void delete();

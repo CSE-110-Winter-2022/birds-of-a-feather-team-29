@@ -6,6 +6,7 @@
 
 package com.example.cse110_project.databases.session;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -20,20 +21,15 @@ import java.util.List;
 public class Session {
 
     @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "session_name")
     public String sessionName;
 
-    @ColumnInfo(name = "bof_student_list")
-    List<BoFStudent> bofList;
-
-    public Session(String sessionName, List<BoFStudent> bofList) {
+    public Session(String sessionName) {
         this.sessionName = (sessionName == null) ? getCurrentTime() : sessionName;
-        this.bofList = bofList;
     }
 
     public String getSessionName() { return this.sessionName; }
-
-    public List<BoFStudent> getBoFList() { return this.bofList; }
 
     private String getCurrentTime() {
         DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");

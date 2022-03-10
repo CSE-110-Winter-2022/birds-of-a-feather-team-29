@@ -63,8 +63,8 @@ public class PrepopulateDatabase {
     }
 
     private static void clearDefaultDatabase(AppDatabase db) {
-        db.DefaultStudentDao().delete();
-        db.DefaultCourseDao().delete();
+//        db.DefaultStudentDao().delete();
+//        db.DefaultCourseDao().delete();
         db.BoFStudentDao().delete();
         db.BoFCourseDao().delete();
     }
