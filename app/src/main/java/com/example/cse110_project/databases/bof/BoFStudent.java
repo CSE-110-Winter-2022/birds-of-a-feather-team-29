@@ -26,11 +26,15 @@ public class BoFStudent {
     @ColumnInfo(name = "is_waving")
     private boolean isWaving;
 
+    @ColumnInfo(name = "am_i_waving")
+    private boolean amIWaving;
+
     public BoFStudent(String name, double sizeScore, int recentScore, boolean isWaving) {
         this.name = name;
         this.sizeScore = sizeScore;
         this.recentScore = recentScore;
         this.isWaving = isWaving;
+        this.amIWaving = false;
     }
 
     public void setStudentId(int newStudentId) {
@@ -60,4 +64,8 @@ public class BoFStudent {
     public void setIsWaving(boolean isWaving) { this.isWaving = isWaving; }
 
     public boolean getIsWaving() { return this.isWaving; }
+
+    public void setAmIWaving(boolean amIWaving) {this.amIWaving = amIWaving; }
+
+    public boolean getAmIWaving() {return this.amIWaving; }
 }

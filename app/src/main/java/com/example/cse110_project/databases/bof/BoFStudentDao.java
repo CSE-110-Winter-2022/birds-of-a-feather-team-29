@@ -27,6 +27,9 @@ public interface BoFStudentDao {
     @Query("UPDATE newStudents SET is_waving=:isWaving WHERE new_student_id=:id")
     void updateIsWaving(boolean isWaving, int id);
 
+    @Query("UPDATE newStudents SET am_i_waving=:amIWaving WHERE new_student_id=:id")
+    void updateAmIWaving(boolean amIWaving, int id);
+
     @Insert
     void insert(BoFStudent student);
 
