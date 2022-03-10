@@ -46,7 +46,7 @@ public class StudentDetailTest {
 
     @Test
     public void test_Display_One_Previous_Course_Shared_With_User() {
-        mainSD.insert(new BoFStudent("Steel", 1.00, 1));
+        mainSD.insert(new BoFStudent("Steel", 1.00, 1, false));
         BoFStudent student = db.BoFStudentDao().getAll().get(0);
         mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall",
                 "Tiny (1-40)", "CSE", "21"));
@@ -61,7 +61,7 @@ public class StudentDetailTest {
 
     @Test
     public void test_Display_Five_Previous_Courses_Shared_With_User() {
-        mainSD.insert(new BoFStudent("Steel", 1.00, 1));
+        mainSD.insert(new BoFStudent("Steel", 1.00, 1, false));
         BoFStudent student = db.BoFStudentDao().getAll().get(0);
         mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall",
                 "Tiny (1-40)", "CSE","21"));
@@ -84,7 +84,7 @@ public class StudentDetailTest {
 
     @Test
     public void test_Student_Has_Default_Head_Shot() {
-        mainSD.insert(new BoFStudent("Steel", 1.00, 1));
+        mainSD.insert(new BoFStudent("Steel", 1.00, 1, false));
         BoFStudent student = db.BoFStudentDao().getAll().get(0);
         mainCD.insert(new BoFCourse(student.getStudentId(), "2018", "Fall",
                 "Tiny (1-40)", "CSE","21"));
