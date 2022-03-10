@@ -39,11 +39,9 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
 
     /**
      * Format of entries:
-     *
      * If mocked student is waving to User:
      * [0]SUUID,[1]Name,[2]Link,[3]Year,[4]Quarter,[5]Course,[6]CourseNumber,[7]ClassSize,
      * [8]OUUID,[9]Wave
-     *
      * If mocked student is not waving to User:
      * [0]SUUID,[1]Name,[2]Link,[3]Year,[4]Quarter,[5]Course,[6]CourseNumber,[7]ClassSize
      * */
