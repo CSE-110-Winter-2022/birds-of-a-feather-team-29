@@ -66,7 +66,7 @@ public class HomePageActivity extends AppCompatActivity {
     /**
      * Helper method to onSearchButtonClicked
      * */
-    public void onSessionTypeClicked() {
+    private void onSessionTypeClicked() {
         Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
         TextView topLeftButton = findViewById(R.id.start_button);
         String currText = topLeftButton.getText().toString();
@@ -130,12 +130,11 @@ public class HomePageActivity extends AppCompatActivity {
             // https://stackoverflow.com/questions/10903754/input-text-dialog-android
             // https://www.baeldung.com/java-replace-character-at-index
 
-            String[] types = {"hello", "musty","hello", "musty","hello", "musty","hello", "musty","hello", "musty","hello", "musty"};
 
             EditText sessionNameEntry = new EditText(this);
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             alertBuilder
-                    .setTitle((db.SessionDao().getAll().size() > 0) ? "Please save the session's data. Enter one of your" +
+                    .setMessage((db.SessionDao().getAll().size() > 0) ? "Please save the session's data. Enter one of your" +
                             " current enrolled classes or a class name as the name of the session below:" :
                             "Please save the session's data. Enter a name for your session below:")
                     .setView(sessionNameEntry)
@@ -178,7 +177,6 @@ public class HomePageActivity extends AppCompatActivity {
 
                             onSessionTypeClicked();
                         }
-
                     });
 
             AlertDialog alertDialog = alertBuilder.create();
