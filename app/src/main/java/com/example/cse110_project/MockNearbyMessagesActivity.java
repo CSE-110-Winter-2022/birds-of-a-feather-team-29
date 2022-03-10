@@ -45,7 +45,6 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
                 //Log.d(TAG, "Found message: " + new String(message.getContent()));
                 String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
 
-                //AppDatabase db = AppDatabase.singleton(getApplicationContext());
                 AppDatabase db = AppDatabase.getSingletonInstance();
                 List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
                 for (int i = 0; i< studentList.size(); i++){

@@ -10,9 +10,12 @@
 package com.example.cse110_project;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,11 +35,16 @@ import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.PrioritizationAlgorithms;
+import com.example.cse110_project.utilities.Utilities;
 import com.example.cse110_project.utilities.comparators.BoFComparator;
 import com.example.cse110_project.utilities.comparators.DefaultBoFComparator;
 import com.example.cse110_project.utilities.comparators.PrioritizeMostRecentComparator;
 import com.example.cse110_project.utilities.comparators.PrioritizeSmallClassesComparator;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.messages.Message;
+import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class HomePageActivity extends AppCompatActivity {
@@ -45,6 +53,11 @@ public class HomePageActivity extends AppCompatActivity {
     protected RecyclerView studentsRecyclerView;
     protected RecyclerView.LayoutManager studentsLayoutManager;
     protected BoFStudentViewAdapter studentsViewAdapter;
+    protected BluetoothAdapter bluetoothAdapter;
+    protected MessageListener mMessageListener;
+    protected Message mMessage;
+
+    private static final String TAG = "CSE110-Project";
 
     /**
      * Inner class for specifying what happens when a particular sorting option is selected at any
@@ -84,9 +97,89 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         setTitle(Constants.APP_VERSION);
 
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        //check if bluetooth is on
+        if (bluetoothAdapter == null || (!bluetoothAdapter.isEnabled())) {
+            runOnUiThread(() -> {
+                Utilities.showAlert(this, Constants.ALERT, Constants.Bluetooth_Not_Supported);
+            });
+        }
+
+
         initSortingOptionsDropdown();
         checkSelectedSortingOption();
         checkStateOfSearchButton();
+
+        mMessageListener = new MessageListener() {
+            @Override
+            public void onFound(final Message message) {
+                Log.d(TAG, "Found message: " + new String(message.getContent()));
+
+                String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
+
+                AppDatabase db = AppDatabase.getSingletonInstance();
+                List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
+                for (int i = 0; i< studentList.size(); i++){
+                    if (studentList.get(i).getName().equals(mockArr[0])){
+                        return;
+                    }
+                }
+                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[0]));
+
+                List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
+
+
+                for (int i = 2; i < mockArr.length; i=i+5) {
+                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
+                            mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
+                }
+            }
+
+            @Override
+            public void onLost(final Message message) {
+                Log.d(TAG, "Lost sight of message: " + new String(message.getContent()));
+            }
+
+        };
+
+        StringBuilder information = new StringBuilder(db.UserDao().getAll().get(0).getUserFirstName());
+        for(int i = 0; i < db.UserCourseDao().getAll().size(); i++){
+            String year = db.UserCourseDao().getAll().get(i).getYear();
+            String quarter = db.UserCourseDao().getAll().get(i).getQuarter();
+            String subject = db.UserCourseDao().getAll().get(i).getCourse();
+            String number = db.UserCourseDao().getAll().get(i).getCourseNum();
+            String size = db.UserCourseDao().getAll().get(i).getClassSize();
+            String fullCourseName = year + "," + quarter + "," + size + "," + subject + "," + number;
+            information.append(",").append(fullCourseName);
+        }
+        mMessage = new Message(information.toString().getBytes());
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mMessageListener!=null){
+            Log.d(TAG, "subscribing");
+            Nearby.getMessagesClient(this).subscribe(mMessageListener);
+        }
+        if(mMessage!=null){
+            Log.d(TAG, "publishing message: " + new String(mMessage.getContent()));
+            Nearby.getMessagesClient(this).publish(mMessage);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mMessageListener!=null){
+            Log.d(TAG, "unsubscribing");
+            Nearby.getMessagesClient(this).unsubscribe(mMessageListener);
+        }
+        if(mMessage!=null){
+            Log.d(TAG, "unpublishing message: " + mMessage.toString());
+            Nearby.getMessagesClient(this).unpublish(mMessage);
+        }
     }
 
     public void saveSortingOption() {
