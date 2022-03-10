@@ -52,6 +52,7 @@ public class SavedSessionsViewAdapter extends RecyclerView.Adapter<SavedSessions
 
         public void setSession(Session session) {
             this.session = session;
+            this.sessionTextView.setText(session.getSessionName());
         }
     }
 }
