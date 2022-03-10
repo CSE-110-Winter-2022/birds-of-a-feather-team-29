@@ -31,6 +31,7 @@ import com.example.cse110_project.databases.bof.BoFStudentDao;
 import com.example.cse110_project.databases.def.DefaultCourse;
 import com.example.cse110_project.databases.def.DefaultStudent;
 import com.example.cse110_project.databases.session.Session;
+import com.example.cse110_project.databases.session.SessionStudent;
 import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.PrioritizationAlgorithms;
@@ -70,8 +71,7 @@ public class HomePageActivity extends AppCompatActivity {
         TextView topLeftButton = findViewById(R.id.start_button);
         String currText = topLeftButton.getText().toString();
 
-        // If the User has ended the student search, then we maintain the list as is -- otherwise
-        // the list is displayed by default sorting
+        // Checks if the User has ended the student search
         if (currText.equals(Constants.START)) {
             this.searchButtonState = true;
             topLeftButton.setText(Constants.STOP);
@@ -106,6 +106,7 @@ public class HomePageActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             db.BoFStudentDao().delete();
+                            db.BoFCourseDao().delete();
                             onSessionTypeClicked();
                         }
 
@@ -129,10 +130,12 @@ public class HomePageActivity extends AppCompatActivity {
             // https://stackoverflow.com/questions/10903754/input-text-dialog-android
             // https://www.baeldung.com/java-replace-character-at-index
 
+            String[] types = {"hello", "musty","hello", "musty","hello", "musty","hello", "musty","hello", "musty","hello", "musty"};
+
             EditText sessionNameEntry = new EditText(this);
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             alertBuilder
-                    .setMessage((db.SessionDao().getAll().size() > 0) ? "Please save the session's data. Enter one of your" +
+                    .setTitle((db.SessionDao().getAll().size() > 0) ? "Please save the session's data. Enter one of your" +
                             " current enrolled classes or a class name as the name of the session below:" :
                             "Please save the session's data. Enter a name for your session below:")
                     .setView(sessionNameEntry)
@@ -167,6 +170,12 @@ public class HomePageActivity extends AppCompatActivity {
                             }
 
                             db.SessionDao().insert(new Session(sessionName));
+
+                            for (BoFStudent bs: db.BoFStudentDao().getAll()) {
+                                db.SessionStudentDao().insert(new SessionStudent(sessionName,
+                                        bs.getName(), db.BoFCourseDao().getForStudent(bs.getStudentId()).size()));
+                            }
+
                             onSessionTypeClicked();
                         }
 

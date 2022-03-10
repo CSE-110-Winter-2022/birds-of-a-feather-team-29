@@ -23,7 +23,7 @@ public class Session {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "session_name")
-    public String sessionName;
+    private String sessionName;
 
     public Session(String sessionName) {
         this.sessionName = (sessionName == null) ? getCurrentTime() : sessionName;
