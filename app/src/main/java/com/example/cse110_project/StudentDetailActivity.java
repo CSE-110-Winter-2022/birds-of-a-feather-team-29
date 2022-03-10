@@ -39,7 +39,11 @@ public class StudentDetailActivity extends AppCompatActivity {
     private void displayWave() {
         Intent intent = getIntent();
         int studentId = intent.getIntExtra(Constants.BOF_STUDENT_ID, -1);
+
         student = db.BoFStudentDao().get(studentId);
+
+        if (student == null) { return; }
+
         amIWaving = student.getAmIWaving();
 
         ImageView imageView = findViewById(R.id.hand_wave);
@@ -56,13 +60,13 @@ public class StudentDetailActivity extends AppCompatActivity {
     }
 
     public void displaySharedCourses(int testInt) {
+        db = AppDatabase.singleton(this);
+
         Intent intent = getIntent();
         int studentId = intent.getIntExtra(Constants.BOF_STUDENT_ID, -1);
 
         if ((studentId == -1) && (testInt == 0)) { return; }
         else if ((studentId == -1) && (testInt == 1)) { studentId = 1; }
-
-        db = AppDatabase.singleton(this);
 
         student = db.BoFStudentDao().get(studentId);
 
