@@ -33,14 +33,10 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mock_nearby_messages);
         setTitle(Constants.APP_VERSION);
-
-        Bundle extras = getIntent().getExtras();
-        Start = extras.getBoolean("start");
     }
 
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, HomePageActivity.class);
-        intent.putExtra("start", Start);
         startActivity(intent);
     }
 

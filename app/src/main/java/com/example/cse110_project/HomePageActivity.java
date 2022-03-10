@@ -125,11 +125,6 @@ public class HomePageActivity extends AppCompatActivity {
     public void checkStateOfSearchButton() {
         Log.d("HomePageActivity::checkStateOfSearchButton()", "Non-testable method");
 
-        // TODO: Instead of using Extras, use SharedPreferences instead to save the state of the
-        //  search button. This lessens the amount of code needed.
-        // TODO: Use SharedPreferences to save which sorting option was selected.
-        //Bundle extras = getIntent().getExtras();
-
         db = AppDatabase.singleton(getApplicationContext());
         SharedPreferences searchButtonSP = getSharedPreferences("SearchButton", MODE_PRIVATE);
         this.searchButtonState = searchButtonSP.getBoolean("searchButtonState", false);
@@ -170,7 +165,6 @@ public class HomePageActivity extends AppCompatActivity {
         Log.d("HomePageActivity::onBackClicked()", "Non-testable method");
 
         Intent intent = new Intent(this, MainPageActivity.class);
-        //intent.putExtra("start", this.searchButtonState);
         saveSortingOption();
         saveSearchButtonState();
         startActivity(intent);
@@ -180,7 +174,6 @@ public class HomePageActivity extends AppCompatActivity {
         Log.d("HomePageActivity::onMockNearbyMessagesClicked()", "Non-testable method");
 
         Intent intent = new Intent(this, MockNearbyMessagesActivity.class);
-        //intent.putExtra("start", this.searchButtonState);
         saveSortingOption();
         saveSearchButtonState();
         startActivity(intent);
@@ -267,8 +260,6 @@ public class HomePageActivity extends AppCompatActivity {
                     // student database
                     db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName(),
                             sizeScore, recentScore, currMatchingStudent.getIsWaving()));
-//                    db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName(),
-//                            sizeScore, recentScore));
                     bsl = db.BoFStudentDao().getAll();
 
                     for (BoFStudent bs : bsl) {
@@ -298,6 +289,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     public void initSortingOptionsDropdown() {
         Log.d("HomePageActivity::initSortingOptionsDropdown()", "Non-testable method");
+
         Spinner sortingOptionsDropdown = findViewById(R.id.sorting_options_dropdown_menu);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.sorting_options, android.R.layout.simple_spinner_dropdown_item);
