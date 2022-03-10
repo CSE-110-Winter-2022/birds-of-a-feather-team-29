@@ -142,17 +142,19 @@ public class HomePageActivity extends AppCompatActivity {
 
         };
 
-        StringBuilder information = new StringBuilder(db.UserDao().getAll().get(0).getUserFirstName());
-        for(int i = 0; i < db.UserCourseDao().getAll().size(); i++){
-            String year = db.UserCourseDao().getAll().get(i).getYear();
-            String quarter = db.UserCourseDao().getAll().get(i).getQuarter();
-            String subject = db.UserCourseDao().getAll().get(i).getCourse();
-            String number = db.UserCourseDao().getAll().get(i).getCourseNum();
-            String size = db.UserCourseDao().getAll().get(i).getClassSize();
-            String fullCourseName = year + "," + quarter + "," + size + "," + subject + "," + number;
-            information.append(",").append(fullCourseName);
+        if(db.UserDao()!=null && db.UserDao().getAll().size()!=0){
+            StringBuilder information = new StringBuilder(db.UserDao().getAll().get(0).getUserFirstName());
+            for(int i = 0; i < db.UserCourseDao().getAll().size(); i++){
+                String year = db.UserCourseDao().getAll().get(i).getYear();
+                String quarter = db.UserCourseDao().getAll().get(i).getQuarter();
+                String subject = db.UserCourseDao().getAll().get(i).getCourse();
+                String number = db.UserCourseDao().getAll().get(i).getCourseNum();
+                String size = db.UserCourseDao().getAll().get(i).getClassSize();
+                String fullCourseName = year + "," + quarter + "," + size + "," + subject + "," + number;
+                information.append(",").append(fullCourseName);
+            }
+            mMessage = new Message(information.toString().getBytes());
         }
-        mMessage = new Message(information.toString().getBytes());
 
     }
 
@@ -218,7 +220,7 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void checkStateOfSearchButton() {
-        Log.d("HomePageActivity::checkStateOfSearchButton()", "Non-testable method");
+        Log.d("HomePageActivity::checkStateOfSearchButton()", "Non:-testable method");
 
         // TODO: Instead of using Extras, use SharedPreferences instead to save the state of the
         //  search button. This lessens the amount of code needed.
