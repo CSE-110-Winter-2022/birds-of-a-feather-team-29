@@ -24,37 +24,37 @@ public class PrepopulateDatabase {
 
         DefaultCourse[] defaultCourseList = {
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                        "Fall","Tiny (1-40)", "CSE", "11", false),
+                        "Fall", "CSE", "11", "Tiny (1-40)",false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                        "Fall","Tiny (1-40)","CSE", "12", false),
+                        "Fall","CSE", "12", "Tiny (1-40)",false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2017",
-                        "Fall","Tiny (1-40)","CSE", "21", false),
+                        "Fall","CSE", "21","Tiny (1-40)", false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                        "Spring","Tiny (1-40)","CSE","100", false),
+                        "Spring","CSE","100","Tiny (1-40)", false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                        "Spring","Tiny (1-40)","CSE","140", false),
+                        "Spring","CSE","140","Tiny (1-40)", false),
                 new DefaultCourse(defStudentsList.get(0).getStudentId(), "2019",
-                        "Spring","Tiny (1-40)","CSE","105", false),
+                        "Spring","CSE","105","Tiny (1-40)", false),
 
                 new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                        "Winter","Large (150-250)","CSE","11", false),
+                        "Winter","CSE","11","Large (150-250)", false),
                 new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                        "Winter","Large (150-250)","CSE","12", false),
+                        "Winter","CSE","12","Large (150-250)",false),
                 new DefaultCourse(defStudentsList.get(1).getStudentId(), "2018",
-                        "Winter","Large (150-250)","CSE","21", false),
+                        "Winter","CSE","21","Large (150-250)", false),
                 new DefaultCourse(defStudentsList.get(1).getStudentId(), "2019",
-                        "Fall","Large (150-250)", "CSE","100", false),
+                        "Fall", "CSE","100","Large (150-250)", false),
 
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2018",
-                        "Spring","Huge (250-400)","CSE","15L", false),
+                        "Spring","CSE","15L","Huge (250-400)", false),
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                        "Summer Session I","Huge (250-400)","CSE","191", false),
+                        "Summer Session I","CSE","191","Huge (250-400)", false),
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                        "Fall","Huge (250-400)","CSE","142", false),
+                        "Fall","CSE","142","Huge (250-400)", false),
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                        "Fall","Huge (250-400)","CSE","112", false),
+                        "Fall","CSE","112","Huge (250-400)", false),
                 new DefaultCourse(defStudentsList.get(2).getStudentId(), "2020",
-                        "Fall","Huge (250-400)","CSE","167", false)
+                        "Fall","CSE","167", "Huge (250-400)",false)
         };
 
         for (DefaultCourse defaultCourse : defaultCourseList) {

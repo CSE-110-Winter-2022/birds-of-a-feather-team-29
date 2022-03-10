@@ -11,7 +11,15 @@ public class PrioritizeMostRecentComparator implements BoFComparator {
     public int compare(BoFStudent s1, BoFStudent s2) {
         int s1TotalRecentScore = s1.getRecentScore();
         int s2TotalRecentScore = s2.getRecentScore();
-        return Integer.compare(s2TotalRecentScore, s1TotalRecentScore);
+
+        if ((s2.getIsWaving() && s1.getIsWaving())
+                || (!s2.getIsWaving() && !s1.getIsWaving())) {
+            return Integer.compare(s2TotalRecentScore, s1TotalRecentScore);
+        } else if (s1.getIsWaving()) {
+            return Integer.compare(s2TotalRecentScore, Integer.MAX_VALUE);
+        } else {
+            return Integer.compare(Integer.MAX_VALUE, s1TotalRecentScore);
+        }
     }
 
 }

@@ -65,6 +65,13 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
     public void onBindViewHolder(@NonNull BoFStudentViewAdapter.ViewHolder holder, int position) {
 //        holder.setStudent(students.get(position));
         oneStudent = students.get(position);
+
+        // ---
+        if (oneStudent.getIsWaving()) {
+            TextView handWave = view.findViewById(R.id.hand_view);
+            handWave.setVisibility(View.VISIBLE);
+        }
+
         Log.v(TAG, "student: " + oneStudent.getName());
         holder.setStudent(oneStudent);
         isFav = oneStudent.getFavorite();

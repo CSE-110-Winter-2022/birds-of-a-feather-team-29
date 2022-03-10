@@ -18,11 +18,14 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MockNearbyMessagesActivity extends AppCompatActivity {
     private static final String TAG = "CSE110-Project";
     private MessageListener messageListener;
+
+    private String myUuid = "4b295157-ba31-4f9f-8401-5d85d9cf659a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,32 +39,89 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Entries:
+     *
+     * If waving:
+     * [0]SUUID,[1]Name,[2]Link,[3]Year,[4]Quarter,[5]Course,[6]CourseNumber,[7]CourseNumber,[8]OUUID,[9]Wave
+     *
+     * Not waving:
+     * [0]SUUID,[1]Name,[2]Link,[3]Year,[4]Quarter,[5]ClassSize,[6]Course,[7]CourseNumber
+     * */
     public void onEnterClicked(View view) {
         TextView mockInformation = findViewById(R.id.mock_text_textview);
 
         MessageListener realListener = new MessageListener() {
             @Override
             public void onFound(@NonNull Message message) {
-                //Log.d(TAG, "Found message: " + new String(message.getContent()));
                 String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
 
-                //AppDatabase db = AppDatabase.singleton(getApplicationContext());
                 AppDatabase db = AppDatabase.getSingletonInstance();
+
                 List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
+
                 for (int i = 0; i< studentList.size(); i++){
-                    if (studentList.get(i).getName().equals(mockArr[0])){
+                    if (studentList.get(i).getName().equals(mockArr[1])){
                         return;
                     }
+//                    if (studentList.get(i).getName().equals(mockArr[0])){
+//                        return;
+//                    }
                 }
-                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[0]));
+
+                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1]));
 
                 List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
 
+                int endIndex;
+                int mockArrLen = mockArr.length;
+                int studentId = defStudentsList.get(defStudentsList.size()-1).getStudentId();
 
-                for (int i = 2; i < mockArr.length; i=i+5) {
-                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
+                // Case: student is waving
+                if(mockArr[mockArrLen - 1].equals("wave")){
+                    endIndex = mockArrLen - 2;
+                    Log.v("mocking activity", "mockArr[mockArrLen - 2] is " + mockArr[mockArrLen - 2]);
+
+                    if(mockArr[mockArrLen - 2].compareTo(myUuid) == 0){
+
+                        // TODO: Alternative find by name
+                        DefaultStudent ds = defStudentsList.get(defStudentsList.size()-1);
+                        db.DefaultStudentDao().updateIsWaving(true, ds.getStudentId());
+
+                        //defStudentsList.get(defStudentsList.size()-1).setIsWave(true);
+                        Log.v("mocking activity", "isWave is true");
+                    }
+                    Log.v("mocking activity", "isWave is true but wrong id");
+                }
+                else{
+                    endIndex = mockArrLen;
+                    Log.v("mocking activity", "isWave is false");
+                }
+
+                // SUUID,Name,Link,[3+5n]Year,[4+5n]Quarter,[5+5n]Course,[6+5n]CourseNumber,[7+5n]ClassSize
+                //
+                // public DefaultCourse(int studentId, String year, String quarter, String course, String courseNum,
+                //                         String classSize, boolean courseAdded) {
+                //        this.studentId = studentId;
+                //        this.year = year;
+                //        this.quarter = quarter;
+                //        this.classSize = classSize;
+                //        this.course = course;
+                //        this.courseNum = courseNum;
+                //        this.courseAdded = courseAdded;
+                //
+
+                for (int i = 3; i < endIndex; i=i+5) {
+                    db.DefaultCourseDao().insert(new DefaultCourse(studentId,
                             mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
                 }
+                Arrays.fill(mockArr, null);
+
+
+//                for (int i = 2; i < mockArr.length; i=i+5) {
+//                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
+//                            mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
+//                }
 
             }
 
