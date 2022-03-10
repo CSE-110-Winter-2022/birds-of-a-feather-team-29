@@ -221,7 +221,9 @@ public class HomePageActivity extends AppCompatActivity {
                     // The above but for the case where the student does not exist in the BoF
                     // student database
                     db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName(),
-                            sizeScore, recentScore));
+                            sizeScore, recentScore, currMatchingStudent.getIsWaving()));
+//                    db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName(),
+//                            sizeScore, recentScore));
                     bsl = db.BoFStudentDao().getAll();
 
                     for (BoFStudent bs : bsl) {

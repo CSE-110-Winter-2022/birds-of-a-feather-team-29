@@ -28,8 +28,8 @@ public interface DefaultStudentDao {
     @Query("DELETE FROM students")
     void delete();
 
-    @Query("UPDATE students SET encountered=:encounter WHERE student_id=:id")
-    void updateEncountered(boolean encounter, int id);
+    @Query("UPDATE students SET is_waving=:isWaving WHERE student_id=:id")
+    void updateIsWaving(boolean isWaving, int id);
 
     @Insert
     void insert(DefaultStudent defaultStudent);

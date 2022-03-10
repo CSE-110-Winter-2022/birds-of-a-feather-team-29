@@ -31,8 +31,8 @@ public class DefaultCourse {
     @ColumnInfo(name = "course_added")
     private boolean courseAdded;
 
-    public DefaultCourse(int studentId, String year, String quarter, String classSize,
-                         String course, String courseNum, boolean courseAdded) {
+    public DefaultCourse(int studentId, String year, String quarter, String course, String courseNum,
+                         String classSize, boolean courseAdded) {
         this.studentId = studentId;
         this.year = year;
         this.quarter = quarter;
