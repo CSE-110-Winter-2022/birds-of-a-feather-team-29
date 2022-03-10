@@ -53,6 +53,10 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
             @Override
             public void onFound(@NonNull Message message) {
                 String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6a93f25f0d9874b0a6789a572c8fb0019129f641
                 AppDatabase db = AppDatabase.getSingletonInstance();
                 List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
 
