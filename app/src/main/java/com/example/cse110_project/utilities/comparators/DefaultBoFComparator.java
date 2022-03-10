@@ -15,7 +15,15 @@ public class DefaultBoFComparator implements BoFComparator {
     public int compare(BoFStudent s1, BoFStudent s2) {
         int s1NumOfSharedCourses = cd.getForStudent(s1.getStudentId()).size();
         int s2NumOfSharedCourses = cd.getForStudent(s2.getStudentId()).size();
-        return Integer.compare(s2NumOfSharedCourses, s1NumOfSharedCourses);
+
+        if ((s2.getIsWaving() && s1.getIsWaving())
+                || (!s2.getIsWaving() && !s1.getIsWaving())) {
+            return Integer.compare(s2NumOfSharedCourses, s1NumOfSharedCourses);
+        } else if (s1.getIsWaving()) {
+            return Integer.compare(s2NumOfSharedCourses, s1NumOfSharedCourses + 100);
+        } else {
+            return Integer.compare(s2NumOfSharedCourses + 100, s1NumOfSharedCourses);
+        }
     }
 
 }

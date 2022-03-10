@@ -13,12 +13,12 @@ public class DefaultStudent {
     @ColumnInfo(name = "name")
     public String name;
 
-    @ColumnInfo(name = "encountered")
-    public boolean encountered;
+    @ColumnInfo(name = "is_waving")
+    public boolean isWaving;
 
     public DefaultStudent(String name) {
         this.name = name;
-        this.encountered = false;
+        this.isWaving = false;
     }
 
     public int getStudentId() {
@@ -33,7 +33,7 @@ public class DefaultStudent {
         this.name = name;
     }
 
-    public boolean getEncountered() { return encountered; }
+    public void setIsWaving() { this.isWaving = true; }
 
-    public void setEncounteredTrue() { encountered = true; }
+    public boolean getIsWaving() { return this.isWaving; }
 }

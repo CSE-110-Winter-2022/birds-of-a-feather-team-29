@@ -18,10 +18,11 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MockNearbyMessagesActivity extends AppCompatActivity {
-    private static final String TAG = "CSE110-Project";
+    private static final String myUuid = "4b295157-ba31-4f9f-8401-5d85d9cf659a";
     private MessageListener messageListener;
 
     @Override
@@ -36,39 +37,67 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Format of entries:
+     * If mocked student is waving to User:
+     * [0]SUUID,[1]Name,[2]Link,[3]Year,[4]Quarter,[5]Course,[6]CourseNumber,[7]ClassSize,
+     * [8]OUUID,[9]Wave
+     * If mocked student is not waving to User:
+     * [0]SUUID,[1]Name,[2]Link,[3]Year,[4]Quarter,[5]Course,[6]CourseNumber,[7]ClassSize
+     * */
     public void onEnterClicked(View view) {
         TextView mockInformation = findViewById(R.id.mock_text_textview);
 
         MessageListener realListener = new MessageListener() {
+
             @Override
             public void onFound(@NonNull Message message) {
-                //Log.d(TAG, "Found message: " + new String(message.getContent()));
                 String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
-
-                //AppDatabase db = AppDatabase.singleton(getApplicationContext());
                 AppDatabase db = AppDatabase.getSingletonInstance();
                 List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
-                for (int i = 0; i< studentList.size(); i++){
-                    if (studentList.get(i).getName().equals(mockArr[0])){
-                        return;
-                    }
+
+                // Search through list to see if student is already in the database
+                // Note: Current duplicate check is same name
+                for (int i = 0; i < studentList.size(); i++){
+                    if (studentList.get(i).getName().equals(mockArr[1])) { return; }
                 }
-                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[0]));
+
+                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1]));
 
                 List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
+                int endIndex;
+                int mockArrLen = mockArr.length;
+                int studentId = defStudentsList.get(defStudentsList.size()-1).getStudentId();
 
+                if (mockArr[mockArrLen - 1].equals("wave")) {
+                    endIndex = mockArrLen - 2;
+                    Log.v("mocking activity", "mockArr[mockArrLen - 2] is " + mockArr[mockArrLen - 2]);
 
-                for (int i = 2; i < mockArr.length; i=i+5) {
-                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
+                    if (mockArr[mockArrLen - 2].compareTo(myUuid) == 0) {
+
+                        DefaultStudent ds = defStudentsList.get(defStudentsList.size() - 1);
+                        db.DefaultStudentDao().updateIsWaving(true, ds.getStudentId());
+
+                        Log.v("mocking activity", "isWave is true");
+                    }
+                    Log.v("mocking activity", "isWave is true but wrong id");
+                }
+                else{
+                    endIndex = mockArrLen;
+                    Log.v("mocking activity", "isWave is false");
+                }
+
+                for (int i = 3; i < endIndex; i=i+5) {
+                    db.DefaultCourseDao().insert(new DefaultCourse(studentId,
                             mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
                 }
+                Arrays.fill(mockArr, null);
 
             }
 
-//            @Override
-//            public void onLost(@NonNull Message message) {
-//                //Log.d(TAG, "Lost sight of message: " + new String(message.getContent()));
-//            }
+            @Override
+            public void onLost(@NonNull Message message) {}
+
         };
 
         this.messageListener = new FakedMessageListener(realListener, 3,
@@ -80,7 +109,7 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(messageListener!=null){
+        if (messageListener != null) {
             Nearby.getMessagesClient(this).subscribe(messageListener);
         }
     }
@@ -88,7 +117,7 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(messageListener!=null){
+        if (messageListener != null) {
             Nearby.getMessagesClient(this).unsubscribe(messageListener);
         }
     }
