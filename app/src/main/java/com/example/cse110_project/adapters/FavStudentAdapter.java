@@ -1,4 +1,4 @@
-package com.example.cse110_project;
+package com.example.cse110_project.adapters;
 
 
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cse110_project.R;
 import com.example.cse110_project.databases.favorite.Favorite;
 
 import java.util.List;

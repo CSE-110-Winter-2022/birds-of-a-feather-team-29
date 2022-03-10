@@ -1,4 +1,4 @@
-package com.example.cse110_project;
+package com.example.cse110_project.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import com.example.cse110_project.R;
 import com.example.cse110_project.databases.bof.BoFCourse;
 import com.example.cse110_project.utilities.Constants;
 

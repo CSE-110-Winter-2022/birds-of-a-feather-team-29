@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.cse110_project.adapters.FavStudentAdapter;
 import com.example.cse110_project.databases.AppDatabase;
 import com.example.cse110_project.databases.favorite.Favorite;
 import com.example.cse110_project.utilities.Constants;
