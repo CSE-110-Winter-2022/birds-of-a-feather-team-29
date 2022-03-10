@@ -20,9 +20,9 @@ public class DefaultBoFComparator implements BoFComparator {
                 || (!s2.getIsWaving() && !s1.getIsWaving())) {
             return Integer.compare(s2NumOfSharedCourses, s1NumOfSharedCourses);
         } else if (s1.getIsWaving()) {
-            return Integer.compare(s2NumOfSharedCourses, Integer.MAX_VALUE);
+            return Integer.compare(s2NumOfSharedCourses, s1NumOfSharedCourses + 100);
         } else {
-            return Integer.compare(Integer.MAX_VALUE, s1NumOfSharedCourses);
+            return Integer.compare(s2NumOfSharedCourses + 100, s1NumOfSharedCourses);
         }
     }
 

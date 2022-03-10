@@ -16,7 +16,7 @@
         android:height="24sp"
         android:lineHeight="16sp"
         android:textAlignment="center"
-        android:textSize="16sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

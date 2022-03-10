@@ -16,9 +16,9 @@ public class PrioritizeSmallClassesComparator implements BoFComparator {
                 || (!s2.getIsWaving() && !s1.getIsWaving())) {
             return Double.compare(s2TotalSizeScore, s1TotalSizeScore);
         } else if (s1.getIsWaving()) {
-            return Double.compare(s2TotalSizeScore, Integer.MAX_VALUE);
+            return Double.compare(s2TotalSizeScore, s1TotalSizeScore + 100);
         } else {
-            return Double.compare(Integer.MAX_VALUE, s1TotalSizeScore);
+            return Double.compare(s2TotalSizeScore + 100, s1TotalSizeScore);
         }
     }
 
