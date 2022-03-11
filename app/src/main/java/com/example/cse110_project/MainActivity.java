@@ -33,9 +33,6 @@ import com.example.cse110_project.databases.session.SessionStudent;
 import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             sessionSPEditor.apply();
         }
 
-        initializeUser();
+        createUser();
     }
 
     public void onStartAppClicked(View view) {
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void initializeUser() {
+    public void createUser() {
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
         if (db.UserDao().getAll().size() > 0) {
             Toast.makeText(MainActivity.this, "Welcome back, " + db.UserDao().getAll().

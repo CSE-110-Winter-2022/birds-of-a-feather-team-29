@@ -21,19 +21,6 @@ public class DeveloperSettingsActivity extends AppCompatActivity {
         PrepopulateDatabase.populateDefaultDatabase(AppDatabase.singleton(getApplicationContext()));
     }
 
-    public void onDeleteAllSessionsClicked(View view) {
-        AppDatabase db = AppDatabase.singleton(this);
-        db.SessionDao().delete();
-        db.SessionStudentDao().delete();
-    }
-
-    public void onResetDataClicked(View view) {
-        AppDatabase db = AppDatabase.singleton(this);
-        db.SessionDao().delete();
-        db.SessionStudentDao().delete();
-        PrepopulateDatabase.populateDefaultDatabase(AppDatabase.singleton(getApplicationContext()));
-    }
-
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
