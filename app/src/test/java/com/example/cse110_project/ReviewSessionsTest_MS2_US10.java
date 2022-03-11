@@ -70,7 +70,6 @@ public class ReviewSessionsTest_MS2_US10 {
             assert(activity.sessionsViewAdapter.getSession(0).getSessionName().equals("EXAMPLE_SESSION"));
             assert(activity.sessionsViewAdapter.getSession(1).getSessionName().equals("EXAMPLE_SESSION (1)"));
             assert(activity.sessionsViewAdapter.getSession(2).getSessionName().equals("EXAMPLE_SESSION (2)"));
-
         });
     }
 }
