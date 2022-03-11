@@ -92,7 +92,6 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
                             mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
                 }
                 Arrays.fill(mockArr, null);
-
             }
 
             @Override

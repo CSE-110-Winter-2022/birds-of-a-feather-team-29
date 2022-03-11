@@ -39,6 +39,9 @@ public class Constants {
     public static final String START = "Start";
     public static final String STOP = "Stop";
     public static final String COMMA = ",";
+    public static final String Bluetooth_Not_Supported = "Device doesn't support Bluetooth!" +
+            " Please check if Bluetooth is on.";
+    public static final int REQUEST_ENABLE_BT = 1;
 
     // Constants for Adapter classes
     public static final String LEFT_PARENTHESIS = " (";
