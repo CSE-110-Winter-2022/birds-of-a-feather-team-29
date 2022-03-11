@@ -2,6 +2,7 @@ package com.example.cse110_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,17 +18,25 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("ProfileActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         setTitle(Constants.APP_VERSION);
+
+        db = AppDatabase.singleton(getApplicationContext());
+
         displayName();
         displayImage();
     }
 
     public void onBackClicked(View view) {
+        Log.d("ProfileActivity::onBackClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, MainPageActivity.class);
         startActivity(intent);
     }

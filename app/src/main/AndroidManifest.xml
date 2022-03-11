@@ -41,10 +41,10 @@
             android:name=".MockNearbyMessagesActivity"
             android:exported="false" />
         <activity
-            android:name=".PreviewPhotoActivity"
+            android:name=".PreviewHeadshotActivity"
             android:exported="false" />
         <activity
-            android:name=".AddLinkActivity"
+            android:name=".EnterHeadshotURLActivity"
             android:exported="false" />
 
         <meta-data

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.cse110_project.databases.AppDatabase;
 import com.example.cse110_project.utilities.Constants;
 
-public class AddLinkActivity extends AppCompatActivity {
+public class EnterHeadshotURLActivity extends AppCompatActivity {
     private AppDatabase db;
 
     @Override
@@ -32,7 +32,7 @@ public class AddLinkActivity extends AppCompatActivity {
         TextView headshotURLView = findViewById(R.id.editTextTextPersonName);
         if (!(checkHeadshotURLEntry(headshotURLView.getText().toString()))) { return; }
 
-        Intent intent = new Intent(this, PreviewPhotoActivity.class);
+        Intent intent = new Intent(this, PreviewHeadshotActivity.class);
         startActivity(intent);
     }
 
@@ -41,7 +41,7 @@ public class AddLinkActivity extends AppCompatActivity {
 
         updateHeadshotURL(Constants.DEFAULT_PIC_LINK);
 
-        Intent intent = new Intent(this, PreviewPhotoActivity.class);
+        Intent intent = new Intent(this, PreviewHeadshotActivity.class);
         startActivity(intent);
     }
 

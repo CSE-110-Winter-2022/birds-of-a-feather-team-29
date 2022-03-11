@@ -1,11 +1,8 @@
 package com.example.cse110_project;
 
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import static org.junit.Assert.assertEquals;
 
-import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,11 +18,11 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class InvalidURLTest {
     @Rule
-    public ActivityScenarioRule<AddLinkActivity> rule = new ActivityScenarioRule<AddLinkActivity>(AddLinkActivity.class);
+    public ActivityScenarioRule<EnterHeadshotURLActivity> rule = new ActivityScenarioRule<EnterHeadshotURLActivity>(EnterHeadshotURLActivity.class);
 
     @Test
     public void test_invalidURL() {
-        ActivityScenario<AddLinkActivity> scenario = rule.getScenario();
+        ActivityScenario<EnterHeadshotURLActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.STARTED);
 
         scenario.onActivity(activity -> {
