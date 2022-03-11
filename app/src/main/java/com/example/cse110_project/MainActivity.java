@@ -28,10 +28,6 @@ import android.widget.Toast;
 import com.example.cse110_project.databases.AppDatabase;
 import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
-import com.example.cse110_project.utilities.PrepopulateDatabase;
-import com.example.cse110_project.utilities.SharedPreferencesDatabase;
-
-import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(Constants.APP_VERSION);
 
-        SharedPreferencesDatabase.clearCurrEnteredCoursesDatabase(getApplicationContext());
-        PrepopulateDatabase.populateDefaultDatabase(AppDatabase.singleton(getApplicationContext()));
         initializeUser();
     }
 
@@ -56,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainPageActivity.class);
             startActivity(intent);
         }
+    }
+
+    public void onDeveloperSettingsClicked(View view) {
+        Intent intent = new Intent(this, DeveloperSettingsActivity.class);
+        startActivity(intent);
     }
 
     public void initializeUser() {

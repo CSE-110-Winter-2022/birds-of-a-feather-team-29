@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.utilities.Constants;
 
 public class MainPageActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +33,16 @@ public class MainPageActivity extends AppCompatActivity {
 
     public void onBoFFunctionClicked(View view) {
         Intent intent = new Intent(this, HomePageActivity.class);
+        startActivity(intent);
+    }
+
+    public void onSavedSessionsClicked(View view) {
+        Intent intent = new Intent(this, SessionsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onDeveloperSettingsClicked(View view) {
+        Intent intent = new Intent(this, DeveloperSettingsActivity.class);
         startActivity(intent);
     }
 }

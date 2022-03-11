@@ -17,23 +17,15 @@ package com.example.cse110_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cse110_project.databases.AppDatabase;
-import com.example.cse110_project.databases.user.User;
-import com.example.cse110_project.databases.user.UserCourse;
 import com.example.cse110_project.utilities.Constants;
-import com.example.cse110_project.utilities.SharedPreferencesDatabase;
 import com.example.cse110_project.utilities.Utilities;
-
-import java.util.HashSet;
 
 public class AddCoursesMainActivity extends AppCompatActivity {
 

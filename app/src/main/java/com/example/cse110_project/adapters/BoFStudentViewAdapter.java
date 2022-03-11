@@ -1,4 +1,4 @@
-package com.example.cse110_project;
+package com.example.cse110_project.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cse110_project.R;
+import com.example.cse110_project.StudentDetailActivity;
 import com.example.cse110_project.databases.bof.BoFCourseDao;
 import com.example.cse110_project.databases.bof.BoFStudent;
 import com.example.cse110_project.databases.favorite.Favorite;
 import com.example.cse110_project.databases.favorite.FavoriteDao;
 import com.example.cse110_project.utilities.comparators.BoFComparator;
-import com.example.cse110_project.utilities.comparators.DefaultBoFComparator;
 import com.example.cse110_project.utilities.Constants;
 
 import java.util.ArrayList;

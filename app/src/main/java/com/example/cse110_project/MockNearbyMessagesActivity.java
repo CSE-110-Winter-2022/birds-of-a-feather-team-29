@@ -22,17 +22,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MockNearbyMessagesActivity extends AppCompatActivity {
-    private static final String myUuid = "4b295157-ba31-4f9f-8401-5d85d9cf659a";
+    private static final String myUUID = "abc";
     private MessageListener messageListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("MockNearbyMessagesActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mock_nearby_messages);
         setTitle(Constants.APP_VERSION);
     }
 
     public void onBackClicked(View view) {
+        Log.d("MockNearbyMessagesActivity::onBackClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, HomePageActivity.class);
         startActivity(intent);
     }
@@ -41,11 +45,14 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
      * Format of entries:
      * If mocked student is waving to User:
      * [0]SUUID,[1]Name,[2]Link,[3]Year,[4]Quarter,[5]Course,[6]CourseNumber,[7]ClassSize,
-     * [8]OUUID,[9]Wave
+     * [8]MYUUID,[9]Wave
+     *
      * If mocked student is not waving to User:
      * [0]SUUID,[1]Name,[2]Link,[3]Year,[4]Quarter,[5]Course,[6]CourseNumber,[7]ClassSize
      * */
     public void onEnterClicked(View view) {
+        Log.d("MockNearbyMessagesActivity::onEnterClicked()", "Non-testable method");
+
         TextView mockInformation = findViewById(R.id.mock_text_textview);
 
         MessageListener realListener = new MessageListener() {
@@ -73,7 +80,7 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
                     endIndex = mockArrLen - 2;
                     Log.v("mocking activity", "mockArr[mockArrLen - 2] is " + mockArr[mockArrLen - 2]);
 
-                    if (mockArr[mockArrLen - 2].compareTo(myUuid) == 0) {
+                    if (mockArr[mockArrLen - 2].compareTo(myUUID) == 0) {
 
                         DefaultStudent ds = defStudentsList.get(defStudentsList.size() - 1);
                         db.DefaultStudentDao().updateIsWaving(true, ds.getStudentId());
@@ -107,7 +114,10 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        Log.d("MockNearbyMessagesActivity::onStart()", "Non-testable method");
+
         super.onStart();
+
         if (messageListener != null) {
             Nearby.getMessagesClient(this).subscribe(messageListener);
         }
@@ -115,7 +125,10 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        Log.d("MockNearbyMessagesActivity::onStop()", "Non-testable method");
+
         super.onStop();
+
         if (messageListener != null) {
             Nearby.getMessagesClient(this).unsubscribe(messageListener);
         }
