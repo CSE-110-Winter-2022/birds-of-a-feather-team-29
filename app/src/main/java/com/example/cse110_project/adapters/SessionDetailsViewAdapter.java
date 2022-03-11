@@ -1,6 +1,5 @@
 package com.example.cse110_project.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ public class SessionDetailsViewAdapter extends RecyclerView.Adapter<SessionDetai
     public SessionDetailsViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.bof_courses_row, parent, false);
+                .inflate(R.layout.session_details_row, parent, false);
 
         return new SessionDetailsViewAdapter.ViewHolder(view);
     }
@@ -53,9 +52,8 @@ public class SessionDetailsViewAdapter extends RecyclerView.Adapter<SessionDetai
 
         public void setSessionDetails(SessionStudent sessionStudent) {
             this.sessionStudent = sessionStudent;
-            System.out.println(sessionStudent.getSessionStudentName());
-            //this.studentNameTextView.setText(this.sessionStudent.getSessionStudentName());
-            //this.numOfSharedCoursesTextView.setText(Integer.toString(this.sessionStudent.getNumOfSharedCourses()));
+            this.studentNameTextView.setText(this.sessionStudent.getSessionStudentName());
+            this.numOfSharedCoursesTextView.setText(Integer.toString(this.sessionStudent.getNumOfSharedCourses()));
         }
     }
 }

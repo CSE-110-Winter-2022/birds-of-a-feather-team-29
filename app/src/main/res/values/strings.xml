@@ -22,6 +22,8 @@
     <string name="developer_settings">DEVELOPER SETTINGS</string>
     <string name="saved_sessions">SAVED SESSIONS</string>
     <string name="students_found_during_session">Students Found During Session</string>
+    <string name="delete_all_sessions">DELETE ALL SESSIONS</string>
+    <string name="reset_data">RESET DATA</string>
 
     <string-array name="academic_years">
         <item>2017</item>
