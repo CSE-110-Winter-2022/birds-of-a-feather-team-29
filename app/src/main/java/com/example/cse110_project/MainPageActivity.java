@@ -40,11 +40,6 @@ public class MainPageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SessionsActivity.class);
         startActivity(intent);
     }
-
-    public void onDeveloperSettingsClicked(View view) {
-        Intent intent = new Intent(this, DeveloperSettingsActivity.class);
-        startActivity(intent);
-    }
 }
 
 

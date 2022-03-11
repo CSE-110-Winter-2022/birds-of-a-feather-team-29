@@ -74,7 +74,7 @@ public class SessionDetailsActivity extends AppCompatActivity {
 
     public void createSessionNameTitle(String sessionName) {
         TextView sessionNameTitle = findViewById(R.id.session_details_title);
-        sessionNameTitle.setText(sessionName);
+        sessionNameTitle.setText(sessionName + " Details");
     }
 
     private void startSessionDetails() {
