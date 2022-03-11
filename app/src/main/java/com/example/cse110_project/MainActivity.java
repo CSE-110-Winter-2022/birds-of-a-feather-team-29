@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,14 +35,51 @@ import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
 
 public class MainActivity extends AppCompatActivity {
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("MainActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(Constants.APP_VERSION);
 
-        // TODO: for user story 9/10
+        db = AppDatabase.singleton(getApplicationContext());
+
+        // FIXME: delete, method will be moved to another class for SRP
+        checkAppClosedUnexpectedly();
+
+        createUser(db);
+    }
+
+    public void onStartAppClicked(View view) {
+        Log.d("MainActivity::onStartAppClicked()", "Non-testable method");
+
+        if (db.UserDao().getAll().get(0).getUserFirstName() == null) {
+            Intent intent = new Intent(this, EnterNameActivity.class);
+            startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(this, MainPageActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void onDeveloperSettingsClicked(View view) {
+        Log.d("MainActivity::onDeveloperSettingsClicked()", "Non-testable method");
+
+        Intent intent = new Intent(this, DeveloperSettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public boolean createUser(AppDatabase db) {
+        if (db.UserDao().getAll().size() > 0) { return false; }
+        db.UserDao().insert(new User(null, null));
+        return true;
+    }
+
+    private void checkAppClosedUnexpectedly() {
         SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
         boolean sessionSavedProperly = sessionSP.getBoolean("sessionSavedProperly", true);
         SharedPreferences.Editor sessionSPEditor = sessionSP.edit();
@@ -52,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             String sessionDefaultName = sessionDefaultNameSP.getString("sessionDefaultName", null);
 
             for (Session s : db.SessionDao().getAll()) {
-                // FIXME: potential runtime error
                 if (s.getSessionName().equals(sessionDefaultName)) {
                     for (BoFStudent bs : db.BoFStudentDao().getAll()) {
                         db.SessionStudentDao().insert(new SessionStudent(sessionDefaultName,
@@ -64,34 +101,5 @@ public class MainActivity extends AppCompatActivity {
             sessionSPEditor.putBoolean("sessionSavedProperly", true);
             sessionSPEditor.apply();
         }
-
-        createUser();
-    }
-
-    public void onStartAppClicked(View view) {
-        AppDatabase db = AppDatabase.getSingletonInstance();
-
-        if (db.UserDao().getAll().get(0).getUserFirstName() == null){
-            Intent intent = new Intent(this, EnterNameActivity.class);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(this, MainPageActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    public void onDeveloperSettingsClicked(View view) {
-        Intent intent = new Intent(this, DeveloperSettingsActivity.class);
-        startActivity(intent);
-    }
-
-    public void createUser() {
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        if (db.UserDao().getAll().size() > 0) {
-            Toast.makeText(MainActivity.this, "Welcome back, " + db.UserDao().getAll().
-                get(0).getUserFirstName(), Toast.LENGTH_LONG).show();
-            return;
-        }
-        db.UserDao().insert(new User(null, null));
     }
 }
