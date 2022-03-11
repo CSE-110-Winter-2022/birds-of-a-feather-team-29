@@ -21,13 +21,20 @@ package com.example.cse110_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.cse110_project.databases.AppDatabase;
+import com.example.cse110_project.databases.bof.BoFStudent;
+import com.example.cse110_project.databases.session.Session;
+import com.example.cse110_project.databases.session.SessionStudent;
 import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +43,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(Constants.APP_VERSION);
+
+        // TODO: for user story 9/10
+        SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
+        boolean sessionSavedProperly = sessionSP.getBoolean("sessionSavedProperly", true);
+        SharedPreferences.Editor sessionSPEditor = sessionSP.edit();
+        SharedPreferences sessionDefaultNameSP = getSharedPreferences("SessionDefaultName", MODE_PRIVATE);
+
+        if (!sessionSavedProperly && (sessionDefaultNameSP.getString("sessionDefaultName", null) != null)) {
+            AppDatabase db = AppDatabase.singleton(this);
+            String sessionDefaultName = sessionDefaultNameSP.getString("sessionDefaultName", null);
+
+            for (Session s : db.SessionDao().getAll()) {
+                // FIXME: potential runtime error
+                if (s.getSessionName().equals(sessionDefaultName)) {
+                    for (BoFStudent bs : db.BoFStudentDao().getAll()) {
+                        db.SessionStudentDao().insert(new SessionStudent(sessionDefaultName,
+                                bs.getName(), db.BoFCourseDao().getForStudent(bs.getStudentId()).size()));
+                    }
+                }
+            }
+
+            sessionSPEditor.putBoolean("sessionSavedProperly", true);
+            sessionSPEditor.apply();
+        }
 
         initializeUser();
     }

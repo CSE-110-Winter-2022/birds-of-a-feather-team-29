@@ -26,14 +26,9 @@ public class Session {
     private String sessionName;
 
     public Session(String sessionName) {
-        this.sessionName = (sessionName == null) ? getCurrentTime() : sessionName;
+        this.sessionName = sessionName;
     }
 
     public String getSessionName() { return this.sessionName; }
-
-    private String getCurrentTime() {
-        DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        return dateTime.format(LocalDateTime.now());
-    }
 
 }

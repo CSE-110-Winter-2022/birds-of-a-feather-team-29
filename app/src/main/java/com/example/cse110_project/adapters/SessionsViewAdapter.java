@@ -45,6 +45,10 @@ public class SessionsViewAdapter extends RecyclerView.Adapter<SessionsViewAdapte
         return this.sessions.size();
     }
 
+    public Session getSession(int position) {
+        return sessions.get(position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView sessionTextView;
         private Session session;
