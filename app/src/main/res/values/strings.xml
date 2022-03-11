@@ -21,6 +21,7 @@
     <string name="populate_default_database">POPULATE DEFAULT DATABASE</string>
     <string name="developer_settings">DEVELOPER SETTINGS</string>
     <string name="saved_sessions">SAVED SESSIONS</string>
+    <string name="students_found_during_session">Students Found During Session</string>
 
     <string-array name="academic_years">
         <item>2017</item>

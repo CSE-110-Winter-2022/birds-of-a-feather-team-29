@@ -37,7 +37,7 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     public void onSavedSessionsClicked(View view) {
-        Intent intent = new Intent(this, SavedSessionsActivity.class);
+        Intent intent = new Intent(this, SessionsActivity.class);
         startActivity(intent);
     }
 }
