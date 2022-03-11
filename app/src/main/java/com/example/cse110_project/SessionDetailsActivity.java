@@ -8,58 +8,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.cse110_project.adapters.SessionDetailsViewAdapter;
-import com.example.cse110_project.adapters.SessionsViewAdapter;
 import com.example.cse110_project.databases.AppDatabase;
-import com.example.cse110_project.databases.bof.BoFStudent;
 import com.example.cse110_project.databases.session.Session;
 import com.example.cse110_project.databases.session.SessionStudent;
 
 import java.util.List;
 
 public class SessionDetailsActivity extends AppCompatActivity {
-    private AppDatabase db;
-    private RecyclerView sessionDetailsRecyclerView;
-    private RecyclerView.LayoutManager sessionDetailsLayoutManager;
-    private SessionDetailsViewAdapter sessionDetailsViewAdapter;
+    protected AppDatabase db;
+    protected RecyclerView sessionDetailsRecyclerView;
+    protected RecyclerView.LayoutManager sessionDetailsLayoutManager;
+    protected SessionDetailsViewAdapter sessionDetailsViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_details);
 
-        displayStudentsFoundInSession();
+        db = AppDatabase.singleton(getApplicationContext());
+        startSessionDetails();
     }
 
     public void onBackClicked(View view) {
         Intent intent = new Intent(this, SessionsActivity.class);
         startActivity(intent);
-    }
-
-    public void initializeSessionNameTitle(String sessionName) {
-        TextView sessionNameTitle = findViewById(R.id.session_details_title);
-        sessionNameTitle.setText(sessionName);
-    }
-
-    public void displayStudentsFoundInSession() {
-        Intent intent = getIntent();
-        String sessionName = intent.getStringExtra("sessionName");
-
-        initializeSessionNameTitle(sessionName);
-
-        db = AppDatabase.singleton(this);
-        List<SessionStudent> sessionStudentList = db.SessionStudentDao().getForSession(sessionName);
-
-        sessionDetailsRecyclerView = findViewById(R.id.session_details_recycler_view);
-        sessionDetailsLayoutManager = new LinearLayoutManager(this);
-        sessionDetailsRecyclerView.setLayoutManager(sessionDetailsLayoutManager);
-        sessionDetailsViewAdapter = new SessionDetailsViewAdapter(sessionStudentList);
-        sessionDetailsRecyclerView.setAdapter(sessionDetailsViewAdapter);
     }
 
     public void onChangeSessionNameClicked(View view) {
@@ -80,7 +57,7 @@ public class SessionDetailsActivity extends AppCompatActivity {
                         // FIXME: fix the stuff behind the pop-up moving
                         for (Session s : db.SessionDao().getAll()) {
                             if (currSessionName.equals(s.getSessionName())) {
-                                initializeSessionNameTitle(sessionName);
+                                createSessionNameTitle(sessionName);
                                 for (SessionStudent ss : db.SessionStudentDao().getForSession(s.getSessionName())) {
                                     db.SessionStudentDao().updateSessionNameOfSessionStudent(sessionName, s.getSessionName());
                                 }
@@ -93,5 +70,34 @@ public class SessionDetailsActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.show();
+    }
+
+    public void createSessionNameTitle(String sessionName) {
+        TextView sessionNameTitle = findViewById(R.id.session_details_title);
+        sessionNameTitle.setText(sessionName);
+    }
+
+    private void startSessionDetails() {
+        String sessionName = getSessionName("sessionName");
+        if (sessionName == null) { return; }
+        createSessionNameTitle(sessionName);
+        displayStudentsFoundInSession(getSessionStudentList(sessionName));
+    }
+
+    private String getSessionName(String sessionNameKey) {
+        Intent intent = getIntent();
+        return intent.getStringExtra(sessionNameKey);
+    }
+
+    private List<SessionStudent> getSessionStudentList(String sessionName) {
+        return db.SessionStudentDao().getForSession(sessionName);
+    }
+
+    public void displayStudentsFoundInSession(List<SessionStudent> sessionStudentList) {
+        sessionDetailsRecyclerView = findViewById(R.id.session_details_recycler_view);
+        sessionDetailsLayoutManager = new LinearLayoutManager(this);
+        sessionDetailsRecyclerView.setLayoutManager(sessionDetailsLayoutManager);
+        sessionDetailsViewAdapter = new SessionDetailsViewAdapter(sessionStudentList);
+        sessionDetailsRecyclerView.setAdapter(sessionDetailsViewAdapter);
     }
 }

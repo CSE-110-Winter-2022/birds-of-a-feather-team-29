@@ -39,6 +39,10 @@ public class SessionDetailsViewAdapter extends RecyclerView.Adapter<SessionDetai
     @Override
     public int getItemCount() { return this.sessionStudentList.size(); }
 
+    public SessionStudent getSessionStudent(int position) {
+        return sessionStudentList.get(position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView studentNameTextView;
         private final TextView numOfSharedCoursesTextView;
