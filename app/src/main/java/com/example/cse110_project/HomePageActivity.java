@@ -228,6 +228,15 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     public void onSearchButtonClicked(View view) {
+        onSearchButtonClicked(view, db);
+    }
+
+    /**
+     * ...
+     *
+     * Note: Overloaded method to account for testing
+     * */
+    public void onSearchButtonClicked(View view, AppDatabase db) {
         Log.d("HomePageActivity::onStartClicked()", "Non-testable method");
 
         TextView topLeftButton = findViewById(R.id.start_button);
@@ -272,6 +281,8 @@ public class HomePageActivity extends AppCompatActivity {
             sessionDefaultNameEditor.apply();
         }
         else if ((currText.equals(Constants.START)) && (db.SessionDao().getAll().size() <= 0)) {
+            System.out.println("TEST");
+
             SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
             SharedPreferences.Editor sessionEditor = sessionSP.edit();
             SharedPreferences sessionDefaultNameSP = getSharedPreferences("SessionDefaultName", MODE_PRIVATE);
@@ -289,6 +300,7 @@ public class HomePageActivity extends AppCompatActivity {
             sessionDefaultNameEditor.apply();
         }
         else {
+            System.out.println("TEST 2");
 
             // sources:
             // https://stackoverflow.com/questions/4134117/edittext-on-a-popup-window
