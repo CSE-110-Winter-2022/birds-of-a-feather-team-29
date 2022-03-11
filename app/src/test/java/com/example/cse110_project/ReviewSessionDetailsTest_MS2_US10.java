@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 
 @RunWith(AndroidJUnit4.class)
-public class ReviewSessionDetailsTest_US9_MS2 {
+public class ReviewSessionDetailsTest_MS2_US10 {
     AppDatabase db;
     SessionDao sd;
     SessionStudentDao ssd;
