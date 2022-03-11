@@ -23,7 +23,6 @@
         android:layout_height="53dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/students_found_during_session"
         android:textAlignment="center"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -36,11 +35,24 @@
         android:id="@+id/session_details_back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:text="@string/back"
+        android:layout_marginBottom="60dp"
         android:onClick="onBackClicked"
+        android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/change_session_name_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_session_name"
+        android:onClick="onChangeSessionNameClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.806"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.912" />
 </androidx.constraintlayout.widget.ConstraintLayout>

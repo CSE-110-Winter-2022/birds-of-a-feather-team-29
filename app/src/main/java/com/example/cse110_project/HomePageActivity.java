@@ -49,6 +49,8 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,36 +66,6 @@ public class HomePageActivity extends AppCompatActivity {
 
     private static final String TAG = "MessageListener";
     private static final String myUuid = "4b295157-ba31-4f9f-8401-5d85d9cf659a";
-
-    /**
-     * Inner class for specifying what happens when a particular sorting option is selected at any
-     * point in time on the home page
-     * */
-    class SortingOptions implements AdapterView.OnItemSelectedListener {
-
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            Log.d("HomePageActivity.SortingOptions::onItemSelected()", "Non-testable method");
-
-            if (db == null) { return; }
-
-            String sortingOption = adapterView.getItemAtPosition(i).toString();
-
-            if (sortingOption.equals("Default")) {
-                displayBirdsOfAFeatherList(db.BoFStudentDao(), new DefaultBoFComparator(db.BoFCourseDao()));
-            } else if (sortingOption.equals("Prioritize Recent")) {
-                displayBirdsOfAFeatherList(db.BoFStudentDao(), new PrioritizeMostRecentComparator());
-            } else {
-                displayBirdsOfAFeatherList(db.BoFStudentDao(), new PrioritizeSmallClassesComparator());
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-            Log.d("HomePageActivity.SortingOptions::onNothingSelected()", "Non-testable method");
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,6 +239,14 @@ public class HomePageActivity extends AppCompatActivity {
         // Source: https://techicaltutorial.blogspot.com/2021/02/android-studio-popup-window-with-input.html
 
         if ((currText.equals(Constants.START)) && (db.SessionDao().getAll().size() > 0)) {
+            SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
+            SharedPreferences.Editor sessionEditor = sessionSP.edit();
+            SharedPreferences sessionDefaultNameSP = getSharedPreferences("SessionDefaultName", MODE_PRIVATE);
+            SharedPreferences.Editor sessionDefaultNameEditor = sessionDefaultNameSP.edit();
+
+            DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            String defaultSessionName = dateTime.format(LocalDateTime.now());
+
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             alertBuilder
                     .setMessage("Would you like to resume a previous session or start" +
@@ -276,31 +256,53 @@ public class HomePageActivity extends AppCompatActivity {
                         // "Clears" the current session to start a new session
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            sessionEditor.putBoolean("sessionSavedProperly", false);
+                            sessionEditor.apply();
                             db.BoFStudentDao().delete();
                             db.BoFCourseDao().delete();
                             onSessionTypeClicked();
                         }
 
-                    })
-                    .setNegativeButton("Resume", new DialogInterface.OnClickListener() {
-
-                        // Functionality indefinitely postponed
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {}
-
                     });
 
             AlertDialog alertDialog = alertBuilder.create();
             alertDialog.show();
-        } else if ((currText.equals(Constants.START)) && (db.SessionDao().getAll().size() <= 0)) {
+
+            db.SessionDao().insert(new Session(defaultSessionName));
+            sessionDefaultNameEditor.putString("sessionDefaultName", defaultSessionName);
+            sessionDefaultNameEditor.apply();
+        }
+        else if ((currText.equals(Constants.START)) && (db.SessionDao().getAll().size() <= 0)) {
+            SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
+            SharedPreferences.Editor sessionEditor = sessionSP.edit();
+            SharedPreferences sessionDefaultNameSP = getSharedPreferences("SessionDefaultName", MODE_PRIVATE);
+            SharedPreferences.Editor sessionDefaultNameEditor = sessionDefaultNameSP.edit();
+
+            DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            String defaultSessionName = dateTime.format(LocalDateTime.now());
+
+            sessionEditor.putBoolean("sessionSavedProperly", false);
+            sessionEditor.apply();
             onSessionTypeClicked();
-        } else {
+
+            db.SessionDao().insert(new Session(defaultSessionName));
+            sessionDefaultNameEditor.putString("sessionDefaultName", defaultSessionName);
+            sessionDefaultNameEditor.apply();
+        }
+        else {
 
             // sources:
             // https://stackoverflow.com/questions/4134117/edittext-on-a-popup-window
             // https://stackoverflow.com/questions/10903754/input-text-dialog-android
             // https://www.baeldung.com/java-replace-character-at-index
 
+            SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
+            SharedPreferences.Editor sessionEditor = sessionSP.edit();
+            SharedPreferences sessionDefaultNameSP = getSharedPreferences("SessionDefaultName", MODE_PRIVATE);
+            String defaultSessionName = sessionDefaultNameSP.getString("sessionDefaultName", null);
+
+            sessionEditor.putBoolean("sessionSavedProperly", true);
+            sessionEditor.apply();
 
             EditText sessionNameEntry = new EditText(this);
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
@@ -339,7 +341,14 @@ public class HomePageActivity extends AppCompatActivity {
                                 }
                             }
 
-                            db.SessionDao().insert(new Session(sessionName));
+                            for (Session s : db.SessionDao().getAll()) {
+                                if (s.getSessionName().equals(defaultSessionName)) {
+                                    db.SessionDao().updateSessionName(sessionName, defaultSessionName);
+                                    break;
+                                }
+                            }
+
+//                            db.SessionDao().insert(new Session(sessionName));
 
                             for (BoFStudent bs: db.BoFStudentDao().getAll()) {
                                 db.SessionStudentDao().insert(new SessionStudent(sessionName,
@@ -519,10 +528,19 @@ public class HomePageActivity extends AppCompatActivity {
     public void checkStateOfSearchButton() {
         Log.d("HomePageActivity::checkStateOfSearchButton()", "Non-testable method");
 
+        SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
+
         db = AppDatabase.singleton(getApplicationContext());
         SharedPreferences searchButtonSP = getSharedPreferences("SearchButton", MODE_PRIVATE);
         this.searchButtonState = searchButtonSP.getBoolean("searchButtonState", false);
         TextView searchButton = findViewById(R.id.start_button);
+
+        // TODO: to stop the search if user closes the app before saving session
+//        if ((db.SessionDao().getAll().size() > 0)
+//                && !(sessionSP.getBoolean("sessionSavedProperly", false))) {
+//            searchButton.setText(Constants.START);
+//            return;
+//        }
 
         if (this.searchButtonState) {
             searchButton.setText(Constants.STOP);
@@ -542,5 +560,35 @@ public class HomePageActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         sortingOptionsDropdown.setAdapter(adapter);
         sortingOptionsDropdown.setOnItemSelectedListener(new SortingOptions());
+    }
+
+    /**
+     * Inner class for specifying what happens when a particular sorting option is selected at any
+     * point in time on the home page
+     * */
+    class SortingOptions implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            Log.d("HomePageActivity.SortingOptions::onItemSelected()", "Non-testable method");
+
+            if (db == null) { return; }
+
+            String sortingOption = adapterView.getItemAtPosition(i).toString();
+
+            if (sortingOption.equals("Default")) {
+                displayBirdsOfAFeatherList(db.BoFStudentDao(), new DefaultBoFComparator(db.BoFCourseDao()));
+            } else if (sortingOption.equals("Prioritize Recent")) {
+                displayBirdsOfAFeatherList(db.BoFStudentDao(), new PrioritizeMostRecentComparator());
+            } else {
+                displayBirdsOfAFeatherList(db.BoFStudentDao(), new PrioritizeSmallClassesComparator());
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            Log.d("HomePageActivity.SortingOptions::onNothingSelected()", "Non-testable method");
+        }
+
     }
 }
