@@ -10,6 +10,10 @@
  *     Link: https://docs.google.com/document/d/19VngfyPVahd7LdmW2fyWTNqWI67Sag_ylnP5Ja2wtBo/edit?usp=sharing
  *     Date: 2/4/22
  *     Source used for...: Reference on how to write a .yml file for automated testing
+ * 3) Title : Identifying App Installations
+ *    Link : https://android-developers.googleblog.com/2011/03/identifying-app-installations.html
+ *    Data: 3/10/22
+ *    Source used for: generating UUID
  * */
 
 package com.example.cse110_project;
