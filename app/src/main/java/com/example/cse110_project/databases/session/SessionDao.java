@@ -16,8 +16,8 @@ public interface SessionDao {
     @Query("SELECT * FROM session where session_name=:sessionName")
     Session get(String sessionName);
 
-    @Query("UPDATE session SET session_name=:sessionName WHERE session_name=:defaultSessionName")
-    void updateSessionName(String sessionName, String defaultSessionName);
+    @Query("UPDATE session SET session_name=:sessionName WHERE session_name=:oldSessionName")
+    void updateSessionName(String sessionName, String oldSessionName);
 
     @Query("DELETE FROM session")
     void delete();

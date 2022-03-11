@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class SessionDetailsActivity extends AppCompatActivity {
         db = AppDatabase.singleton(this);
         TextView currSessionTitle = findViewById(R.id.session_details_title);
         String currSessionName = currSessionTitle.getText().toString();
+        String currSessionName2 = currSessionName.substring(0, currSessionName.length()-8);
         EditText sessionNameEntry = new EditText(this);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder
@@ -54,17 +56,15 @@ public class SessionDetailsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String sessionName = sessionNameEntry.getText().toString();
 
-                        // FIXME: fix the stuff behind the pop-up moving
                         for (Session s : db.SessionDao().getAll()) {
-                            if (currSessionName.equals(s.getSessionName())) {
-                                createSessionNameTitle(sessionName);
-                                for (SessionStudent ss : db.SessionStudentDao().getForSession(s.getSessionName())) {
-                                    db.SessionStudentDao().updateSessionNameOfSessionStudent(sessionName, s.getSessionName());
-                                }
+                            if (currSessionName2.equals(s.getSessionName())) {
                                 db.SessionDao().updateSessionName(sessionName, s.getSessionName());
+                                db.SessionStudentDao().updateSessionNameOfSessionStudent(sessionName, s.getSessionName());
                                 return;
                             }
                         }
+
+//                        createSessionNameTitle(currSessionName2);
                     }
                 });
 
