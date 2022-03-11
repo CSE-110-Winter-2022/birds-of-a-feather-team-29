@@ -26,16 +26,17 @@
         android:textAlignment="center"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/session_details_recycler_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.041" />
 
     <Button
         android:id="@+id/session_details_back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="52dp"
         android:onClick="onBackClicked"
         android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,12 +48,11 @@
         android:id="@+id/change_session_name_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/change_session_name"
+        android:layout_marginBottom="52dp"
         android:onClick="onChangeSessionNameClicked"
+        android:text="@string/change_session_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.806"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.912" />
+        app:layout_constraintHorizontal_bias="0.805"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

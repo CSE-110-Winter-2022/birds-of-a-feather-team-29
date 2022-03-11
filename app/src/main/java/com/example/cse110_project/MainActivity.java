@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         // TODO: for user story 9/10
         SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
         boolean sessionSavedProperly = sessionSP.getBoolean("sessionSavedProperly", true);
+        SharedPreferences.Editor sessionSPEditor = sessionSP.edit();
         SharedPreferences sessionDefaultNameSP = getSharedPreferences("SessionDefaultName", MODE_PRIVATE);
-        SharedPreferences.Editor sessionDefaultNameEditor = sessionDefaultNameSP.edit();
 
         if (!sessionSavedProperly && (sessionDefaultNameSP.getString("sessionDefaultName", null) != null)) {
             AppDatabase db = AppDatabase.singleton(this);
@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+
+            sessionSPEditor.putBoolean("sessionSavedProperly", true);
+            sessionSPEditor.apply();
         }
 
         initializeUser();

@@ -82,7 +82,7 @@ public class SessionDetailsActivity extends AppCompatActivity {
                             if (currSessionName.equals(s.getSessionName())) {
                                 initializeSessionNameTitle(sessionName);
                                 for (SessionStudent ss : db.SessionStudentDao().getForSession(s.getSessionName())) {
-
+                                    db.SessionStudentDao().updateSessionNameOfSessionStudent(sessionName, s.getSessionName());
                                 }
                                 db.SessionDao().updateSessionName(sessionName, s.getSessionName());
                                 return;

@@ -83,6 +83,7 @@ public class HomePageActivity extends AppCompatActivity {
             });
         }
 
+        db = AppDatabase.singleton(getApplicationContext());
 
         initSortingOptionsDropdown();
         checkSelectedSortingOption();
@@ -525,10 +526,18 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method retains the previous state of the search button in the case where the User has
+     * navigated to a different page, e.g. if the User is searching for students and navigates to
+     * another page, then the app should still be searching
+     *
+     * Note: When the User closes the App while searching for students, the App should halt
+     *            the search
+     * */
     public void checkStateOfSearchButton() {
         Log.d("HomePageActivity::checkStateOfSearchButton()", "Non-testable method");
 
-        SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
+        SharedPreferences sessionSavedSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
 
         db = AppDatabase.singleton(getApplicationContext());
         SharedPreferences searchButtonSP = getSharedPreferences("SearchButton", MODE_PRIVATE);
@@ -537,16 +546,28 @@ public class HomePageActivity extends AppCompatActivity {
 
         // TODO: to stop the search if user closes the app before saving session
 //        if ((db.SessionDao().getAll().size() > 0)
-//                && !(sessionSP.getBoolean("sessionSavedProperly", false))) {
+//                && !(sessionSP.getBoolean("sessionSavedProperly", false))
+//                && ) {
 //            searchButton.setText(Constants.START);
 //            return;
 //        }
 
-        if (this.searchButtonState) {
+        if (this.searchButtonState && sessionSavedSP.getBoolean("sessionSavedProperly", false)) {
+            // Deals with the case where the search should automatically stop if the User closes
+            // the App before saving the current session
+            searchButton.setText(Constants.START);
+        }
+        else if (this.searchButtonState) {
+            System.out.println("Inside true");
             searchButton.setText(Constants.STOP);
+
+            // Allows the User to "search" for students even after navigating to another page. E.g.
+            // If we, the developers, choose to mock the arrival of a nearby student, then once
+            // we navigate back to the home page, the App will re-search for potential matching
+            // students
             compareUserCoursesWithStudents(AppDatabase.singleton(getApplicationContext()));
         }
-        else { searchButton.setText(Constants.START); }
+        else { System.out.println("Inside stop"); searchButton.setText(Constants.START); }
 
         displayBirdsOfAFeatherList(db.BoFStudentDao(), new DefaultBoFComparator(db.BoFCourseDao()));
     }
