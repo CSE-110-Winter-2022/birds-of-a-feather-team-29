@@ -35,7 +35,7 @@ import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
 
 public class MainActivity extends AppCompatActivity {
-    AppDatabase db;
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

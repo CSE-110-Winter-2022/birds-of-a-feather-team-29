@@ -36,7 +36,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class EnterNameActivity extends AppCompatActivity implements View.OnClickListener {
-
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -143,5 +142,4 @@ public class EnterNameActivity extends AppCompatActivity implements View.OnClick
             updateUI(null);
         }
     }
-
 }

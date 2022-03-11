@@ -5,59 +5,65 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.cse110_project.databases.AppDatabase;
-import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.utilities.Constants;
 
-
 public class AddLinkActivity extends AppCompatActivity {
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("AddLinkActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_link);
-        setTitle("Birds of a Feather v0.0.1");
+        setTitle(Constants.APP_VERSION);
+
+        db = AppDatabase.singleton(getApplicationContext());
     }
 
     public void onContinueClicked(View view) {
-        SharedPreferences preferences = getSharedPreferences(Constants.USER_INFO, MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        TextView urlView = findViewById(R.id.editTextTextPersonName);
+        Log.d("AddLinkActivity::onContinueClicked()", "Non-testable method");
 
-        editor.putString(Constants.USER_URL_KEY, urlView.getText().toString());
-        editor.apply();
+        TextView headshotURLView = findViewById(R.id.editTextTextPersonName);
+        if (!(checkHeadshotURLEntry(headshotURLView.getText().toString()))) { return; }
 
-        if(!urlView.getText().toString().isEmpty()){
-            Intent intent = new Intent(this, PreviewPhotoActivity.class);
-
-
-            editor.apply();
-
-            AppDatabase db = AppDatabase.singleton(getApplicationContext());
-            db.UserDao().updateHeadshotURL(urlView.toString(), db.UserDao().getAll().get(0).getUserId());
-
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, PreviewPhotoActivity.class);
+        startActivity(intent);
     }
 
     public void onSkipClicked(View view) {
-        String default_pic = Constants.DEFAULT_PIC_LINK;
+        Log.d("AddLinkActivity::onSkipClicked()", "Non-testable method");
+
+        updateHeadshotURL(Constants.DEFAULT_PIC_LINK);
+
+        Intent intent = new Intent(this, PreviewPhotoActivity.class);
+        startActivity(intent);
+    }
+
+    private boolean checkHeadshotURLEntry(String headshotURL) {
+        Log.d("AddLinkActivity::checkHeadshotURLEntry()", "Non-testable method");
+
+        if (headshotURL.isEmpty()) { return false; }
+
+        updateHeadshotURL(headshotURL);
+
+        return true;
+    }
+
+    private void updateHeadshotURL(String headshotURL) {
+        Log.d("AddLinkActivity::updateHeadshotURL()", "Non-testable method");
 
         SharedPreferences preferences = getSharedPreferences(Constants.USER_INFO, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
-        Intent intent = new Intent(this, PreviewPhotoActivity.class);
-
-        editor.putString(Constants.USER_URL_KEY, default_pic);
+        editor.putString(Constants.USER_URL_KEY, headshotURL);
         editor.apply();
-
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        db.UserDao().updateHeadshotURL(Constants.DEFAULT_PIC_LINK, db.UserDao().getAll().get(0).getUserId());
-
-        startActivity(intent);
+        db.UserDao().updateHeadshotURL(headshotURL, db.UserDao().getAll().get(0).getUserId());
     }
 }
 
