@@ -269,12 +269,14 @@
 
 package com.example.cse110_project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -318,7 +320,8 @@ public class HomePageActivity extends AppCompatActivity {
     protected MessageListener mMessageListener;
     protected Message mMessage;
 
-    private static final String TAG = "CSE110-Project";
+    private static final String TAG = "MessageListener";
+    private static final String myUuid = "4b295157-ba31-4f9f-8401-5d85d9cf659a";
 
     /**
      * Inner class for specifying what happens when a particular sorting option is selected at any
@@ -373,45 +376,89 @@ public class HomePageActivity extends AppCompatActivity {
 
         mMessageListener = new MessageListener() {
             @Override
-            public void onFound(final Message message) {
-                Log.d(TAG, "Found message: " + new String(message.getContent()));
-
+            public void onFound(@NonNull final Message message) {
+                Log.d(TAG, "find message: " + new String(message.getContent()));
                 String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
-
                 AppDatabase db = AppDatabase.getSingletonInstance();
                 List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
-                for (int i = 0; i< studentList.size(); i++){
-                    if (studentList.get(i).getName().equals(mockArr[0])){
-                        return;
-                    }
+
+                // Search through list to see if student is already in the database
+                // Note: Current duplicate check is same name
+                for (int i = 0; i < studentList.size(); i++){
+                    if (studentList.get(i).getName().equals(mockArr[1])) { return; }
                 }
-                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[0]));
+
+                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1]));
 
                 List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
+                int endIndex;
+                int mockArrLen = mockArr.length;
+                int studentId = defStudentsList.get(defStudentsList.size()-1).getStudentId();
 
+                if (mockArr[mockArrLen - 1].equals("wave")) {
+                    endIndex = mockArrLen - 2;
+                    Log.v("mocking activity", "mockArr[mockArrLen - 2] is " + mockArr[mockArrLen - 2]);
 
-                for (int i = 2; i < mockArr.length; i=i+5) {
-                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
+                    if (mockArr[mockArrLen - 2].compareTo(myUuid) == 0) {
+
+                        DefaultStudent ds = defStudentsList.get(defStudentsList.size() - 1);
+                        db.DefaultStudentDao().updateIsWaving(true, ds.getStudentId());
+
+                        Log.v("mocking activity", "isWave is true");
+                    }
+                    Log.v("mocking activity", "isWave is true but wrong id");
+                }
+                else{
+                    endIndex = mockArrLen;
+                    Log.v("mocking activity", "isWave is false");
+                }
+
+                for (int i = 3; i < endIndex; i=i+5) {
+                    db.DefaultCourseDao().insert(new DefaultCourse(studentId,
                             mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
                 }
+                Arrays.fill(mockArr, null);
             }
+//                Log.d(TAG, "Found message: " + new String(message.getContent()));
+//
+//                String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
+//
+//                AppDatabase db = AppDatabase.getSingletonInstance();
+//                List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
+//                for (int i = 0; i< studentList.size(); i++){
+//                    if (studentList.get(i).getName().equals(mockArr[0])){
+//                        return;
+//                    }
+//                }
+//                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[0]));
+//
+//                List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
+//
+//
+//                for (int i = 2; i < mockArr.length; i=i+5) {
+//                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
+//                            mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
+//                }
 
             @Override
-            public void onLost(final Message message) {
+            public void onLost(@NonNull final Message message) {
                 Log.d(TAG, "Lost sight of message: " + new String(message.getContent()));
             }
 
         };
 
         if(db.UserDao()!=null && db.UserDao().getAll().size()!=0){
-            StringBuilder information = new StringBuilder(db.UserDao().getAll().get(0).getUserFirstName());
+            String UUID = Installation.id(getApplicationContext());
+            StringBuilder information = new StringBuilder(UUID);
+            information.append(",").append(db.UserDao().getAll().get(0).getUserFirstName());
+            information.append(",").append(db.UserDao().getAll().get(0).getHeadshotURL());
             for(int i = 0; i < db.UserCourseDao().getAll().size(); i++){
                 String year = db.UserCourseDao().getAll().get(i).getYear();
                 String quarter = db.UserCourseDao().getAll().get(i).getQuarter();
                 String subject = db.UserCourseDao().getAll().get(i).getCourse();
                 String number = db.UserCourseDao().getAll().get(i).getCourseNum();
                 String size = db.UserCourseDao().getAll().get(i).getClassSize();
-                String fullCourseName = year + "," + quarter + "," + size + "," + subject + "," + number;
+                String fullCourseName = year + "," + quarter + "," + subject + "," + number + "," + size;
                 information.append(",").append(fullCourseName);
             }
             mMessage = new Message(information.toString().getBytes());
@@ -440,7 +487,7 @@ public class HomePageActivity extends AppCompatActivity {
             Nearby.getMessagesClient(this).unsubscribe(mMessageListener);
         }
         if(mMessage!=null){
-            Log.d(TAG, "unpublishing message: " + mMessage.toString());
+            Log.d(TAG, "unpublishing message: " + new String(mMessage.getContent()));
             Nearby.getMessagesClient(this).unpublish(mMessage);
         }
     }

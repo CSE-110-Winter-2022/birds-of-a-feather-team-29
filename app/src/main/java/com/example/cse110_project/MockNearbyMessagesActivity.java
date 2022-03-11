@@ -53,10 +53,6 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
             @Override
             public void onFound(@NonNull Message message) {
                 String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
-<<<<<<< HEAD
-=======
-
->>>>>>> 6a93f25f0d9874b0a6789a572c8fb0019129f641
                 AppDatabase db = AppDatabase.getSingletonInstance();
                 List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
 
@@ -96,7 +92,6 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
                             mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
                 }
                 Arrays.fill(mockArr, null);
-
             }
 
             @Override
