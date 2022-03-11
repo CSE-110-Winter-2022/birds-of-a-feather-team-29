@@ -1,10 +1,22 @@
 package com.example.cse110_project;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,17 +25,52 @@ import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.databases.user.UserDao;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.Utilities;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
-public class EnterNameActivity extends AppCompatActivity {
+import java.util.LinkedList;
+import java.util.List;
+
+public class EnterNameActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_name);
         setTitle(Constants.APP_VERSION);
+
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
+    }
+
+    private void updateUI(GoogleSignInAccount account) {
+        if(account != null){
+            findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
+            String personGivenName = account.getGivenName();
+            TextView textView = findViewById(R.id.enter_name);
+            textView.setText(personGivenName);
+        }
+        else{
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+        }
     }
 
     public void onConfirmButtonClicked(View view) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
         TextView nameTextView = findViewById(R.id.enter_name);
         String name = nameTextView.getText().toString();
 
@@ -59,4 +106,42 @@ public class EnterNameActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.sign_in_button:
+                OpenSignIn();
+                break;
+        }
+    }
+
+    ActivityResultLauncher<Intent> SignInActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                        handleSignInResult(task);
+                    }
+                }
+            });
+
+    public void OpenSignIn() {
+        Intent intent = mGoogleSignInClient.getSignInIntent();
+        SignInActivityResultLauncher.launch(intent);
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            updateUI(account);
+        } catch (ApiException e) {
+            Log.w("Error", "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
+    }
+
 }
