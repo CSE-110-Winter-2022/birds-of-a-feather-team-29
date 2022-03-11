@@ -34,6 +34,8 @@ android {
 }
 
 dependencies {
+
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
     def room_version = "2.4.1"
     implementation 'com.google.android.gms:play-services-nearby:18.0.2'
 
