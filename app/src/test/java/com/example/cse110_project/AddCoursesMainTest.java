@@ -1,6 +1,5 @@
 package com.example.cse110_project;
 
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -16,11 +15,11 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class AddCoursesMainTest {
     @Rule
-    public ActivityScenarioRule<AddCoursesMainActivity> rule = new ActivityScenarioRule<>(AddCoursesMainActivity.class);
+    public ActivityScenarioRule<EnterCourseInformationActivity> rule = new ActivityScenarioRule<>(EnterCourseInformationActivity.class);
 
     @Test
     public void test_Func_initYearDropdown() {
-        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+        ActivityScenario<EnterCourseInformationActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
             Spinner yearDropdown = activity.findViewById(R.id.year_dropdown_container);
@@ -30,7 +29,7 @@ public class AddCoursesMainTest {
 
     @Test
     public void test_Func_initQuarterDropdown() {
-        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+        ActivityScenario<EnterCourseInformationActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
             Spinner quarterDropdown = activity.findViewById(R.id.quarter_dropdown_container);
@@ -40,7 +39,7 @@ public class AddCoursesMainTest {
 
     @Test
     public void test_Func_initClassSizeDropdown() {
-        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+        ActivityScenario<EnterCourseInformationActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
             Spinner classSizeDropdown = activity.findViewById(R.id.class_size_dropdown_container);
@@ -50,7 +49,7 @@ public class AddCoursesMainTest {
 
     @Test
     public void test_Subject_TextView_Is_Initially_Empty() {
-        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+        ActivityScenario<EnterCourseInformationActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
             TextView subject = activity.findViewById(R.id.enter_subject_textview);
@@ -60,7 +59,7 @@ public class AddCoursesMainTest {
 
     @Test
     public void test_Course_Number_TextView_Is_Initially_Empty() {
-        ActivityScenario<AddCoursesMainActivity> scenario = rule.getScenario();
+        ActivityScenario<EnterCourseInformationActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
             TextView courseEntry = activity.findViewById(R.id.enter_course_textview);

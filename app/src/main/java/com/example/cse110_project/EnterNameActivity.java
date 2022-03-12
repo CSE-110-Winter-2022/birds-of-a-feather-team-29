@@ -6,23 +6,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.cse110_project.databases.AppDatabase;
-import com.example.cse110_project.databases.user.User;
-import com.example.cse110_project.databases.user.UserDao;
 import com.example.cse110_project.utilities.Constants;
 import com.example.cse110_project.utilities.Utilities;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,11 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class EnterNameActivity extends AppCompatActivity implements View.OnClickListener {
-
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -80,7 +68,7 @@ public class EnterNameActivity extends AppCompatActivity implements View.OnClick
             });
         }
         else {
-            Intent intent = new Intent(this, AddLinkActivity.class);
+            Intent intent = new Intent(this, EnterHeadshotURLActivity.class);
             SharedPreferences pref = getSharedPreferences(Constants.USER_INFO, MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
 
@@ -143,5 +131,4 @@ public class EnterNameActivity extends AppCompatActivity implements View.OnClick
             updateUI(null);
         }
     }
-
 }

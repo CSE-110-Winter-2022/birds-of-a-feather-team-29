@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddCoursesMainActivity">
+    tools:context=".EnterCourseInformationActivity">
 
     <TextView
         android:id="@+id/enter_prev_courses_header_textview"

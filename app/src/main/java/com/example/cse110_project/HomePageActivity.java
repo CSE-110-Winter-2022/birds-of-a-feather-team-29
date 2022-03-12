@@ -132,26 +132,6 @@ public class HomePageActivity extends AppCompatActivity {
                 }
                 Arrays.fill(mockArr, null);
             }
-//                Log.d(TAG, "Found message: " + new String(message.getContent()));
-//
-//                String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
-//
-//                AppDatabase db = AppDatabase.getSingletonInstance();
-//                List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
-//                for (int i = 0; i< studentList.size(); i++){
-//                    if (studentList.get(i).getName().equals(mockArr[0])){
-//                        return;
-//                    }
-//                }
-//                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[0]));
-//
-//                List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
-//
-//
-//                for (int i = 2; i < mockArr.length; i=i+5) {
-//                    db.DefaultCourseDao().insert(new DefaultCourse(defStudentsList.get(defStudentsList.size()-1).getStudentId(),
-//                            mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
-//                }
 
             @Override
             public void onLost(@NonNull final Message message) {

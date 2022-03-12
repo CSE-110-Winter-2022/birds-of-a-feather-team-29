@@ -67,7 +67,7 @@ public class AddCoursesActivity extends AppCompatActivity {
     }
 
     public void onBackClicked(View view) {
-        Intent intent = new Intent(this, AddCoursesMainActivity.class);
+        Intent intent = new Intent(this, EnterCourseInformationActivity.class);
         startActivity(intent);
     }
 

@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-public class UserRoomDatabaseTest_MS2_US2 {
+public class UserRoomDatabaseTest {
     UserDao ud;
     UserCourseDao ucd;
     AppDatabase db;
