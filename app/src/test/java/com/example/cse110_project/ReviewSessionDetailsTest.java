@@ -62,9 +62,9 @@ public class ReviewSessionDetailsTest {
     @Test
     public void test_Non_Zero_Students_Found_One_Session() {
         sd.insert(new Session("EXAMPLE_SESSION"));
-        ssd.insert(new SessionStudent("EXAMPLE_SESSION", "Bob", 1));
-        ssd.insert(new SessionStudent("EXAMPLE_SESSION", "Hailey", 2));
-        ssd.insert(new SessionStudent("EXAMPLE_SESSION", "Yoda", 3));
+        ssd.insert(new SessionStudent("EXAMPLE_SESSION", "Bob", 1,"url"));
+        ssd.insert(new SessionStudent("EXAMPLE_SESSION", "Hailey", 2,"url"));
+        ssd.insert(new SessionStudent("EXAMPLE_SESSION", "Yoda", 3,"url"));
 
         ActivityScenario<SessionDetailsActivity> scenario = rule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);

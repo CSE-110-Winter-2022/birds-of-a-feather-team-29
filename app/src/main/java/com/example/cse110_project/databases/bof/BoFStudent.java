@@ -43,7 +43,6 @@ public class BoFStudent {
         this.url = url;
     }
 
-
     public void setStudentId(int newStudentId) {
         this.newStudentId = newStudentId;
     }
@@ -64,7 +63,11 @@ public class BoFStudent {
 
     public boolean getFavorite(){ return isFavorite; }
 
+    public void setSetSizeScore(double sizeScore) { this.sizeScore = sizeScore; }
+
     public double getSizeScore() { return this.sizeScore; }
+
+    public void setRecentScore(int recentScore) { this.recentScore = recentScore; }
 
     public int getRecentScore() { return this.recentScore; }
 
