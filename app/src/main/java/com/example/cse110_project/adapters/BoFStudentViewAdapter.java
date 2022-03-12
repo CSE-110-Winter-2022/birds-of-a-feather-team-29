@@ -2,11 +2,14 @@ package com.example.cse110_project.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cse110_project.R;
 import com.example.cse110_project.StudentDetailActivity;
+import com.example.cse110_project.databases.AppDatabase;
 import com.example.cse110_project.databases.bof.BoFCourseDao;
 import com.example.cse110_project.databases.bof.BoFStudent;
 import com.example.cse110_project.databases.favorite.Favorite;
 import com.example.cse110_project.databases.favorite.FavoriteDao;
 import com.example.cse110_project.utilities.comparators.BoFComparator;
 import com.example.cse110_project.utilities.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +91,13 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
             }
         }
 
+        ImageView headShotView = view.findViewById(R.id.imageView);
+
+        try {
+            Picasso.get().load(oneStudent.getUrl()).resize(150, 150).into(headShotView);
+        } catch (IllegalStateException ignored) {}
+
+
 
         TextView starView = view.findViewById(R.id.star_view);
         if(isFav == true){
@@ -111,6 +123,7 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private final TextView studentNameView;
+        private final ImageView studentUrlView;
         private final TextView numOfSharedCoursesView;
         private BoFStudent student;
         private BoFCourseDao cd;
@@ -118,6 +131,7 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
         ViewHolder(View itemView, BoFCourseDao cd) {
             super(itemView);
             this.studentNameView = itemView.findViewById(R.id.student_row_name);
+            this.studentUrlView = itemView.findViewById(R.id.imageView);
             this.cd = cd;
             this.numOfSharedCoursesView = itemView.findViewById(R.id.num_shared_courses_textview);
             itemView.setOnClickListener(this);
@@ -141,8 +155,14 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
                     oneStudent.setFavorite(true);
                     starView.setTextColor(Color.parseColor("#FFD600"));
 
+                    String url = Constants.DEFAULT_PIC_LINK;
                     // Create a Favorite student object and insert
-                    favStudent = new Favorite(name);
+                    for (BoFStudent bs : AppDatabase.getSingletonInstance().BoFStudentDao().getAll()) {
+                        if (bs.getName().equals(name)) {
+                            url = bs.getUrl();
+                        }
+                    }
+                    favStudent = new Favorite(name, url);
                     favId = favoriteD.insert(favStudent);
 
                     Log.v(TAG, "student: " + name + " isFavorite is now true");

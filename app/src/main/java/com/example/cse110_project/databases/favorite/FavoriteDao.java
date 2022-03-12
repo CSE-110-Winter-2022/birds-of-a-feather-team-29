@@ -20,6 +20,9 @@ public interface FavoriteDao {
     @Query("DELETE FROM favoriteStudents WHERE id = :id")
     void deleteById(long id);
 
+    @Query("UPDATE favoriteStudents SET url=:url WHERE id=:id")
+    void updateUrl(String url, int id);
+
     @Delete
     void delete(Favorite favorite);
 }

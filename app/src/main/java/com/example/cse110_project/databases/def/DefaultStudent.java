@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.cse110_project.utilities.Constants;
+
 @Entity(tableName = "students")
 public class DefaultStudent {
     @PrimaryKey(autoGenerate = true)
@@ -13,12 +15,16 @@ public class DefaultStudent {
     @ColumnInfo(name = "name")
     public String name;
 
+    @ColumnInfo(name = "url")
+    public String url;
+
     @ColumnInfo(name = "is_waving")
     public boolean isWaving;
 
-    public DefaultStudent(String name) {
+    public DefaultStudent(String name, String url) {
         this.name = name;
         this.isWaving = false;
+        this.url = url;
     }
 
     public int getStudentId() {
@@ -36,4 +42,11 @@ public class DefaultStudent {
     public void setIsWaving() { this.isWaving = true; }
 
     public boolean getIsWaving() { return this.isWaving; }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(){ this.url = url; }
+
 }

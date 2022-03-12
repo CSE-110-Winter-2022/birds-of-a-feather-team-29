@@ -29,8 +29,8 @@ public class BoFCourse {
     @ColumnInfo(name = "course_num")
     private String courseNum;
 
-    public BoFCourse(int studentId, String year, String quarter, String classSize,
-                     String course, String courseNum) {
+    public BoFCourse(int studentId, String year, String quarter, String classSize, String course,
+                     String courseNum) {
         this.studentId = studentId;
         this.year = year;
         this.quarter = quarter;

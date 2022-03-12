@@ -11,9 +11,9 @@ public class PrepopulateDatabase {
         clearDefaultDatabase(db);
 
         DefaultStudent[] defaultStudentList = {
-                new DefaultStudent("Steel"),
-                new DefaultStudent("Sandy"),
-                new DefaultStudent("Aiko")
+                new DefaultStudent("Steel", Constants.DEFAULT_PIC_LINK),
+                new DefaultStudent("Sandy", Constants.DEFAULT_PIC_LINK),
+                new DefaultStudent("Aiko", Constants.DEFAULT_PIC_LINK)
         };
 
         for (DefaultStudent dS : defaultStudentList) {

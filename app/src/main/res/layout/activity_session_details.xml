@@ -43,9 +43,10 @@
 
     <TextView
         android:id="@+id/session_details_title"
-        android:layout_width="395dp"
-        android:layout_height="73dp"
+        android:layout_width="388dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="20dp"
+        android:text="Student List"
         android:textAlignment="center"
         android:textSize="28sp"
         android:textStyle="bold"

@@ -30,6 +30,9 @@ public interface BoFStudentDao {
     @Query("UPDATE newStudents SET am_i_waving=:amIWaving WHERE student_id=:id")
     void updateAmIWaving(boolean amIWaving, int id);
 
+    @Query("UPDATE newStudents SET url=:url WHERE student_id=:id")
+    void updateUrl(String url, int id);
+
     @Insert
     void insert(BoFStudent student);
 

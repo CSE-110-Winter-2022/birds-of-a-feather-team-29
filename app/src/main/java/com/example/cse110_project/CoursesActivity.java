@@ -2,6 +2,7 @@ package com.example.cse110_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,6 +17,8 @@ public class CoursesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("CoursesActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
         setTitle(Constants.APP_VERSION);
@@ -23,16 +26,22 @@ public class CoursesActivity extends AppCompatActivity {
     }
 
     public void onBackClicked(View view) {
+        Log.d("CoursesActivity::onBackClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, MainPageActivity.class);
         startActivity(intent);
     }
 
     public void onEnterClicked(View view) {
+        Log.d("CoursesActivity::onEnterClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, EnterCourseInformationActivity.class);
         startActivity(intent);
     }
 
     public void displayCourse() {
+        Log.d("CoursesActivity::displayCourse()", "Non-testable method");
+
         AppDatabase db = AppDatabase.getSingletonInstance();
 
         ArrayList<String> courseList = new ArrayList<>();

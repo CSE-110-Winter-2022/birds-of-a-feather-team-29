@@ -73,6 +73,9 @@ public class EnterCourseInformationActivity extends AppCompatActivity {
 
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
 
+        if (checkDatabaseEmpty()) {
+        }
+
         // Checks if the user has entered data into the database
         if (db.UserCourseDao().getAll().size() < 1) {
             Utilities.showAlert(this, Constants.WARNING, Constants.NO_CLASSES_ENTERED_WARNING);
@@ -86,8 +89,12 @@ public class EnterCourseInformationActivity extends AppCompatActivity {
     }
 
     private boolean checkDatabaseEmpty() {
+        Log.d("EnterCourseInformationActivity::checkDatabaseEmpty()", "Non-testable method");
+
         if (db.UserCourseDao().getAll().size() > 0) { return false; }
+
         Utilities.showAlert(this, Constants.WARNING, Constants.NO_CLASSES_ENTERED_WARNING);
+
         return false;
     }
 
@@ -105,7 +112,7 @@ public class EnterCourseInformationActivity extends AppCompatActivity {
     }
 
     private void createDropdownMenus() {
-        Log.d("EnterCourseInformationActivity::createDropdownMenus()", "Non-testable methods");
+        Log.d("EnterCourseInformationActivity::createDropdownMenus()", "Non-testable method");
 
         Spinner[] containers = { findViewById(R.id.year_dropdown_container),
                 findViewById(R.id.quarter_dropdown_container),

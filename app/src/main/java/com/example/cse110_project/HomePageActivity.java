@@ -101,7 +101,7 @@ public class HomePageActivity extends AppCompatActivity {
                     if (studentList.get(i).getName().equals(mockArr[1])) { return; }
                 }
 
-                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1]));
+                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1], mockArr[2]));
 
                 List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
                 int endIndex;
@@ -237,9 +237,8 @@ public class HomePageActivity extends AppCompatActivity {
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             alertBuilder
-                    .setMessage("Would you like to resume a previous session or start" +
-                            " a new session?")
-                    .setPositiveButton("New", new DialogInterface.OnClickListener() {
+                    .setMessage("Do you want to start a new session?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                         // "Clears" the current session to start a new session
                         @Override
@@ -248,6 +247,16 @@ public class HomePageActivity extends AppCompatActivity {
                             sessionEditor.apply();
                             db.BoFStudentDao().delete();
                             db.BoFCourseDao().delete();
+                            onSessionTypeClicked();
+                        }
+
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            sessionEditor.putBoolean("sessionSavedProperly", false);
+                            sessionEditor.apply();
                             onSessionTypeClicked();
                         }
 
@@ -307,6 +316,11 @@ public class HomePageActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             String sessionName = sessionNameEntry.getText().toString();
+
+                            if (sessionName.isEmpty()) {
+                                return;
+                            }
+
                             String sessionNameInDB;
                             char currentCopy;
                             int newCopy;
@@ -343,7 +357,7 @@ public class HomePageActivity extends AppCompatActivity {
 
                             for (BoFStudent bs: db.BoFStudentDao().getAll()) {
                                 db.SessionStudentDao().insert(new SessionStudent(sessionName,
-                                        bs.getName(), db.BoFCourseDao().getForStudent(bs.getStudentId()).size()));
+                                        bs.getName(), db.BoFCourseDao().getForStudent(bs.getStudentId()).size(), bs.getUrl()));
                             }
 
                             onSessionTypeClicked();
@@ -388,7 +402,9 @@ public class HomePageActivity extends AppCompatActivity {
         String courseNum;
         double sizeScore;
         int recentScore;
+        int studentBoFId;
         boolean next;
+        boolean duplicateCourse;
 
         // Checks which students in the default database have courses that match with the courses
         // the user has entered
@@ -403,6 +419,7 @@ public class HomePageActivity extends AppCompatActivity {
 
             for (DefaultCourse dc : dcl) {
                 next = false;
+                duplicateCourse = false;
 
                 if (dc.getCourseAdded()) { continue; }
                 // Checks the default course database if any match with the course the user has
@@ -413,6 +430,30 @@ public class HomePageActivity extends AppCompatActivity {
 
                     DefaultStudent currMatchingStudent = db.DefaultStudentDao().get(dc.getStudentId());
                     bsl = db.BoFStudentDao().getAll();
+
+                    studentBoFId = Integer.MAX_VALUE;
+
+                    for (BoFStudent bs : db.BoFStudentDao().getAll()) {
+                        if (bs.getName().equals(currMatchingStudent.getName())) {
+                            studentBoFId = bs.getStudentId();
+                        }
+                    }
+
+                    // Check if course already exists in the database for this student
+                    if (studentBoFId != Integer.MAX_VALUE) {
+                        for (BoFCourse c : db.BoFCourseDao().getForStudent(studentBoFId)) {
+                            if ((c.getYear().equals(dc.getYear()))
+                            && (c.getQuarter().equals(dc.getQuarter()))
+                            && (c.getClassSize().equals(dc.getClassSize()))
+                            && (c.getCourse().equals(dc.getCourse()))
+                            && (c.getCourseNum().equals(dc.getCourseNum()))) {
+                                duplicateCourse = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (duplicateCourse) { continue; }
 
                     // Checks if the student with the matching course is already in the BoF student
                     // database
@@ -453,7 +494,8 @@ public class HomePageActivity extends AppCompatActivity {
                     // The above but for the case where the student does not exist in the BoF
                     // student database
                     db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName(),
-                            sizeScore, recentScore, currMatchingStudent.getIsWaving()));
+                            sizeScore, recentScore, currMatchingStudent.getIsWaving(),
+                            currMatchingStudent.getUrl()));
                     bsl = db.BoFStudentDao().getAll();
 
                     for (BoFStudent bs : bsl) {
@@ -533,14 +575,6 @@ public class HomePageActivity extends AppCompatActivity {
         SharedPreferences searchButtonSP = getSharedPreferences("SearchButton", MODE_PRIVATE);
         this.searchButtonState = searchButtonSP.getBoolean("searchButtonState", false);
         TextView searchButton = findViewById(R.id.start_button);
-
-        // TODO: to stop the search if user closes the app before saving session
-//        if ((db.SessionDao().getAll().size() > 0)
-//                && !(sessionSP.getBoolean("sessionSavedProperly", false))
-//                && ) {
-//            searchButton.setText(Constants.START);
-//            return;
-//        }
 
         if (this.searchButtonState && sessionSavedSP.getBoolean("sessionSavedProperly", false)) {
             // Deals with the case where the search should automatically stop if the User closes

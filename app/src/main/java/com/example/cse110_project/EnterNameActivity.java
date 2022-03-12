@@ -29,6 +29,8 @@ public class EnterNameActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("EnterNameActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_name);
         setTitle(Constants.APP_VERSION);
@@ -45,6 +47,8 @@ public class EnterNameActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void updateUI(GoogleSignInAccount account) {
+        Log.d("EnterNameActivity::updateUI()", "Non-testable method");
+
         if(account != null){
             findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
             String personGivenName = account.getGivenName();
@@ -57,6 +61,8 @@ public class EnterNameActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void onConfirmButtonClicked(View view) {
+        Log.d("EnterNameActivity::onConfirmButtonClicked()", "Non-testable method");
+
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         updateUI(account);
         TextView nameTextView = findViewById(R.id.enter_name);
@@ -97,6 +103,8 @@ public class EnterNameActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
+        Log.d("EnterNameActivity::onClick()", "Non-testable method");
+
         switch (view.getId()) {
             case R.id.sign_in_button:
                 OpenSignIn();
@@ -118,11 +126,15 @@ public class EnterNameActivity extends AppCompatActivity implements View.OnClick
             });
 
     public void OpenSignIn() {
+        Log.d("EnterNameActivity::OpenSignIn()", "Non-testable method");
+
         Intent intent = mGoogleSignInClient.getSignInIntent();
         SignInActivityResultLauncher.launch(intent);
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        Log.d("EnterNameActivity::handleSignInResult()", "Non-testable method");
+
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             updateUI(account);

@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkAppClosedUnexpectedly() {
+        Log.d("MainActivity::checkAppClosedUnexpectedly()", "Non-testable method");
         SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
         boolean sessionSavedProperly = sessionSP.getBoolean("sessionSavedProperly", true);
         SharedPreferences.Editor sessionSPEditor = sessionSP.edit();
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 if (s.getSessionName().equals(sessionDefaultName)) {
                     for (BoFStudent bs : db.BoFStudentDao().getAll()) {
                         db.SessionStudentDao().insert(new SessionStudent(sessionDefaultName,
-                                bs.getName(), db.BoFCourseDao().getForStudent(bs.getStudentId()).size()));
+                                bs.getName(), db.BoFCourseDao().getForStudent(bs.getStudentId()).size(), bs.getUrl()));
                     }
                 }
             }
