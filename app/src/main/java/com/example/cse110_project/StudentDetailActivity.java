@@ -2,6 +2,7 @@ package com.example.cse110_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,8 +29,11 @@ public class StudentDetailActivity extends AppCompatActivity {
     public boolean amIWaving;
     public static final String HOLLOW_PIC = "https://lh3.googleusercontent.com/pw/AM-JKLWhrG5_J2DgZIYaBuFCWWIq1hqzqY2MjyJy86MfGLiodrTs88PND5cfBDpU4-G3D60uhaOE7AYDWq_8aBg6tgPxQ-og88xmx6YdQNUczvnS86iDvTWt7F_y2D06gCXJVEt05DsKjRhGSyohFgja6Iad=s612-no";
     public static final String FILLED_PIC = "https://lh3.googleusercontent.com/pw/AM-JKLVaTugZo4OA4sv4F92MqcL89zjEfHq9f1py7dCP0dM4dlEUrMMdudsXOpTHwngD_tu-8I14jR57urJnwXxM2qpimDO-lYTeICxowK11AJO9cqZDAbf-TYntp_T49MUda-AGn2yAjk0UFz0cZzVOWBHj=s612-no";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("StudentDetailActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_detail);
 
@@ -47,7 +51,15 @@ public class StudentDetailActivity extends AppCompatActivity {
         Picasso.get().load(student.getUrl()).resize(150,150).into(headShotView);
     }
 
+    public void onGoBackClicked(View view) {
+        Log.d("StudentDetailActivity::onGoBackClicked()", "Non-testable method");
+
+        finish();
+    }
+
     private void displayWave() {
+        Log.d("StudentDetailActivity::displayWave()", "Non-testable method");
+
         Intent intent = getIntent();
         int studentId = intent.getIntExtra(Constants.BOF_STUDENT_ID, -1);
 
@@ -64,10 +76,6 @@ public class StudentDetailActivity extends AppCompatActivity {
         else {
             Picasso.get().load(HOLLOW_PIC).into(imageView);
         }
-    }
-
-    public void onGoBackClicked(View view) {
-        finish();
     }
 
     public void displaySharedCourses(int testInt) {
@@ -96,10 +104,14 @@ public class StudentDetailActivity extends AppCompatActivity {
      * Returns the number of courses shared with the User for testing purposes
      * */
     public int getNumOfCoursesDisplayed() {
+        Log.d("StudentDetailActivity::getNumOfCoursesDisplayed()", "Non-testable method");
+
         return coursesViewAdapter.getItemCount();
     }
 
     public void onClickWave(View view) {
+        Log.d("StudentDetailActivity::onClickWave()", "Non-testable method");
+
         Intent intent = getIntent();
         int studentId = intent.getIntExtra(Constants.BOF_STUDENT_ID, -1);
         student = db.BoFStudentDao().get(studentId);

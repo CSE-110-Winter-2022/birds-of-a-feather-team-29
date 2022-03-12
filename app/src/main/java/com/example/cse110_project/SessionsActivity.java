@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.cse110_project.adapters.SessionsViewAdapter;
@@ -23,6 +24,8 @@ public class SessionsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("SessionsActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sessions);
 
@@ -31,11 +34,15 @@ public class SessionsActivity extends AppCompatActivity {
     }
 
     public void onBackClicked(View view) {
+        Log.d("SessionsActivity::onBackClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, MainPageActivity.class);
         startActivity(intent);
     }
 
     private List<Session> getSessionsList() {
+        Log.d("SessionsActivity::getSessionsList()", "Non-testable method");
+
         return db.SessionDao().getAll();
     }
 

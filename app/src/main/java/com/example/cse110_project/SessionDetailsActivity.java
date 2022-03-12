@@ -28,6 +28,8 @@ public class SessionDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("SessionDetailsActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_details);
 
@@ -36,11 +38,15 @@ public class SessionDetailsActivity extends AppCompatActivity {
     }
 
     public void onBackClicked(View view) {
+        Log.d("SessionDetailsActivity::onBackClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, SessionsActivity.class);
         startActivity(intent);
     }
 
     public void onChangeSessionNameClicked(View view) {
+        Log.d("SessionDetailsActivity::onChangeSessionNameClicked()", "Non-testable method");
+
         db = AppDatabase.singleton(this);
         TextView currSessionTitle = findViewById(R.id.session_details_title);
         String currSessionName = currSessionTitle.getText().toString();
@@ -71,6 +77,8 @@ public class SessionDetailsActivity extends AppCompatActivity {
     }
 
     private void startSessionDetails() {
+        Log.d("SessionDetailsActivity::startSessionDetails()", "Non-testable method");
+
         String sessionName = getSessionName("sessionName");
         if (sessionName == null) { return; }
         displayStudentsFoundInSession(getSessionStudentList(sessionName));
@@ -82,6 +90,8 @@ public class SessionDetailsActivity extends AppCompatActivity {
     }
 
     private List<SessionStudent> getSessionStudentList(String sessionName) {
+        Log.d("SessionDetailsActivity::getSessionStudentList()", "Non-testable method");
+
         return db.SessionStudentDao().getForSession(sessionName);
     }
 

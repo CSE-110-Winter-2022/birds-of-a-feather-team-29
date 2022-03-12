@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.cse110_project.adapters.FavStudentAdapter;
@@ -23,6 +24,8 @@ public class FavoriteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("FavoriteActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         setTitle(Constants.APP_VERSION);
@@ -38,6 +41,8 @@ public class FavoriteActivity extends AppCompatActivity {
     }
 
     public void onGoBackClicked(View view) {
+        Log.d("FavoriteActivity::onGoBackClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, MainPageActivity.class);
         startActivity(intent);
     }
