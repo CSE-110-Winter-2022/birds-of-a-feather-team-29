@@ -46,7 +46,6 @@
         android:layout_width="388dp"
         android:layout_height="48dp"
         android:layout_marginBottom="20dp"
-        android:text="Student List"
         android:textAlignment="center"
         android:textSize="28sp"
         android:textStyle="bold"

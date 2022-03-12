@@ -34,6 +34,7 @@ public class SessionDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_session_details);
 
         db = AppDatabase.singleton(getApplicationContext());
+        createTitle();
         startSessionDetails();
     }
 
@@ -44,13 +45,18 @@ public class SessionDetailsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void createTitle() {
+        TextView currSessionTitle = findViewById(R.id.session_details_title);
+        currSessionTitle.setText(getSessionName("sessionName"));
+    }
+
     public void onChangeSessionNameClicked(View view) {
         Log.d("SessionDetailsActivity::onChangeSessionNameClicked()", "Non-testable method");
 
         db = AppDatabase.singleton(this);
         TextView currSessionTitle = findViewById(R.id.session_details_title);
         String currSessionName = currSessionTitle.getText().toString();
-        String currSessionName2 = currSessionName.substring(0, currSessionName.length()-8);
+
         EditText sessionNameEntry = new EditText(this);
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder
@@ -63,7 +69,7 @@ public class SessionDetailsActivity extends AppCompatActivity {
                         String sessionName = sessionNameEntry.getText().toString();
 
                         for (Session s : db.SessionDao().getAll()) {
-                            if (currSessionName2.equals(s.getSessionName())) {
+                            if (currSessionName.equals(s.getSessionName())) {
                                 db.SessionDao().updateSessionName(sessionName, s.getSessionName());
                                 db.SessionStudentDao().updateSessionNameOfSessionStudent(sessionName, s.getSessionName());
                                 return;

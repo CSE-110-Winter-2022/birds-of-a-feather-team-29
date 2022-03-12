@@ -270,8 +270,6 @@ public class HomePageActivity extends AppCompatActivity {
             sessionDefaultNameEditor.apply();
         }
         else if ((currText.equals(Constants.START)) && (db.SessionDao().getAll().size() <= 0)) {
-            System.out.println("TEST");
-
             SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
             SharedPreferences.Editor sessionEditor = sessionSP.edit();
             SharedPreferences sessionDefaultNameSP = getSharedPreferences("SessionDefaultName", MODE_PRIVATE);

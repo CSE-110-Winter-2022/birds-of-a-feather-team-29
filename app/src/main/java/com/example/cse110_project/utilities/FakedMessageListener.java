@@ -1,5 +1,7 @@
 package com.example.cse110_project.utilities;
 
+import android.util.Log;
+
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
