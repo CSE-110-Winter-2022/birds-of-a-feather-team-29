@@ -73,13 +73,7 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         setTitle(Constants.APP_VERSION);
 
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        //check if bluetooth is on
-        if (bluetoothAdapter == null || (!bluetoothAdapter.isEnabled())) {
-            runOnUiThread(() -> {
-                Utilities.showAlert(this, Constants.ALERT, Constants.Bluetooth_Not_Supported);
-            });
-        }
+        setupBluetooth();
 
         db = AppDatabase.singleton(getApplicationContext());
 
@@ -91,46 +85,7 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onFound(@NonNull final Message message) {
                 Log.d(TAG, "find message: " + new String(message.getContent()));
-                String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
-                AppDatabase db = AppDatabase.getSingletonInstance();
-                List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
-
-                // Search through list to see if student is already in the database
-                // Note: Current duplicate check is same name
-                for (int i = 0; i < studentList.size(); i++){
-                    if (studentList.get(i).getName().equals(mockArr[1])) { return; }
-                }
-
-                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1], mockArr[2]));
-
-                List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
-                int endIndex;
-                int mockArrLen = mockArr.length;
-                int studentId = defStudentsList.get(defStudentsList.size()-1).getStudentId();
-
-                if (mockArr[mockArrLen - 1].equals("wave")) {
-                    endIndex = mockArrLen - 2;
-                    Log.v("mocking activity", "mockArr[mockArrLen - 2] is " + mockArr[mockArrLen - 2]);
-
-                    if (mockArr[mockArrLen - 2].compareTo(myUuid) == 0) {
-
-                        DefaultStudent ds = defStudentsList.get(defStudentsList.size() - 1);
-                        db.DefaultStudentDao().updateIsWaving(true, ds.getStudentId());
-
-                        Log.v("mocking activity", "isWave is true");
-                    }
-                    Log.v("mocking activity", "isWave is true but wrong id");
-                }
-                else{
-                    endIndex = mockArrLen;
-                    Log.v("mocking activity", "isWave is false");
-                }
-
-                for (int i = 3; i < endIndex; i=i+5) {
-                    db.DefaultCourseDao().insert(new DefaultCourse(studentId,
-                            mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
-                }
-                Arrays.fill(mockArr, null);
+                populateDatabase(message);
             }
 
             @Override
@@ -140,6 +95,11 @@ public class HomePageActivity extends AppCompatActivity {
 
         };
 
+        updateMessage();
+
+    }
+
+    private void updateMessage() {
         if(db.UserDao()!=null && db.UserDao().getAll().size()!=0){
             String UUID = Installation.id(getApplicationContext());
             StringBuilder information = new StringBuilder(UUID);
@@ -156,7 +116,43 @@ public class HomePageActivity extends AppCompatActivity {
             }
             mMessage = new Message(information.toString().getBytes());
         }
+    }
 
+    private void populateDatabase(@NonNull Message message) {
+        String[] mockArr = new String(message.getContent()).split(Constants.COMMA);
+        AppDatabase db = AppDatabase.getSingletonInstance();
+        List<DefaultStudent> studentList = db.DefaultStudentDao().getAll();
+
+        // Search through list to see if student is already in the database
+        // Note: Current duplicate check is same name
+        for (int i = 0; i < studentList.size(); i++){
+            if (studentList.get(i).getName().equals(mockArr[1])) {
+                return;
+            }
+        }
+
+        db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1], mockArr[2]));
+
+        List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
+
+        int mockArrLen = mockArr.length;
+        int studentId = defStudentsList.get(defStudentsList.size()-1).getStudentId();
+
+        for (int i = 3; i < mockArrLen; i=i+5) {
+            db.DefaultCourseDao().insert(new DefaultCourse(studentId,
+                    mockArr[i], mockArr[i+1], mockArr[i+2], mockArr[i+3], mockArr[i+4], false));
+        }
+        Arrays.fill(mockArr, null);
+    }
+
+    private void setupBluetooth() {
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        //check if bluetooth is on
+        if (bluetoothAdapter == null || (!bluetoothAdapter.isEnabled())) {
+            runOnUiThread(() -> {
+                Utilities.showAlert(this, Constants.ALERT, Constants.Bluetooth_Not_Supported);
+            });
+        }
     }
 
     @Override
