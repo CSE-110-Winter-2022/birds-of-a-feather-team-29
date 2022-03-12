@@ -92,7 +92,12 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
         }
 
         ImageView headShotView = view.findViewById(R.id.imageView);
-        Picasso.get().load(oneStudent.getUrl()).resize(150,150).into(headShotView);
+
+        try {
+            Picasso.get().load(oneStudent.getUrl()).resize(150, 150).into(headShotView);
+        } catch (IllegalStateException ignored) {}
+
+
 
         TextView starView = view.findViewById(R.id.star_view);
         if(isFav == true){

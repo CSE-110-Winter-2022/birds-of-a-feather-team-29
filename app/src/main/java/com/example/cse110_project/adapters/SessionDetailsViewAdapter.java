@@ -40,7 +40,10 @@ public class SessionDetailsViewAdapter extends RecyclerView.Adapter<SessionDetai
         SessionStudent oneStudent = sessionStudentList.get(position);
         holder.setSessionDetails(oneStudent);
         ImageView headShotView = view.findViewById(R.id.imageView2);
-        Picasso.get().load(oneStudent.getUrl()).resize(150,150).into(headShotView);
+
+        try {
+            Picasso.get().load(oneStudent.getUrl()).resize(150,150).into(headShotView);
+        } catch (IllegalStateException ignored) {}
     }
 
     @Override

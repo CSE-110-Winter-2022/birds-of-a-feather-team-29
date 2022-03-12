@@ -48,7 +48,10 @@ public class StudentDetailActivity extends AppCompatActivity {
 
         student = db.BoFStudentDao().get(studentId);
         ImageView headShotView = findViewById(R.id.head_shot_image_view);
-        Picasso.get().load(student.getUrl()).resize(150,150).into(headShotView);
+        try {
+            Picasso.get().load(student.getUrl()).resize(150,150).into(headShotView);
+        } catch (IllegalStateException ignored) {}
+
     }
 
     public void onGoBackClicked(View view) {
@@ -60,10 +63,11 @@ public class StudentDetailActivity extends AppCompatActivity {
     private void displayWave() {
         Log.d("StudentDetailActivity::displayWave()", "Non-testable method");
 
-        Intent intent = getIntent();
-        int studentId = intent.getIntExtra(Constants.BOF_STUDENT_ID, -1);
-
-        student = db.BoFStudentDao().get(studentId);
+        try {
+            Intent intent = getIntent();
+            int studentId = intent.getIntExtra(Constants.BOF_STUDENT_ID, -1);
+            student = db.BoFStudentDao().get(studentId);
+        } catch (IllegalStateException ignored) {}
 
         if (student == null) { return; }
 
