@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -25,30 +26,32 @@ import android.widget.TextView;
 
 import com.example.cse110_project.databases.AppDatabase;
 import com.example.cse110_project.utilities.Constants;
+import com.example.cse110_project.utilities.SpinnerCreation;
 import com.example.cse110_project.utilities.Utilities;
 
-public class AddCoursesMainActivity extends AppCompatActivity {
+public class EnterCourseInformationActivity extends AppCompatActivity {
+    AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("EnterCourseInformationActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_courses);
         setTitle(Constants.APP_VERSION);
 
-        initYearDropdown();
-        initQuarterDropdown();
-        initClassSizeDropdown();
+        db = AppDatabase.singleton(getApplicationContext());
+
+        createDropdownMenus();
     }
 
     public void onEnterClicked(View view) {
+        Log.d("EnterCourseInformationActivity::onEnterClicked()", "Non-testable method");
+
         TextView subject = findViewById(R.id.enter_subject_textview);
         TextView courseNumber = findViewById(R.id.enter_course_textview);
 
-        // Checks if the user has not entered a course and corresponding course number
-        if ((subject.getText().toString().equals("")) || (courseNumber.getText().toString().equals(""))) {
-            Utilities.showAlert(this, Constants.WARNING, Constants.NO_SUB_OR_COURSE_NUMBER_WARNING);
-            return;
-        }
+        if (checkMissingEntry(subject, courseNumber)) { return; }
 
         Spinner year = findViewById(R.id.year_dropdown_container);
         Spinner quarter = findViewById(R.id.quarter_dropdown_container);
@@ -66,6 +69,8 @@ public class AddCoursesMainActivity extends AppCompatActivity {
     }
 
     public boolean onDoneClicked(View view) {
+        Log.d("EnterCourseInformationActivity::onDoneClicked()", "Non-testable methods");
+
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
 
         // Checks if the user has entered data into the database
@@ -80,27 +85,35 @@ public class AddCoursesMainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void initYearDropdown() {
-        Spinner yearDropdown = findViewById(R.id.year_dropdown_container);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.academic_years, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        yearDropdown.setAdapter(adapter);
+    private boolean checkDatabaseEmpty() {
+        if (db.UserCourseDao().getAll().size() > 0) { return false; }
+        Utilities.showAlert(this, Constants.WARNING, Constants.NO_CLASSES_ENTERED_WARNING);
+        return false;
     }
 
-    public void initQuarterDropdown() {
-        Spinner quarterDropdown = findViewById(R.id.quarter_dropdown_container);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.academic_quarters, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        quarterDropdown.setAdapter(adapter);
+    private boolean checkMissingEntry(TextView subject, TextView courseNumber) {
+        Log.d("EnterCourseInformationActivity::checkMissingEntry()", "Non-testable method");
+
+        if (!(subject.getText().toString().equals(""))
+                && !(courseNumber.getText().toString().equals(""))) {
+            return false;
+        }
+
+        Utilities.showAlert(this, Constants.WARNING, Constants.NO_SUB_OR_COURSE_NUMBER_WARNING);
+
+        return true;
     }
 
-    public void initClassSizeDropdown() {
-        Spinner classSizeDropdown = findViewById(R.id.class_size_dropdown_container);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.class_size, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        classSizeDropdown.setAdapter(adapter);
+    private void createDropdownMenus() {
+        Log.d("EnterCourseInformationActivity::createDropdownMenus()", "Non-testable methods");
+
+        Spinner[] containers = { findViewById(R.id.year_dropdown_container),
+                findViewById(R.id.quarter_dropdown_container),
+                findViewById(R.id.class_size_dropdown_container) };
+        int[] arrays = { R.array.academic_years, R.array.academic_quarters, R.array.class_size };
+
+        for (int i = 0; i < containers.length; i++) {
+            SpinnerCreation.createSpinner(this, containers[i], arrays[i]);
+        }
     }
 }

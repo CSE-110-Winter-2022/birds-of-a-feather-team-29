@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class PrioritizationAlgorithmsTest_MS2_US6 {
+public class PrioritizationAlgorithmsTest {
 
     @Test
     public void test_Func_calcClassSizeScore_One_Class() {

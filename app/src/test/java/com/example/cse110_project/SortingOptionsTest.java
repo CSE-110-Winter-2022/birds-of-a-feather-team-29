@@ -25,7 +25,7 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 
 @RunWith(AndroidJUnit4.class)
-public class SortingOptionsTest_MS2_US6 {
+public class SortingOptionsTest {
     UserCourseDao ucd;
     AppDatabase db;
 

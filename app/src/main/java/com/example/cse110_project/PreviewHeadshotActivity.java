@@ -34,7 +34,7 @@ public class PreviewHeadshotActivity extends AppCompatActivity {
     public void onConfirmClicked(View view) {
         Log.d("PreviewHeadshotActivity::onConfirmClicked()", "Non-testable method");
 
-        Intent intent = new Intent(this, AddCoursesMainActivity.class);
+        Intent intent = new Intent(this, EnterCourseInformationActivity.class);
         startActivity(intent);
     }
 

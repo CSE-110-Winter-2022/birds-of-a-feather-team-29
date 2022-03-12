@@ -17,7 +17,7 @@ public class EnterHeadshotURLActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("AddLinkActivity::onCreate()", "Non-testable method");
+        Log.d("EnterHeadshotURLActivity::onCreate()", "Non-testable method");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_link);
@@ -27,7 +27,7 @@ public class EnterHeadshotURLActivity extends AppCompatActivity {
     }
 
     public void onContinueClicked(View view) {
-        Log.d("AddLinkActivity::onContinueClicked()", "Non-testable method");
+        Log.d("EnterHeadshotURLActivity::onContinueClicked()", "Non-testable method");
 
         TextView headshotURLView = findViewById(R.id.editTextTextPersonName);
         if (!(checkHeadshotURLEntry(headshotURLView.getText().toString()))) { return; }
@@ -37,7 +37,7 @@ public class EnterHeadshotURLActivity extends AppCompatActivity {
     }
 
     public void onSkipClicked(View view) {
-        Log.d("AddLinkActivity::onSkipClicked()", "Non-testable method");
+        Log.d("EnterHeadshotURLActivity::onSkipClicked()", "Non-testable method");
 
         updateHeadshotURL(Constants.DEFAULT_PIC_LINK);
 
@@ -46,7 +46,7 @@ public class EnterHeadshotURLActivity extends AppCompatActivity {
     }
 
     private boolean checkHeadshotURLEntry(String headshotURL) {
-        Log.d("AddLinkActivity::checkHeadshotURLEntry()", "Non-testable method");
+        Log.d("EnterHeadshotURLActivity::checkHeadshotURLEntry()", "Non-testable method");
 
         if (headshotURL.isEmpty()) { return false; }
 
@@ -56,7 +56,7 @@ public class EnterHeadshotURLActivity extends AppCompatActivity {
     }
 
     private void updateHeadshotURL(String headshotURL) {
-        Log.d("AddLinkActivity::updateHeadshotURL()", "Non-testable method");
+        Log.d("EnterHeadshotURLActivity::updateHeadshotURL()", "Non-testable method");
 
         SharedPreferences preferences = getSharedPreferences(Constants.USER_INFO, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();

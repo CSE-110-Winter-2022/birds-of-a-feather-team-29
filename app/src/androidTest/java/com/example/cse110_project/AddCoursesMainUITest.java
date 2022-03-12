@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
 public class AddCoursesMainUITest {
 
     @Rule
-    public ActivityTestRule<AddCoursesMainActivity> mActivityTestRule = new ActivityTestRule<>(AddCoursesMainActivity.class);
+    public ActivityTestRule<EnterCourseInformationActivity> mActivityTestRule = new ActivityTestRule<>(EnterCourseInformationActivity.class);
 
     @Test
     public void test_warning_displayed_with_zero_entries() {

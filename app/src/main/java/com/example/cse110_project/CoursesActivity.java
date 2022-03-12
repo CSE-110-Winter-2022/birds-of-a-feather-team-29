@@ -3,7 +3,6 @@ package com.example.cse110_project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +28,7 @@ public class CoursesActivity extends AppCompatActivity {
     }
 
     public void onEnterClicked(View view) {
-        Intent intent = new Intent(this, AddCoursesMainActivity.class);
+        Intent intent = new Intent(this, EnterCourseInformationActivity.class);
         startActivity(intent);
     }
 
