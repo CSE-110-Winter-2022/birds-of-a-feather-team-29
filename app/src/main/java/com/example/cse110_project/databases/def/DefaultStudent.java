@@ -21,12 +21,6 @@ public class DefaultStudent {
     @ColumnInfo(name = "is_waving")
     public boolean isWaving;
 
-    public DefaultStudent(String name) {
-        this.name = name;
-        this.isWaving = false;
-        this.url = Constants.DEFAULT_PIC_LINK;
-    }
-
     public DefaultStudent(String name, String url) {
         this.name = name;
         this.isWaving = false;

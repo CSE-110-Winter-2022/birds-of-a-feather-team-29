@@ -101,7 +101,7 @@ public class HomePageActivity extends AppCompatActivity {
                     if (studentList.get(i).getName().equals(mockArr[1])) { return; }
                 }
 
-                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1]));
+                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1], mockArr[2]));
 
                 List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
                 int endIndex;
@@ -357,7 +357,7 @@ public class HomePageActivity extends AppCompatActivity {
 
                             for (BoFStudent bs: db.BoFStudentDao().getAll()) {
                                 db.SessionStudentDao().insert(new SessionStudent(sessionName,
-                                        bs.getName(), db.BoFCourseDao().getForStudent(bs.getStudentId()).size()));
+                                        bs.getName(), db.BoFCourseDao().getForStudent(bs.getStudentId()).size(), bs.getUrl()));
                             }
 
                             onSessionTypeClicked();
@@ -494,7 +494,8 @@ public class HomePageActivity extends AppCompatActivity {
                     // The above but for the case where the student does not exist in the BoF
                     // student database
                     db.BoFStudentDao().insert(new BoFStudent(currMatchingStudent.getName(),
-                            sizeScore, recentScore, currMatchingStudent.getIsWaving()));
+                            sizeScore, recentScore, currMatchingStudent.getIsWaving(),
+                            currMatchingStudent.getUrl()));
                     bsl = db.BoFStudentDao().getAll();
 
                     for (BoFStudent bs : bsl) {

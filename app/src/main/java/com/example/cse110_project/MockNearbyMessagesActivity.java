@@ -69,7 +69,7 @@ public class MockNearbyMessagesActivity extends AppCompatActivity {
                     if (studentList.get(i).getName().equals(mockArr[1])) { return; }
                 }
 
-                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1]));
+                db.DefaultStudentDao().insert(new DefaultStudent(mockArr[1], mockArr[2]));
 
                 List<DefaultStudent> defStudentsList = db.DefaultStudentDao().getAll();
                 int endIndex;

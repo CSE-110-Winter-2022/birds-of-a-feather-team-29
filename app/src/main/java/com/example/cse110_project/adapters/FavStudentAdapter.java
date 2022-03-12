@@ -4,6 +4,7 @@ package com.example.cse110_project.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cse110_project.R;
 import com.example.cse110_project.databases.favorite.Favorite;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class FavStudentAdapter extends RecyclerView.Adapter<FavStudentAdapter.ViewHolder>{
 
     private final List<Favorite> students;
+    private View view;
 
     public FavStudentAdapter(List<Favorite> students) {
         super();
@@ -29,13 +32,17 @@ public class FavStudentAdapter extends RecyclerView.Adapter<FavStudentAdapter.Vi
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.fav_student_row, parent, false);
+        this.view = view;
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setStudent(students.get(position));
+        Favorite oneStudent = students.get(position);
+        holder.setStudent(oneStudent);
 
+        ImageView headShotView = view.findViewById(R.id.imageView);
+        Picasso.get().load(oneStudent.getUrl()).resize(150,150).into(headShotView);
     }
 
     @Override

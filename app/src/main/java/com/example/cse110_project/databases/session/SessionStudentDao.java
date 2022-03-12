@@ -15,6 +15,9 @@ public interface SessionStudentDao {
     @Query("UPDATE sessionStudent SET session_name=:newSessionName WHERE session_name=:oldSessionName")
     void updateSessionNameOfSessionStudent(String newSessionName, String oldSessionName);
 
+    @Query("UPDATE sessionStudent SET url=:url WHERE session_student_id=:id")
+    void updateUrl(String url, int id);
+
     @Query("DELETE FROM sessionStudent")
     void delete();
 

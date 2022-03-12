@@ -3,6 +3,7 @@ package com.example.cse110_project.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,11 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cse110_project.R;
 import com.example.cse110_project.databases.session.SessionStudent;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class SessionDetailsViewAdapter extends RecyclerView.Adapter<SessionDetailsViewAdapter.ViewHolder> {
     private final List<SessionStudent> sessionStudentList;
+    private View view;
+
 
     public SessionDetailsViewAdapter(List<SessionStudent> sessionStudentList) {
         super();
@@ -27,13 +31,16 @@ public class SessionDetailsViewAdapter extends RecyclerView.Adapter<SessionDetai
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.session_details_row, parent, false);
-
+        this.view = view;
         return new SessionDetailsViewAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SessionDetailsViewAdapter.ViewHolder holder, int position) {
-        holder.setSessionDetails(sessionStudentList.get(position));
+        SessionStudent oneStudent = sessionStudentList.get(position);
+        holder.setSessionDetails(oneStudent);
+        ImageView headShotView = view.findViewById(R.id.imageView2);
+        Picasso.get().load(oneStudent.getUrl()).resize(150,150).into(headShotView);
     }
 
     @Override

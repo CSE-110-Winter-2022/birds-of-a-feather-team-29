@@ -34,16 +34,6 @@ public class BoFStudent {
     @ColumnInfo(name = "am_i_waving")
     private boolean amIWaving;
 
-    public BoFStudent(String name, double sizeScore, int recentScore, boolean isWaving) {
-        this.name = name;
-        this.sizeScore = sizeScore;
-        this.recentScore = recentScore;
-        this.isWaving = isWaving;
-        this.amIWaving = false;
-        this.url = Constants.DEFAULT_PIC_LINK;
-
-    }
-
     public BoFStudent(String name, double sizeScore, int recentScore, boolean isWaving, String url) {
         this.name = name;
         this.sizeScore = sizeScore;

@@ -35,6 +35,16 @@ public class StudentDetailActivity extends AppCompatActivity {
 
         displaySharedCourses(0);
         displayWave();
+        displayImage();
+    }
+
+    private void displayImage() {
+        Intent intent = getIntent();
+        int studentId = intent.getIntExtra(Constants.BOF_STUDENT_ID, -1);
+
+        student = db.BoFStudentDao().get(studentId);
+        ImageView headShotView = findViewById(R.id.head_shot_image_view);
+        Picasso.get().load(student.getUrl()).resize(150,150).into(headShotView);
     }
 
     private void displayWave() {

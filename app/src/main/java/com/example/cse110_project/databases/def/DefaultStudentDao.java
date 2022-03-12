@@ -31,6 +31,9 @@ public interface DefaultStudentDao {
     @Query("UPDATE students SET is_waving=:isWaving WHERE student_id=:id")
     void updateIsWaving(boolean isWaving, int id);
 
+    @Query("UPDATE students SET url=:url WHERE student_id=:id")
+    void updateUrl(String url, int id);
+
     @Insert
     void insert(DefaultStudent defaultStudent);
 

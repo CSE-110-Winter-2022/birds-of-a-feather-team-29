@@ -11,6 +11,9 @@ public class SessionStudent {
     @ColumnInfo(name = "session_student_id")
     private int sessionStudentId;
 
+    @ColumnInfo(name = "url")
+    public String url;
+
     @ColumnInfo(name = "session_name")
     private String sessionName;
 
@@ -20,10 +23,11 @@ public class SessionStudent {
     @ColumnInfo(name = "num_of_shared_courses")
     private int numOfSharedCourses;
 
-    public SessionStudent(String sessionName, String sessionStudentName, int numOfSharedCourses) {
+    public SessionStudent(String sessionName, String sessionStudentName, int numOfSharedCourses, String url) {
         this.sessionName = sessionName;
         this.sessionStudentName = sessionStudentName;
         this.numOfSharedCourses = numOfSharedCourses;
+        this.url = url;
     }
 
     public void setSessionStudentId(int sessionStudentId) { this.sessionStudentId = sessionStudentId; }
@@ -35,4 +39,8 @@ public class SessionStudent {
     public String getSessionStudentName() { return this.sessionStudentName; }
 
     public int getNumOfSharedCourses() { return this.numOfSharedCourses; }
+
+    public String getUrl() {
+        return url;
+    }
 }
