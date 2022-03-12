@@ -50,15 +50,4 @@ public class MainActivityTest {
             assert(activity.createUser(db));
         });
     }
-
-    @Test
-    public void test_Func_createUser_User_Created() {
-        ud.insert(new User("Bob", "url.link"));
-        ActivityScenario<MainActivity> scenario = rule.getScenario();
-        scenario.moveToState(Lifecycle.State.CREATED);
-        scenario.onActivity(activity -> {
-            assert(!activity.createUser(db));
-            assert(db.UserDao().getAll().size() > 0);
-        });
-    }
 }
