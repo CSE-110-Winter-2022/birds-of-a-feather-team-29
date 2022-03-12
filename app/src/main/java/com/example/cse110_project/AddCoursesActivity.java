@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ public class AddCoursesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("AddCoursesActivity::onCreate()", "Non-testable method");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_courses);
         setTitle(Constants.APP_VERSION);
@@ -47,6 +50,8 @@ public class AddCoursesActivity extends AppCompatActivity {
     }
 
     public void onEnterClicked(View view) {
+        Log.d("AddCoursesActivity::onEnterClicked()", "Non-testable method");
+
         TextView enteredCourseNumber = findViewById(R.id.course_number_textview);
 
         // Checks if 1) user has entered > 6 courses, 2) no course was entered, and 3) course has
@@ -67,6 +72,8 @@ public class AddCoursesActivity extends AppCompatActivity {
     }
 
     public void onBackClicked(View view) {
+        Log.d("AddCoursesActivity::onBackClicked()", "Non-testable method");
+
         Intent intent = new Intent(this, EnterCourseInformationActivity.class);
         startActivity(intent);
     }
@@ -75,6 +82,8 @@ public class AddCoursesActivity extends AppCompatActivity {
      * Displays the course the user entered this page with
      * */
     public void displayInitPrevCourse() {
+        Log.d("AddCoursesActivity::displayInitPrevCourse()", "Non-testable method");
+
         TextView firstCourse = findViewById(R.id.prev_course_one_textview);
         Bundle extras = getIntent().getExtras();
 
@@ -86,6 +95,8 @@ public class AddCoursesActivity extends AppCompatActivity {
     }
 
     public void displayEnteredPrevCourse(int courseIndex) {
+        Log.d("AddCoursesActivity::displayEnteredPrevCourse()", "Non-testable method");
+
         TextView[] courseLayouts = {findViewById(R.id.prev_course_two_textview),
                 findViewById(R.id.prev_course_three_textview),
                 findViewById(R.id.prev_course_four_textview),
@@ -102,10 +113,14 @@ public class AddCoursesActivity extends AppCompatActivity {
     }
 
     public void addToList(String courseNumber) {
+        Log.d("AddCoursesActivity::addToList()", "Non-testable method");
+
         enteredCourses.add(courseNumber);
     }
 
     public void addToDatabase(String courseNum) {
+        Log.d("AddCoursesActivity::addToDatabase()", "Non-testable method");
+
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
         List<UserCourse> ucl = db.UserCourseDao().getAll();
 

@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkAppClosedUnexpectedly() {
+        Log.d("MainActivity::checkAppClosedUnexpectedly()", "Non-testable method");
         SharedPreferences sessionSP = getSharedPreferences("WasSessionSavedProperly", MODE_PRIVATE);
         boolean sessionSavedProperly = sessionSP.getBoolean("sessionSavedProperly", true);
         SharedPreferences.Editor sessionSPEditor = sessionSP.edit();
