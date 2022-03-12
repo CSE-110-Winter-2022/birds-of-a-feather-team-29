@@ -575,14 +575,6 @@ public class HomePageActivity extends AppCompatActivity {
         this.searchButtonState = searchButtonSP.getBoolean("searchButtonState", false);
         TextView searchButton = findViewById(R.id.start_button);
 
-        // TODO: to stop the search if user closes the app before saving session
-//        if ((db.SessionDao().getAll().size() > 0)
-//                && !(sessionSP.getBoolean("sessionSavedProperly", false))
-//                && ) {
-//            searchButton.setText(Constants.START);
-//            return;
-//        }
-
         if (this.searchButtonState && sessionSavedSP.getBoolean("sessionSavedProperly", false)) {
             // Deals with the case where the search should automatically stop if the User closes
             // the App before saving the current session

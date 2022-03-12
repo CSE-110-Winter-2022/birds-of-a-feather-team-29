@@ -2,11 +2,13 @@ package com.example.cse110_project.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.example.cse110_project.databases.favorite.Favorite;
 import com.example.cse110_project.databases.favorite.FavoriteDao;
 import com.example.cse110_project.utilities.comparators.BoFComparator;
 import com.example.cse110_project.utilities.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +89,8 @@ public class BoFStudentViewAdapter extends RecyclerView.Adapter<BoFStudentViewAd
             }
         }
 
+        ImageView headShotView = view.findViewById(R.id.imageView);
+        Picasso.get().load(Constants.DEFAULT_PIC_LINK).into(headShotView);
 
         TextView starView = view.findViewById(R.id.star_view);
         if(isFav == true){
