@@ -237,9 +237,8 @@ public class HomePageActivity extends AppCompatActivity {
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             alertBuilder
-                    .setMessage("Would you like to resume a previous session or start" +
-                            " a new session?")
-                    .setPositiveButton("New", new DialogInterface.OnClickListener() {
+                    .setMessage("Do you want to start a new session?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                         // "Clears" the current session to start a new session
                         @Override
@@ -248,6 +247,16 @@ public class HomePageActivity extends AppCompatActivity {
                             sessionEditor.apply();
                             db.BoFStudentDao().delete();
                             db.BoFCourseDao().delete();
+                            onSessionTypeClicked();
+                        }
+
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            sessionEditor.putBoolean("sessionSavedProperly", false);
+                            sessionEditor.apply();
                             onSessionTypeClicked();
                         }
 
@@ -307,6 +316,11 @@ public class HomePageActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             String sessionName = sessionNameEntry.getText().toString();
+
+                            if (sessionName.isEmpty()) {
+                                return;
+                            }
+
                             String sessionNameInDB;
                             char currentCopy;
                             int newCopy;
@@ -388,7 +402,9 @@ public class HomePageActivity extends AppCompatActivity {
         String courseNum;
         double sizeScore;
         int recentScore;
+        int studentBoFId;
         boolean next;
+        boolean duplicateCourse;
 
         // Checks which students in the default database have courses that match with the courses
         // the user has entered
@@ -403,6 +419,7 @@ public class HomePageActivity extends AppCompatActivity {
 
             for (DefaultCourse dc : dcl) {
                 next = false;
+                duplicateCourse = false;
 
                 if (dc.getCourseAdded()) { continue; }
                 // Checks the default course database if any match with the course the user has
@@ -413,6 +430,30 @@ public class HomePageActivity extends AppCompatActivity {
 
                     DefaultStudent currMatchingStudent = db.DefaultStudentDao().get(dc.getStudentId());
                     bsl = db.BoFStudentDao().getAll();
+
+                    studentBoFId = Integer.MAX_VALUE;
+
+                    for (BoFStudent bs : db.BoFStudentDao().getAll()) {
+                        if (bs.getName().equals(currMatchingStudent.getName())) {
+                            studentBoFId = bs.getStudentId();
+                        }
+                    }
+
+                    // Check if course already exists in the database for this student
+                    if (studentBoFId != Integer.MAX_VALUE) {
+                        for (BoFCourse c : db.BoFCourseDao().getForStudent(studentBoFId)) {
+                            if ((c.getYear().equals(dc.getYear()))
+                            && (c.getQuarter().equals(dc.getQuarter()))
+                            && (c.getClassSize().equals(dc.getClassSize()))
+                            && (c.getCourse().equals(dc.getCourse()))
+                            && (c.getCourseNum().equals(dc.getCourseNum()))) {
+                                duplicateCourse = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (duplicateCourse) { continue; }
 
                     // Checks if the student with the matching course is already in the BoF student
                     // database

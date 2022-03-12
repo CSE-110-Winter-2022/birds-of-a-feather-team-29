@@ -9,7 +9,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.cse110_project.databases.AppDatabase;
-import com.example.cse110_project.databases.user.User;
 import com.example.cse110_project.databases.user.UserDao;
 
 import org.junit.After;

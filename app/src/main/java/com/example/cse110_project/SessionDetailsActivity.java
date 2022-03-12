@@ -63,8 +63,6 @@ public class SessionDetailsActivity extends AppCompatActivity {
                                 return;
                             }
                         }
-
-//                        createSessionNameTitle(currSessionName2);
                     }
                 });
 
@@ -72,15 +70,9 @@ public class SessionDetailsActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public void createSessionNameTitle(String sessionName) {
-        TextView sessionNameTitle = findViewById(R.id.session_details_title);
-        sessionNameTitle.setText(sessionName + " Details");
-    }
-
     private void startSessionDetails() {
         String sessionName = getSessionName("sessionName");
         if (sessionName == null) { return; }
-        createSessionNameTitle(sessionName);
         displayStudentsFoundInSession(getSessionStudentList(sessionName));
     }
 
